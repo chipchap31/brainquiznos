@@ -1,0 +1,47 @@
+.container
+    width: 98%
+    max-width: 1200px
+    margin: 0 auto
+
+.flex
+    display: flex
+$padding: 0
+
+@while $padding <= 100
+    .pt-#{$padding}
+        padding-top: #{$padding}px
+    .pr-#{$padding}
+        padding-right: #{$padding}px
+    .pb-#{$padding}
+        padding-bottom: #{$padding}px
+    .pl-#{$padding}
+        padding-left: #{$padding}px
+    .pv-#{$padding}
+        padding: #{$padding}px 0
+    .ph-#{$padding}
+        padding: 0 #{$padding}px
+
+    $padding: $padding + 10
+$margin: 0
+
+@while $margin <= 100
+    .mt-#{$margin}
+        margin-top: #{$margin}px
+    .mr-#{$margin}
+        margin-right: #{$margin}px
+    .mb-#{$margin}
+        margin-bottom: #{$margin}px
+    .ml-#{$margin}
+        margin-left: #{$margin}px
+    .mv-#{$margin}
+        margin: #{$margin}px 0
+    .mh-#{$margin}
+        margin: 0 #{$margin}px
+
+    $margin: $margin + 10
+@each $el in space-between flex-start flex-end space-around center
+    .h-#{$el}
+        justify-content: #{$el}
+@each $el in center flex-start flex-end
+    .v-#{$el}
+        align-items: #{$el}

@@ -1,0 +1,15 @@
+body
+    font-family: $font-1
+.text-bold
+    font-weight: bold
+.text-italic
+    font-weight: italic
+.text-up
+    text-transform: uppercase
+.text-clear
+    text-decoration: none
+
+@each $el, $size in $headingSize
+    #{$el}
+      font-size: #{$size}
+      text-transform: uppercase
