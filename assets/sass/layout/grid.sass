@@ -7,7 +7,7 @@
     display: flex
 $padding: 0
 
-@while $padding <= 100
+@while $padding <= 200
     .pt-#{$padding}
         padding-top: #{$padding}px
     .pr-#{$padding}
@@ -45,3 +45,17 @@ $margin: 0
 @each $el in center flex-start flex-end
     .v-#{$el}
         align-items: #{$el}
+
+.d-col
+  flex-direction: column
+
+
+
+$col: 0
+$colMax: 12
+
+@while $col <= 12
+    .col-#{$col}
+        width: percentage($col/$colMax)
+
+    $col: $col + 1

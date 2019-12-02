@@ -313,6 +313,246 @@ table {
   padding: 0 100px;
 }
 
+.pt-110 {
+  padding-top: 110px;
+}
+
+.pr-110 {
+  padding-right: 110px;
+}
+
+.pb-110 {
+  padding-bottom: 110px;
+}
+
+.pl-110 {
+  padding-left: 110px;
+}
+
+.pv-110 {
+  padding: 110px 0;
+}
+
+.ph-110 {
+  padding: 0 110px;
+}
+
+.pt-120 {
+  padding-top: 120px;
+}
+
+.pr-120 {
+  padding-right: 120px;
+}
+
+.pb-120 {
+  padding-bottom: 120px;
+}
+
+.pl-120 {
+  padding-left: 120px;
+}
+
+.pv-120 {
+  padding: 120px 0;
+}
+
+.ph-120 {
+  padding: 0 120px;
+}
+
+.pt-130 {
+  padding-top: 130px;
+}
+
+.pr-130 {
+  padding-right: 130px;
+}
+
+.pb-130 {
+  padding-bottom: 130px;
+}
+
+.pl-130 {
+  padding-left: 130px;
+}
+
+.pv-130 {
+  padding: 130px 0;
+}
+
+.ph-130 {
+  padding: 0 130px;
+}
+
+.pt-140 {
+  padding-top: 140px;
+}
+
+.pr-140 {
+  padding-right: 140px;
+}
+
+.pb-140 {
+  padding-bottom: 140px;
+}
+
+.pl-140 {
+  padding-left: 140px;
+}
+
+.pv-140 {
+  padding: 140px 0;
+}
+
+.ph-140 {
+  padding: 0 140px;
+}
+
+.pt-150 {
+  padding-top: 150px;
+}
+
+.pr-150 {
+  padding-right: 150px;
+}
+
+.pb-150 {
+  padding-bottom: 150px;
+}
+
+.pl-150 {
+  padding-left: 150px;
+}
+
+.pv-150 {
+  padding: 150px 0;
+}
+
+.ph-150 {
+  padding: 0 150px;
+}
+
+.pt-160 {
+  padding-top: 160px;
+}
+
+.pr-160 {
+  padding-right: 160px;
+}
+
+.pb-160 {
+  padding-bottom: 160px;
+}
+
+.pl-160 {
+  padding-left: 160px;
+}
+
+.pv-160 {
+  padding: 160px 0;
+}
+
+.ph-160 {
+  padding: 0 160px;
+}
+
+.pt-170 {
+  padding-top: 170px;
+}
+
+.pr-170 {
+  padding-right: 170px;
+}
+
+.pb-170 {
+  padding-bottom: 170px;
+}
+
+.pl-170 {
+  padding-left: 170px;
+}
+
+.pv-170 {
+  padding: 170px 0;
+}
+
+.ph-170 {
+  padding: 0 170px;
+}
+
+.pt-180 {
+  padding-top: 180px;
+}
+
+.pr-180 {
+  padding-right: 180px;
+}
+
+.pb-180 {
+  padding-bottom: 180px;
+}
+
+.pl-180 {
+  padding-left: 180px;
+}
+
+.pv-180 {
+  padding: 180px 0;
+}
+
+.ph-180 {
+  padding: 0 180px;
+}
+
+.pt-190 {
+  padding-top: 190px;
+}
+
+.pr-190 {
+  padding-right: 190px;
+}
+
+.pb-190 {
+  padding-bottom: 190px;
+}
+
+.pl-190 {
+  padding-left: 190px;
+}
+
+.pv-190 {
+  padding: 190px 0;
+}
+
+.ph-190 {
+  padding: 0 190px;
+}
+
+.pt-200 {
+  padding-top: 200px;
+}
+
+.pr-200 {
+  padding-right: 200px;
+}
+
+.pb-200 {
+  padding-bottom: 200px;
+}
+
+.pl-200 {
+  padding-left: 200px;
+}
+
+.pv-200 {
+  padding: 200px 0;
+}
+
+.ph-200 {
+  padding: 0 200px;
+}
+
 .mt-0 {
   margin-top: 0px;
 }
@@ -609,6 +849,62 @@ table {
   align-items: flex-end;
 }
 
+.d-col {
+  flex-direction: column;
+}
+
+.col-0 {
+  width: 0%;
+}
+
+.col-1 {
+  width: 8.3333333333%;
+}
+
+.col-2 {
+  width: 16.6666666667%;
+}
+
+.col-3 {
+  width: 25%;
+}
+
+.col-4 {
+  width: 33.3333333333%;
+}
+
+.col-5 {
+  width: 41.6666666667%;
+}
+
+.col-6 {
+  width: 50%;
+}
+
+.col-7 {
+  width: 58.3333333333%;
+}
+
+.col-8 {
+  width: 66.6666666667%;
+}
+
+.col-9 {
+  width: 75%;
+}
+
+.col-10 {
+  width: 83.3333333333%;
+}
+
+.col-11 {
+  width: 91.6666666667%;
+}
+
+.col-12 {
+  width: 100%;
+}
+
 body {
   font-family: "Open Sans";
 }
@@ -629,13 +925,21 @@ body {
   text-decoration: none;
 }
 
+.text-center {
+  text-align: center;
+}
+
+.title-sub {
+  font-size: 18px;
+}
+
 h1 {
-  font-size: 32px;
+  font-size: 40px;
   text-transform: uppercase;
 }
 
 h2 {
-  font-size: 24px;
+  font-size: 32px;
   text-transform: uppercase;
 }
 
@@ -651,6 +955,10 @@ h2 {
   color: #d62af6;
 }
 
+.color-black {
+  color: #666666;
+}
+
 .colorbg-dblue {
   background-color: #2924d4;
 }
@@ -663,16 +971,51 @@ h2 {
   background-color: #2a5af6;
 }
 
-.button {
+.colorbg-purple {
+  background-color: #5c24d4;
+}
+
+.button, .button-2, .button-1 {
   display: inline-block;
   color: white;
-  border-radius: 5px;
   text-decoration: none;
   text-transform: uppercase;
+  transition: 200ms;
+  border: none;
+  cursor: pointer;
+}
+.button:hover, .button-2:hover, .button-1:hover {
+  transform: scale(1.1);
 }
 
 .button-1 {
   padding: 10px 36px;
+  border-radius: 5px;
+}
+
+.button-2 {
+  padding: 20px 40px;
+  border-radius: 5px;
+}
+
+#hero {
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-image: url("../images/hero-bg.jpg");
+  display: block;
+}
+
+#newsletter input {
+  font-size: 18px;
+}
+#newsletter input[type=email] {
+  width: 400px;
+  border-radius: 15px;
+  border: none;
+  text-indent: 10px;
+}
+#newsletter input:focus, #newsletter textarea:focus, #newsletter select:focus {
+  outline: none;
 }
 
 /*# sourceMappingURL=master.css.map */
