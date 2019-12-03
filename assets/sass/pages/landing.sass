@@ -1,5 +1,4 @@
 #hero
-
   +background-image("../images/hero-bg.jpg")
 
 #newsletter
@@ -13,3 +12,22 @@
     text-indent: 10px
   input:focus, textarea:focus, select:focus
     outline: none
+
+
+$size: 60px
+#social
+  .icons
+    li
+      transition: 200ms
+      height: $size
+      width: $size
+      border-radius: 50%
+      line-height: $size
+      text-align: center
+      &:hover
+        transform: scale(1.2)
+      a
+        font-size: 30px
+        display: block
+  .footer
+    font-size: 14px
