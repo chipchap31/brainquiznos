@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700&display=swap");
-/** http://meyerweb.com/eric/tools/css/reset/ 
- * * v2.0 | 20110126 
- * * License: none (public domain) 
+/** http://meyerweb.com/eric/tools/css/reset/
+ * * v2.0 | 20110126
+ * * License: none (public domain)
  * * Changed from CSS to SASS
  * */
 html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
@@ -37,6 +37,10 @@ blockquote:before, blockquote:after, q:before, q:after {
 table {
   border-collapse: collapse;
   border-spacing: 0;
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
 }
 
 .container {
@@ -995,7 +999,7 @@ h2 {
 
 .button, .button-2, .button-1 {
   display: inline-block;
-  color: white;
+  color: white !important;
   text-decoration: none;
   text-transform: uppercase;
   transition: 200ms;
@@ -1016,10 +1020,29 @@ h2 {
   border-radius: 5px;
 }
 
+.form {
+  width: 100%;
+}
+.form input {
+  height: 34px;
+  text-indent: 5px;
+  font-size: 16px;
+  color: #666666;
+  border-radius: 5px;
+  border: none;
+}
+.form input:not([type=radio]) {
+  width: 100%;
+}
+.form label {
+  display: block;
+  font-size: 18px;
+}
+
 #hero {
   background-size: 100% 100%;
   background-repeat: no-repeat;
-  background-image: url("../images/hero-bg.jpg");
+  background-image: url("/images/hero-bg.jpg");
   display: block;
 }
 
@@ -1031,9 +1054,6 @@ h2 {
   border-radius: 15px;
   border: none;
   text-indent: 10px;
-}
-#newsletter input:focus, #newsletter textarea:focus, #newsletter select:focus {
-  outline: none;
 }
 
 #social .icons li {

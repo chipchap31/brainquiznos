@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "client:dev": "webpack-dev-server",
-    "start": "npm run client:dev"
+    "start:dev": "nodemon server.js"
   },
   "repository": {
     "type": "git",
@@ -28,7 +27,6 @@
     "morgan": "^1.9.1"
   },
   "devDependencies": {
-    "webpack": "^4.41.2",
-    "webpack-cli": "^3.3.10"
+    "nodemon": "^2.0.1"
   }
 }
