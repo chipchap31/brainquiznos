@@ -14,4 +14,5 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "assets")));
 app.use("/", indexRouter);
 app.use("/user", userRouter);
+
 app.listen(4000, () => console.log("Example app listening on port 4000!"));

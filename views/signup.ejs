@@ -9,17 +9,29 @@
       <div class="row h-center">
         <div class="col-4">
           <form class="form mt-20" action="/user/signup" method="post">
+            <% if (err) { %>
+              <div class="colorbg-white text-center p-20 err-title">
+                <h5 class="color-red ">There are some items that needs your attention!</h5>
+              </div>
+
+            <% } %>
             <label class='mt-10 color-white' for="username">Username</label>
-            <input class='mt-10' id='username' type="text" name="username" placeholder="johnDoe31">
+            <input class='<%= errMessage.username ? "err-input" : null %> mt-10' id='username' type="text" name="username" placeholder="johnDoe31" required>
+
+                <% if(errMessage.username) { %>
+                  <div class="err mt-10">
+                    <%= errMessage.username %>
+                  </div>
+                 <% }%>
 
             <label class='mt-10 color-white' for="email">Email</label>
-            <input class='mt-10' id='email' type="email" name="email" placeholder="example@example.com">
+            <input class='mt-10' id='email' type="email" name="email" placeholder="example@example.com" required>
 
             <label class='mt-10 color-white' for="password">Password</label>
-            <input class='mt-10' id='password' type="password" name="password" placeholder="Password">
+            <input class='mt-10' id='password' type="password" name="password" placeholder="Password" required>
 
             <label class='mt-10 color-white' for="password2">Confirm password</label>
-            <input class='mt-10' id='password2' type="password" name="password2" placeholder="Confirm password">
+            <input class='mt-10' id='password2' type="password" name="password2" placeholder="Confirm password" required>
 
             <label class='mt-10 color-white' for="gender">Gender</label>
             <div class="flex">

@@ -6,6 +6,16 @@ router.get("/", function(req, res, next) {
   res.render("index");
 });
 router.get("/signup.html", function(req, res, next) {
-  res.render("signup");
+  res.render("signup", {
+    user: false,
+    err: false,
+    errMessage: {
+      username: false,
+      email: false,
+      password: false,
+      password2: false,
+      gender: false
+    }
+  });
 });
 module.exports = router;
