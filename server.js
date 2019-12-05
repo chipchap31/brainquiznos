@@ -19,7 +19,6 @@ mongoose.connect(
 );
 app.use(
   cookieSession({
-    maxAge: 300000,
     keys: ["key1", "key2"]
   })
 );
