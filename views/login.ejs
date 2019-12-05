@@ -2,10 +2,49 @@
 <main>
   <section id="login" class="pv-60 colorbg-purple">
     <div class="container">
-      <div class="row">
-        <h1>Login</h1>
+      <div class="text-center">
+        <h1 class="color-white">Login</h1>
+        <p class='title-sub color-white mt-10'></p>
       </div>
-    </div>
+      <div class="row  flex h-center">
+        <div class="col-3">
+          <form class="form mt-20" action="/user/login" method="post">
+        
+            <label class='mt-10 color-white' for="username">Username</label>
+            <input class='<%= errMessage.username ? "err-input" : null %> mt-10' id='username' type="text" name="username" placeholder="Your username" required>
+
+                <% if(errMessage.username) { %>
+                  <div class="err mt-10">
+                    <%= errMessage.username %>
+                  </div>
+                 <% }%>
+
+
+            <label class='mt-10 color-white' for="password">Password</label>
+            <input class='mt-10' id='password' type="password" name="password" placeholder="Your password" required>
+            <% if(errMessage.password) { %>
+              <div class="err mt-10">
+                <%= errMessage.password %>
+              </div>
+             <% }%>
+             <div class="flex v-center">
+               <input type="checkbox" id="remember" name="remember" value="true"><label for="remember" class="remember color-white">Remember me</label>
+             </div>
+
+
+             <div class="text-center mv-10">
+               <span class='color-white'>Don't have an account?</span>
+               <a class="color-pink" href="/signup">Sign up</a>
+
+             </div>
+
+            <button class='button-submit colorbg-pink mt-30'>Login</button>
+          </form>
+        </div>
+
+
+      </div>
+
   </section>
 </main>
 <%- include("layout/footer") %>

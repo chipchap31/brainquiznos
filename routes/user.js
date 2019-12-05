@@ -56,8 +56,47 @@ router.post("/signup", async function(req, res, next) {
   }
 });
 
-router.post("/login", async (req, res) => {});
+router.post("/login", async (req, res) => {
+  const { username, password, remember } = req.body;
+  const userSave = remember ? JSON.parse(remember) : false;
+  const USERS = mongoose.model("users");
+  const user = await USERS.findOne({ username });
+  const match = user ? await bcrypt.compare(password, user.password) : false;
 
+  // no user find with the given
+  // username is found
+  if (!user) {
+    return res.render("login", {
+      user: false,
+      err: true,
+      errMessage: {
+        username: "Account does not exist.",
+        password: false
+      }
+    });
+  } else if (!match) {
+    return res.render("login", {
+      user: false,
+      err: true,
+      errMessage: {
+        username: false,
+        password: "Password does not match."
+      }
+    });
+  } else {
+    if (userSave) {
+      req.session.maxAge = 30 * 24 * 60 * 60 * 1000;
+    }
+
+    req.session.user = user._id;
+    return res.redirect("/");
+  }
+});
+
+router.get("/logout", (req, res) => {
+  req.session = null;
+  res.redirect("/");
+});
 module.exports = router;
 
 function validate(data) {

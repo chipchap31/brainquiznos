@@ -9,12 +9,7 @@
       <div class="row  flex h-center">
         <div class="col-3">
           <form class="form mt-20" action="/user/signup" method="post">
-            <% if (err) { %>
-              <div class="colorbg-white text-center p-20 err-title">
-                <h5 class="color-red ">There are some items that needs your attention!</h5>
-              </div>
-
-            <% } %>
+          
             <div class="input-inline flex h-space-between">
               <div>
                 <label class='mt-10 color-white' for="firstname">First name</label>
@@ -70,11 +65,12 @@
                 <input class="mr-10 ml-20" type="radio" name="gender" value="other" required><span
                     class="color-white">Other</span>
               </div>
-
-
+            </div>
+            <div class="text-center mv-10">
+              <span class='color-white'>Already have an account?</span>
+              <a class="color-pink" href="/login">Login</a>
 
             </div>
-
             <button class='button-submit colorbg-pink mt-30'>Sign up</button>
           </form>
         </div>
