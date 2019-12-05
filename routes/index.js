@@ -11,8 +11,11 @@ router.get("/", async (req, res, next) => {
   if (!user) {
     res.render("index", { user });
   } else {
-    console.log(userFind.gender);
-    res.render("interface", { user, gender: userFind.gender });
+    res.render("interface", {
+      user,
+      gender: userFind.gender,
+      username: userFind.username
+    });
   }
 });
 router.get("/signup", function(req, res, next) {
