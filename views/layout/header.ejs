@@ -20,10 +20,23 @@
         >
 
         <ul class="flex v-center">
-          <li><a class="color-white text-up" href="login.html">login</a></li>
-          <li class="ml-20">
-            <a class="button-1 colorbg-pink" href="signup.html">signup</a>
-          </li>
+
+          <% if (user) { %>
+          <div class="profile">
+            <img src="/images/<%= gender %>.png" alt='profile'>
+          </div>
+
+
+
+
+
+
+          <% }else{ %>
+            <li><a class="color-white text-up" href="/login">login</a></li>
+            <li class="ml-20">
+              <a class="button-1 colorbg-pink" href="/signup">signup</a>
+            </li>
+          <% }%>
         </ul>
       </div>
     </header>

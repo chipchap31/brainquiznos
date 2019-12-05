@@ -9,17 +9,7 @@
       <div class="row  flex h-center">
         <div class="col-3">
           <form class="form mt-20" action="/user/login" method="post">
-            <% if (err) { %>
-              <div class="colorbg-white text-center p-20 err-title">
-                <h5 class="color-red ">There are some items that needs your attention!</h5>
-              </div>
-
-            <% } %>
-
-
-
-
-
+        
             <label class='mt-10 color-white' for="username">Username</label>
             <input class='<%= errMessage.username ? "err-input" : null %> mt-10' id='username' type="text" name="username" placeholder="Your username" required>
 
@@ -44,7 +34,7 @@
 
              <div class="text-center mv-10">
                <span class='color-white'>Don't have an account?</span>
-               <a class="color-pink" href="signup.html">Sign up</a>
+               <a class="color-pink" href="/signup">Sign up</a>
 
              </div>
 
