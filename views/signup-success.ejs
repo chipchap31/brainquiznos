@@ -2,10 +2,23 @@
 <main>
   <section id="signup-success" class="colorbg-purple pv-60">
     <div class="container">
-      <div class="row">
-        <h1 class="color-white">Account Created</h1>
+      <div class="row flex h-center">
+        <div class="col-7 text-center">
+          <h1 class="color-white mb-20">Account Created</h1>
+          <p class='color-white'>Hello <%= firstname %>, thank you for signing up! Your account has been created.</p>
+
+        </div>
+
+      </div>
+
+      <div class="row mv-30 flex h-center">
+        <img src="/images/checked.svg" alt="">
       </div>
     </div>
+    <div class="row text-center">
+      <a href="login.html" class='button-1 colorbg-pink'>login</a>
+    </div>
+
   </section>
 </main>
 <%- include('layout/footer') %>

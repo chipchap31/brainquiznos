@@ -51,7 +51,7 @@ router.post("/signup", async function(req, res, next) {
         gender
       });
       userNew.save();
-      return res.render(`/signup-success/${userNew._id}`);
+      return res.render("signup-success", { username, firstname });
     });
   }
 });
