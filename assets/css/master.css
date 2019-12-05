@@ -941,10 +941,6 @@ input:focus, textarea:focus, select:focus {
   flex-direction: column;
 }
 
-.row {
-  display: flex;
-}
-
 .col-0 {
   width: 0%;
 }
@@ -1204,6 +1200,10 @@ h5 {
 }
 #social .footer {
   font-size: 14px;
+}
+
+#signup-success img {
+  width: 300px;
 }
 
 /*# sourceMappingURL=master.css.map */
