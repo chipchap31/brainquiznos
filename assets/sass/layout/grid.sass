@@ -7,7 +7,7 @@
     display: flex
 $padding: 0
 
-@while $padding <= 100
+@while $padding <= 200
     .pt-#{$padding}
         padding-top: #{$padding}px
     .pr-#{$padding}
@@ -20,7 +20,8 @@ $padding: 0
         padding: #{$padding}px 0
     .ph-#{$padding}
         padding: 0 #{$padding}px
-
+    .p-#{$padding}
+      padding: #{$padding}px
     $padding: $padding + 10
 $margin: 0
 
@@ -45,3 +46,24 @@ $margin: 0
 @each $el in center flex-start flex-end
     .v-#{$el}
         align-items: #{$el}
+
+.d-col
+  flex-direction: column
+
+.row
+  display: flex
+
+$col: 0
+$colMax: 12
+
+@while $col <= 12
+    .col-#{$col}
+        width: percentage($col/$colMax)
+
+    $col: $col + 1
+
+
+.divider
+  border-bottom: solid 1px white
+  width: 100%
+  height: 1px

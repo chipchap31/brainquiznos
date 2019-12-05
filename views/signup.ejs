@@ -1,0 +1,87 @@
+<%- include('layout/header') %>
+<main>
+  <section id="signup" class="colorbg-purple pv-40">
+    <div class="container">
+      <div class="text-center">
+        <h1 class="color-white">Signup now</h1>
+        <p class='title-sub color-white mt-10'>Create an account and start playing for free.</p>
+      </div>
+      <div class="row h-center">
+        <div class="col-3">
+          <form class="form mt-20" action="/user/signup" method="post">
+            <% if (err) { %>
+              <div class="colorbg-white text-center p-20 err-title">
+                <h5 class="color-red ">There are some items that needs your attention!</h5>
+              </div>
+
+            <% } %>
+            <div class="input-inline flex h-space-between">
+              <div>
+                <label class='mt-10 color-white' for="firstname">First name</label>
+                <input  class='mt-10' id='firstname' type="text" name="firstname" placeholder="Your first name" required>
+              </div>
+              <div>
+                <label class='mt-10 color-white' for="lastname">Last name</label>
+                <input class='mt-10' id='lastname' type="text" name="lastname" placeholder="Your last name" required>
+
+              </div>
+            </div>
+
+
+
+
+            <label class='mt-10 color-white' for="username">Username</label>
+            <input class='<%= errMessage.username ? "err-input" : null %> mt-10' id='username' type="text" name="username" placeholder="Your username" required>
+
+                <% if(errMessage.username) { %>
+                  <div class="err mt-10">
+                    <%= errMessage.username %>
+                  </div>
+                 <% }%>
+
+            <label class='mt-10 color-white' for="email">Email</label>
+            <input class='mt-10' id='email' type="email" name="email" placeholder="Your email" required>
+            <% if(errMessage.email) { %>
+              <div class="err mt-10">
+                <%= errMessage.email %>
+              </div>
+             <% }%>
+            <label class='mt-10 color-white' for="password">Password</label>
+            <input class='mt-10' id='password' type="password" name="password" placeholder="Your password" required>
+            <% if(errMessage.password) { %>
+              <div class="err mt-10">
+                <%= errMessage.password %>
+              </div>
+             <% }%>
+            <label class='mt-10 color-white' for="password2">Confirm password</label>
+            <input class='mt-10' id='password2' type="password" name="password2" placeholder="Confirm password" required>
+
+            <label class='mt-10 color-white' for="gender">Gender</label>
+            <div class="flex">
+              <div class="flex v-center">
+                <input class="mr-10 " type="radio" name="gender" value="male" required>
+                <span class="color-white ">Male</span>
+              </div>
+              <div class="flex v-center">
+                <input class="mr-10 ml-20" type="radio" name="gender" value="female" required><span
+                    class="color-white">Female</span>
+              </div>
+              <div class="flex v-center">
+                <input class="mr-10 ml-20" type="radio" name="gender" value="other" required><span
+                    class="color-white">Other</span>
+              </div>
+
+
+
+            </div>
+
+            <button class='button-submit colorbg-pink mt-30'>Sign up</button>
+          </form>
+        </div>
+
+
+      </div>
+    </div>
+  </section>
+</main>
+<%- include('layout/footer') %>

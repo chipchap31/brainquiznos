@@ -1,5 +1,7 @@
 body
     font-family: $font-1
+p
+  line-height: 24px
 .text-bold
     font-weight: bold
 .text-italic
@@ -8,7 +10,10 @@ body
     text-transform: uppercase
 .text-clear
     text-decoration: none
-
+.text-center
+  text-align: center
+.title-sub
+  font-size: 18px
 @each $el, $size in $headingSize
     #{$el}
       font-size: #{$size}

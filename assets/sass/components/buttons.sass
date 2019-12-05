@@ -1,8 +1,26 @@
 .button
     display: inline-block
-    color: white
-    border-radius: 5px
+    color: white !important
     text-decoration: none
     text-transform: uppercase
+    transition: 200ms
+    border: none
+    cursor: pointer
+    &:hover
+      transform: scale(1.1)
 .button-1
+    @extend .button
     padding: 10px 36px
+    border-radius: 5px
+.button-2
+  padding: 20px 40px
+  border-radius: 5px
+
+  font-size: 18px
+  @extend .button
+.button-submit
+  padding: 20px 40px
+  border-radius: 5px
+  width: 100%
+  font-size: 18px
+  @extend .button
