@@ -1069,7 +1069,7 @@ h5 {
 }
 
 .color-black {
-  color: #666666;
+  color: #4d4d4d;
 }
 
 .color-red {
@@ -1138,16 +1138,18 @@ h5 {
   height: 34px;
   text-indent: 5px;
   font-size: 16px;
-  color: #666666;
+  color: #4d4d4d;
   border-radius: 5px;
   border: none;
 }
-.form input:not([type=radio]) {
+.form input:not([type=radio]):not([type=checkbox]) {
   width: 100%;
 }
 .form label {
   display: block;
-  font-size: 18px;
+}
+.form .remember {
+  font-size: 14px;
 }
 
 .err-title {
