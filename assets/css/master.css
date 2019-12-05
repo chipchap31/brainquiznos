@@ -1104,7 +1104,7 @@ h5 {
   background-color: white;
 }
 
-.button, .button-2, .button-1 {
+.button, .button-submit, .button-2, .button-1 {
   display: inline-block;
   color: white !important;
   text-decoration: none;
@@ -1113,7 +1113,7 @@ h5 {
   border: none;
   cursor: pointer;
 }
-.button:hover, .button-2:hover, .button-1:hover {
+.button:hover, .button-submit:hover, .button-2:hover, .button-1:hover {
   transform: scale(1.1);
 }
 
@@ -1125,6 +1125,14 @@ h5 {
 .button-2 {
   padding: 20px 40px;
   border-radius: 5px;
+  font-size: 18px;
+}
+
+.button-submit {
+  padding: 20px 40px;
+  border-radius: 5px;
+  width: 100%;
+  font-size: 18px;
 }
 
 .form {
@@ -1152,6 +1160,10 @@ h5 {
 
 .err-input {
   border: solid 2px #b72020 !important;
+}
+
+.input-inline div {
+  width: 48.5%;
 }
 
 .err {

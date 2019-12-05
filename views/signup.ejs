@@ -7,7 +7,7 @@
         <p class='title-sub color-white mt-10'>Create an account and start playing for free.</p>
       </div>
       <div class="row h-center">
-        <div class="col-4">
+        <div class="col-3">
           <form class="form mt-20" action="/user/signup" method="post">
             <% if (err) { %>
               <div class="colorbg-white text-center p-20 err-title">
@@ -15,8 +15,23 @@
               </div>
 
             <% } %>
+            <div class="input-inline flex h-space-between">
+              <div>
+                <label class='mt-10 color-white' for="firstname">First name</label>
+                <input  class='mt-10' id='firstname' type="text" name="firstname" placeholder="Your first name" required>
+              </div>
+              <div>
+                <label class='mt-10 color-white' for="lastname">Last name</label>
+                <input class='mt-10' id='lastname' type="text" name="lastname" placeholder="Your last name" required>
+
+              </div>
+            </div>
+
+
+
+
             <label class='mt-10 color-white' for="username">Username</label>
-            <input class='<%= errMessage.username ? "err-input" : null %> mt-10' id='username' type="text" name="username" placeholder="johnDoe31" required>
+            <input class='<%= errMessage.username ? "err-input" : null %> mt-10' id='username' type="text" name="username" placeholder="Your username" required>
 
                 <% if(errMessage.username) { %>
                   <div class="err mt-10">
@@ -25,11 +40,19 @@
                  <% }%>
 
             <label class='mt-10 color-white' for="email">Email</label>
-            <input class='mt-10' id='email' type="email" name="email" placeholder="example@example.com" required>
-
+            <input class='mt-10' id='email' type="email" name="email" placeholder="Your email" required>
+            <% if(errMessage.email) { %>
+              <div class="err mt-10">
+                <%= errMessage.email %>
+              </div>
+             <% }%>
             <label class='mt-10 color-white' for="password">Password</label>
-            <input class='mt-10' id='password' type="password" name="password" placeholder="Password" required>
-
+            <input class='mt-10' id='password' type="password" name="password" placeholder="Your password" required>
+            <% if(errMessage.password) { %>
+              <div class="err mt-10">
+                <%= errMessage.password %>
+              </div>
+             <% }%>
             <label class='mt-10 color-white' for="password2">Confirm password</label>
             <input class='mt-10' id='password2' type="password" name="password2" placeholder="Confirm password" required>
 
@@ -52,7 +75,7 @@
 
             </div>
 
-            <input class='button-1 colorbg-pink mt-30' type="submit" value="Sign up">
+            <button class='button-submit colorbg-pink mt-30'>Sign up</button>
           </form>
         </div>
 

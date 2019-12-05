@@ -12,9 +12,7 @@ router.get("/signup.html", function(req, res, next) {
     errMessage: {
       username: false,
       email: false,
-      password: false,
-      password2: false,
-      gender: false
+      password: false
     }
   });
 });
