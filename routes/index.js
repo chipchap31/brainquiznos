@@ -16,4 +16,15 @@ router.get("/signup.html", function(req, res, next) {
     }
   });
 });
+router.get("/login.html", function(req, res, next) {
+  res.render("login", {
+    user: false,
+    err: false,
+    errMessage: {
+      username: false,
+      email: false,
+      password: false
+    }
+  });
+});
 module.exports = router;
