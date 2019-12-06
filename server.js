@@ -7,6 +7,7 @@ const indexRouter = require("./routes/index");
 const userRouter = require("./routes/user");
 const mongoose = require("mongoose");
 const cookieSession = require("cookie-session");
+const PORT = process.env.PORT || 8000;
 require("./models/userModel");
 mongoose.connect(
   process.env.MONGO_URI,
@@ -36,4 +37,4 @@ app.use(express.static(path.join(__dirname, "assets")));
 app.use("/", indexRouter);
 app.use("/user", userRouter);
 
-app.listen(4000, () => console.log("Example app listening on port 4000!"));
+app.listen(PORT, () => console.log(`App is running on port ${PORT}`));

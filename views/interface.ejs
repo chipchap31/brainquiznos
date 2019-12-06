@@ -1,5 +1,57 @@
 <%- include("layout/header", {user ,gender, username}) %>
 <main>
-  interface
+  <section id="game-home" class='colorbg-purple pv-40'>
+    <div class="container">
+      <div class="row flex h-space-between">
+        <div class="col">
+          <h3 class='color-white mb-10'>Start playing</h3>
+          <p class='color-white title-sub  mb-30'>Choose a theme that suits you.</p>
+          <div class="glider-wrapper">
+            <div class="glider-contain">
+              <div class="glider">
+                <div class='text-center'>
+                  <div class="overlay">
+                    <i class="far fa-play-circle"></i>
+                  </div>
+                  <h4 class="color-black">Sport</h4>
+                  <i class="mt-20 color-black fas fa-running"></i>
+                </div>
+                <div class='text-center'>
+                  <div class="overlay">
+                    <i class="far fa-play-circle"></i>
+                  </div>
+                  <h4 class="color-black">Flags</h4>
+                  <i class="mt-20 color-black fas fa-flag"></i>
+                </div>
+                <div class='text-center'>
+                  <div class="overlay">
+                    <i class="far fa-play-circle"></i>
+                  </div>
+                  <h4 class="color-black">Cars</h4>
+                  <i class="mt-20 color-black fas fa-car"></i>
+
+                </div>
+                <div class='text-center'>
+                  <div class="overlay">
+                    <i class="far fa-play-circle"></i>
+                  </div>
+                  <h4 class="color-black" >Sport</h4>
+                </div>
+              </div>
+              <button role="button" aria-label="Previous" class="glider-prev"><i class="color-pink fas fa-caret-left"></i></button>
+              <button role="button" aria-label="Next" class="glider-next"><i class="color-pink fas fas fa-caret-right"></i></button>
+              <div role="tablist" class="dots"></div>
+          </div>
+        </div>
+        </div>
+
+
+        <div class="col-6">
+          <h3 class="color-white">Leaderboard</h3>
+        </div>
+      </div>
+
+    </div>
+  </section>
 <main>
 <%- include("layout/footer") %>
