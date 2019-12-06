@@ -3,11 +3,13 @@ const mongoose = require("mongoose"),
 
 const userSchema = new Schema({
   username: String,
-  firstname: String,
-  lastname: String,
   email: String,
   password: String,
   gender: String,
+  games: {
+    type: Number,
+    default: 0
+  },
   points: {
     type: Number,
     default: 0
