@@ -6,6 +6,10 @@ const userSchema = new Schema({
   email: String,
   password: String,
   gender: String,
+  games: {
+    type: Number,
+    default: 0
+  },
   points: {
     type: Number,
     default: 0

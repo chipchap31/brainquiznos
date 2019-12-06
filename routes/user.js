@@ -9,6 +9,7 @@ router.post("/signup", async function(req, res, next) {
   const { username, email, password, password2, gender } = req.body;
 
   const userExist = await USERS.findOne({ email, username });
+
   // displays an error when user does not
   // have any number in their username
 

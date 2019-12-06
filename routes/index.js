@@ -11,10 +11,13 @@ router.get("/", async (req, res, next) => {
   if (!user) {
     res.render("index", { user });
   } else {
+    const userAll = await USERS.find({}, "username games points");
+    console.log(userAll);
     res.render("interface", {
       user,
       gender: userFind.gender,
-      username: userFind.username
+      username: userFind.username,
+      userAll
     });
   }
 });
