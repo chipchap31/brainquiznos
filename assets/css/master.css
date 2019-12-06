@@ -1190,6 +1190,7 @@ h5 {
   bottom: -180px;
   border-radius: 5px;
   width: 150px;
+  z-index: 99;
   padding: 15px 5px;
   background-size: 100% 100%;
   background-repeat: no-repeat;
@@ -1203,6 +1204,61 @@ h5 {
 .profile:hover .profile-menu {
   opacity: 1;
   pointer-events: all;
+}
+
+.glider-wrapper {
+  width: 400px;
+}
+.glider-wrapper .glider-contain {
+  width: 400px;
+}
+.glider-wrapper .glider-slide {
+  background-color: white;
+  height: 110px !important;
+  margin: 0 10px;
+  padding: 10px 0;
+  border-radius: 5px;
+  position: relative;
+}
+.glider-wrapper .glider-slide i {
+  font-size: 40px;
+}
+.glider-wrapper .glider-slide .overlay {
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(77, 77, 77, 0.7);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  transition: 200ms;
+  color: #d62af6;
+}
+.glider-wrapper .glider-slide .overlay:hover {
+  opacity: 1;
+}
+
+.glider-next {
+  right: -45px;
+}
+
+.glider-prev {
+  left: -35px;
+}
+
+.glider-next, .glider-prev {
+  opacity: 0.7;
+}
+
+.glider-next:hover {
+  opacity: 1;
+}
+
+.glider-prev:hover {
+  opacity: 1;
 }
 
 #hero {
@@ -1243,6 +1299,10 @@ h5 {
 
 #signup-success img {
   width: 300px;
+}
+
+#game-home {
+  position: relative;
 }
 
 /*# sourceMappingURL=master.css.map */
