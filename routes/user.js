@@ -6,15 +6,7 @@ const bcrypt = require("bcrypt");
 
 router.post("/signup", async function(req, res, next) {
   const USERS = mongoose.model("users");
-  const {
-    username,
-    firstname,
-    lastname,
-    email,
-    password,
-    password2,
-    gender
-  } = req.body;
+  const { username, email, password, password2, gender } = req.body;
 
   const userExist = await USERS.findOne({ email, username });
   // displays an error when user does not
@@ -44,8 +36,7 @@ router.post("/signup", async function(req, res, next) {
     bcrypt.hash(password, 10, async function(err, hash) {
       const userNew = await new USERS({
         username,
-        firstname,
-        lastname,
+
         email,
         password: hash,
         gender
