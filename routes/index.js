@@ -11,13 +11,20 @@ router.get("/", async (req, res, next) => {
   if (!user) {
     res.render("index", { user });
   } else {
-    const userAll = await USERS.find({}, "username games points");
-    console.log(userAll);
+    const $fetchUser = await USERS.find(
+      {},
+      "username games points gender"
+    ).sort({
+      points: -1
+    });
+    const rank = $fetchUser.map(e => e.id).indexOf(user) + 1;
+    const userAll = $fetchUser.filter((x, i) => i < 6);
     res.render("interface", {
       user,
       gender: userFind.gender,
       username: userFind.username,
-      userAll
+      userAll,
+      rank
     });
   }
 });

@@ -1261,6 +1261,18 @@ h5 {
   opacity: 1;
 }
 
+.leaderboard ul li {
+  border-radius: 5px;
+}
+.leaderboard ul li img {
+  border-radius: 50%;
+  background-color: #d62af6;
+  padding: 1px;
+}
+.leaderboard ul li:not(:first-child) {
+  margin-top: 15px;
+}
+
 #hero {
   background-size: 100% 100%;
   background-repeat: no-repeat;
