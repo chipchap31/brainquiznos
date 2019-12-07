@@ -1,40 +1,40 @@
 <%- include("layout/header", {user ,gender, username}) %>
 <main>
-  <section id="game-home" class='colorbg-purple pv-40'>
+  <section id="game-home" class='open colorbg-purple pv-40'>
     <div class="container">
       <div class="row flex h-space-between">
         <div class="col">
           <h3 class='color-white mb-10'>Start playing</h3>
-          <p class='color-white title-sub  mb-30'>Choose a theme that suits you.</p>
+          <p class='color-white title-sub  mb-20'>Choose a theme that suits you.</p>
           <div class="glider-wrapper">
             <div class="glider-contain">
               <div class="glider">
                 <div class='text-center'>
-                  <div class="overlay">
-                    <i class="far fa-play-circle"></i>
-                  </div>
+
+                    <i class="open-game-difficulty overlay far fa-play-circle"></i>
+
                   <h4 class="color-black">Sport</h4>
                   <i class="mt-20 color-black fas fa-running"></i>
                 </div>
                 <div class='text-center'>
-                  <div class="overlay">
-                    <i class="far fa-play-circle"></i>
-                  </div>
+
+                    <i class="open-game-difficulty overlay far fa-play-circle"></i>
+
                   <h4 class="color-black">Flags</h4>
                   <i class="mt-20 color-black fas fa-flag"></i>
                 </div>
                 <div class='text-center'>
-                  <div class="overlay">
-                    <i class="far fa-play-circle"></i>
-                  </div>
+
+                    <i class="open-game-difficulty overlay far fa-play-circle"></i>
+
                   <h4 class="color-black">Cars</h4>
                   <i class="mt-20 color-black fas fa-car"></i>
 
                 </div>
                 <div class='text-center'>
-                  <div class="overlay">
-                    <i class="far fa-play-circle"></i>
-                  </div>
+
+                    <i class="open-game-difficulty overlay far fa-play-circle"></i>
+
                   <h4 class="color-black" >Sport</h4>
                 </div>
               </div>
@@ -86,6 +86,31 @@
         </div>
       </div>
 
+    </div>
+  </section>
+
+  <section id="game-difficulty" class="pv-200 colorbg-purple">
+    <div class="container">
+      <div class="row text-center">
+        <h2 class="color-white mb-10">Choose difficulty</h2>
+        <p class="title-sub color-white mb-30">Choose the difficulty of your game wisely.</p>
+      </div>
+
+      <ul class="flex h-space-around">
+        <li class='easy color-white colorbg-pink flex h-center v-center d-col'>
+          <h4>Easy</h4>
+          <p class="title-sub">4x5</p>
+        </li>
+        <li class='normal color-white colorbg-pink flex h-center v-center d-col'>
+          <h4>Normal</h4>
+          <p class="title-sub">4x5</p>
+        </li>
+        <li class='hard color-white colorbg-pink flex h-center v-center d-col'>
+          <h4>Hard</h4>
+          <p class="title-sub">4x5</p>
+        </li>
+
+      </ul>
     </div>
   </section>
 <main>

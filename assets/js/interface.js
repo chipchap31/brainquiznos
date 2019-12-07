@@ -11,3 +11,16 @@ window.addEventListener("load", function() {
     }
   });
 });
+var $gameHomeView = $("#game-home");
+var $gameDifficulty = $("#game-difficulty");
+$(window).on("click", function(e) {
+  console.log(e.target.classList[0]);
+
+  switch (e.target.classList[0]) {
+    case "open-game-difficulty":
+      $gameHomeView.removeClass("open");
+      $gameDifficulty.addClass("open");
+      break;
+    default:
+  }
+});

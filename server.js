@@ -8,7 +8,20 @@ const userRouter = require("./routes/user");
 const mongoose = require("mongoose");
 const cookieSession = require("cookie-session");
 const PORT = process.env.PORT || 8000;
+const fetch = require("node-fetch");
+global.fetch = fetch;
 require("./models/userModel");
+const Unsplash = require("unsplash-js").default;
+const unsplash = new Unsplash({
+  accessKey: "3200b07be3363cd54d2a1aa04bb36551dd649f438c30b646e8444f39fbb58a7d"
+});
+
+unsplash.search
+  .photos("dogs", 1, 10, { orientation: "portrait" })
+  .then(res => res.json())
+  .then(res => {
+    console.log(res.results[0]);
+  });
 mongoose.connect(
   process.env.MONGO_URI,
   { useNewUrlParser: true, useUnifiedTopology: true },

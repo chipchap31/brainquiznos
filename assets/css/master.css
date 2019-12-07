@@ -1220,22 +1220,20 @@ h5 {
   border-radius: 5px;
   position: relative;
 }
-.glider-wrapper .glider-slide i {
-  font-size: 40px;
-}
 .glider-wrapper .glider-slide .overlay {
-  opacity: 0;
+  background-color: rgba(77, 77, 77, 0.7);
+  font-size: 40px;
+  display: block;
   position: absolute;
   top: 0;
   left: 0;
-  background-color: rgba(77, 77, 77, 0.7);
   height: 100%;
   display: flex;
-  align-items: center;
   justify-content: center;
-  width: 100%;
+  align-items: center;
+  opacity: 0;
   transition: 200ms;
-  color: #d62af6;
+  width: 100%;
 }
 .glider-wrapper .glider-slide .overlay:hover {
   opacity: 1;
@@ -1271,6 +1269,40 @@ h5 {
 }
 .leaderboard ul li:not(:first-child) {
   margin-top: 15px;
+}
+
+.open, #game-difficulty.open, #game-home.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+#game-home {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#game-difficulty {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 99;
+  opacity: 0;
+  pointer-events: none;
+  background-color: #5c24d4;
+}
+#game-difficulty .container {
+  max-width: 40%;
+}
+#game-difficulty ul li {
+  height: 150px;
+  width: 150px;
+  cursor: pointer;
+  transition: 200ms;
+}
+#game-difficulty ul li:hover {
+  transform: scale(1.2);
 }
 
 #hero {
@@ -1311,10 +1343,6 @@ h5 {
 
 #signup-success img {
   width: 300px;
-}
-
-#game-home {
-  position: relative;
 }
 
 /*# sourceMappingURL=master.css.map */
