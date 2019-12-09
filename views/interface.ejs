@@ -1,4 +1,5 @@
 <%- include("layout/header", {user ,gender, username}) %>
+
 <main>
   <section id="game-home" class='open colorbg-purple pv-40'>
     <div class="container">
@@ -11,7 +12,7 @@
               <div class="glider">
                 <div class='text-center'>
 
-                    <i class="open-game-difficulty overlay far fa-play-circle"></i>
+                    <i role='button' data-open='game-difficulty'  class="open-game-difficulty overlay far fa-play-circle"></i>
 
                   <h4 class="color-black">Sport</h4>
                   <i class="mt-20 color-black fas fa-running"></i>
@@ -89,29 +90,50 @@
     </div>
   </section>
 
-  <section id="game-difficulty" class="pv-200 colorbg-purple">
+  <section id="game-difficulty" class="pv-100 colorbg-purple">
+
     <div class="container">
-      <div class="row text-center">
-        <h2 class="color-white mb-10">Choose difficulty</h2>
-        <p class="title-sub color-white mb-30">Choose the difficulty of your game wisely.</p>
+
+      <div class="inner p-70 colorbg-purple">
+        <div class="mb-50">
+          <i class="color-pink fas fas fa-caret-left"></i>
+          <a role='button' data-open='game-difficulty' class="close-game-difficulty color-white" href="#">
+          back
+          </a>
+        </div>
+        <div class="text-center">
+          <h2 class="color-white mb-10">Choose difficulty</h2>
+          <p class="title-sub color-white mb-30">Choose the difficulty of your game wisely.</p>
+        </div>
+
+        <ul class="flex h-space-around">
+          <li class='easy color-white colorbg-pink flex h-center v-center d-col'>
+            <h4>Easy</h4>
+            <p class="title-sub">4x5</p>
+          </li>
+          <li class='normal color-white colorbg-pink flex h-center v-center d-col'>
+            <h4>Normal</h4>
+            <p class="title-sub">4x5</p>
+          </li>
+          <li class='hard color-white colorbg-pink flex h-center v-center d-col'>
+            <h4>Hard</h4>
+            <p class="title-sub">4x5</p>
+          </li>
+
+        </ul>
       </div>
 
-      <ul class="flex h-space-around">
-        <li class='easy color-white colorbg-pink flex h-center v-center d-col'>
-          <h4>Easy</h4>
-          <p class="title-sub">4x5</p>
-        </li>
-        <li class='normal color-white colorbg-pink flex h-center v-center d-col'>
-          <h4>Normal</h4>
-          <p class="title-sub">4x5</p>
-        </li>
-        <li class='hard color-white colorbg-pink flex h-center v-center d-col'>
-          <h4>Hard</h4>
-          <p class="title-sub">4x5</p>
-        </li>
-
-      </ul>
     </div>
   </section>
+  <section id='game-main' class='pv-60 colorbg-purple'>
+    <div class="container">
+      <h2 class='color-white'>game main</h2>
+    </div>
+  </section>
+
+
+
+
+
 <main>
 <%- include("layout/footer", {user}) %>

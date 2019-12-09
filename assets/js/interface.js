@@ -1,26 +1,35 @@
-window.addEventListener("load", function() {
-  new Glider(document.querySelector(".glider"), {
-    slidesToScroll: 1,
-    slidesToShow: 2.5,
-    draggable: true,
-    rewind: true,
+document.addEventListener(
+  "DOMContentLoaded",
+  function() {
+    var btnCollection = document.querySelectorAll("[role='button'");
 
-    arrows: {
-      prev: ".glider-prev",
-      next: ".glider-next"
-    }
-  });
-});
-var $gameHomeView = $("#game-home");
-var $gameDifficulty = $("#game-difficulty");
-$(window).on("click", function(e) {
-  console.log(e.target.classList[0]);
+    btnCollection.forEach(element => {
+      var openId = element.getAttribute("data-open");
+      var closeId = element.getAttribute("data-close") || false;
 
-  switch (e.target.classList[0]) {
-    case "open-game-difficulty":
-      $gameHomeView.removeClass("open");
-      $gameDifficulty.addClass("open");
-      break;
-    default:
-  }
-});
+      var openData = document.getElementById(openId);
+      var closeData = closeId ? document.getElementById(closeId) : false;
+
+      element.addEventListener("click", () => {
+        if (openData.classList.contains("open")) {
+          openData.classList.remove("open");
+        } else {
+          openData.classList.add("open");
+        }
+      });
+    });
+
+    new Glider(document.querySelector(".glider"), {
+      slidesToScroll: 1,
+      slidesToShow: 2.5,
+      draggable: true,
+      rewind: true,
+
+      arrows: {
+        prev: ".glider-prev",
+        next: ".glider-next"
+      }
+    });
+  },
+  false
+);
