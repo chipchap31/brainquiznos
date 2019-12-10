@@ -10,7 +10,7 @@
           <div class="glider-wrapper">
             <div class="glider-contain">
               <div class="glider">
-                <div class='text-center'>
+                <div onclick="game.getTheme('sport')" class='text-center'>
 
                     <i role='button' data-open='game-difficulty'  class="open-game-difficulty overlay far fa-play-circle"></i>
 
@@ -107,7 +107,7 @@
         </div>
 
         <ul class="flex h-space-around">
-          <li role="button" data-open="game-main" data-close='game-home game-difficulty' class='easy color-white colorbg-pink flex h-center v-center d-col'>
+          <li onclick="game.init('easy')" role="button" data-open="game-main" data-close='game-home game-difficulty' class='easy color-white colorbg-pink flex h-center v-center d-col'>
             <h4>Easy</h4>
             <p class="title-sub">4x5</p>
           </li>
@@ -126,9 +126,26 @@
     </div>
   </section>
   <section id='game-main' class='pv-60 colorbg-purple'>
+    <div class="game-init modal open">
+      <div class="inner colorbg-purple p-50">
+        <h2 class="color-white">Game will start in</h2>
+        <div class="text-center mt-20">
+          <h3 class="game-init-time color-white">5</h3>
+        </div>
+
+      </div>
+
+    </div>
     <div class="container">
-      <h2 class='color-white'>game main</h2>
-      <ul class="tile-container">
+      <div class="flex h-center mb-30">
+        <div class="">
+          <span class='game-helper'></span>
+          <h2 class='game-main-time color-white'>00:00</h2>
+        </div>
+
+      </div>
+
+      <ul class="tile-container hidden">
 
       </ul>
     </div>
