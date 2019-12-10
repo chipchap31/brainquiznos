@@ -5,16 +5,13 @@ const path = require("path");
 const bodyParser = require("body-parser");
 const indexRouter = require("./routes/index");
 const userRouter = require("./routes/user");
+const unsplashRouter = require("./routes/unsplash");
 const mongoose = require("mongoose");
 const cookieSession = require("cookie-session");
 const PORT = process.env.PORT || 8000;
 const fetch = require("node-fetch");
 global.fetch = fetch;
 require("./models/userModel");
-const Unsplash = require("unsplash-js").default;
-const unsplash = new Unsplash({
-  accessKey: process.env.UNSPLASH_KEY
-});
 
 mongoose.connect(
   process.env.MONGO_URI,
@@ -44,4 +41,5 @@ app.use(express.static(path.join(__dirname, "assets")));
 app.use("/", indexRouter);
 app.use("/user", userRouter);
 
+app.use("/unsplash", unsplashRouter);
 app.listen(PORT, () => console.log(`App is running on port ${PORT}`));

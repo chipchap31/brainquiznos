@@ -5,10 +5,9 @@ document.addEventListener(
 
     btnCollection.forEach(element => {
       var openId = element.getAttribute("data-open");
-      var closeId = element.getAttribute("data-close") || false;
+      var closeList = element.getAttribute("data-close") || false;
 
       var openData = document.getElementById(openId);
-      var closeData = closeId ? document.getElementById(closeId) : false;
 
       element.addEventListener("click", () => {
         if (openData.classList.contains("open")) {
@@ -16,6 +15,13 @@ document.addEventListener(
         } else {
           openData.classList.add("open");
         }
+        if (!closeList) return null;
+
+        closeList.split(" ").forEach(el => {
+          var closeTarget = document.getElementById(el);
+
+          closeTarget.classList.remove("open");
+        });
       });
     });
 
