@@ -1100,6 +1100,10 @@ h5 {
   background-color: white;
 }
 
+.colorbg-grey {
+  background-color: #666666;
+}
+
 .button, .button-submit, .button-2, .button-1 {
   display: inline-block;
   color: white !important;
@@ -1116,6 +1120,7 @@ h5 {
 .button-1 {
   padding: 10px 36px;
   border-radius: 5px;
+  font-size: 16px;
 }
 
 .button-2 {
@@ -1322,9 +1327,9 @@ h5 {
 #game-main .tile-container.easy {
   justify-content: center;
   display: grid;
-  grid-template-columns: 100px 100px 100px 100px 100px;
-  grid-template-rows: 100px 100px 100px 100px;
-  grid-column-gap: 50px;
+  grid-template-columns: 120px 120px 120px 120px 120px;
+  grid-template-rows: 120px 120px 120px 120px;
+  grid-column-gap: 20px;
   grid-row-gap: 20px;
 }
 #game-main .tile-container.easy .tile {

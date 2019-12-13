@@ -17,9 +17,9 @@
                   <h4 class="color-black">Sport</h4>
                   <i class="mt-20 color-black fas fa-running"></i>
                 </div>
-                <div class='text-center'>
+                <div onclick="game.getTheme('flags')" class='text-center'>
 
-                    <i class="open-game-difficulty overlay far fa-play-circle"></i>
+                    <i role='button' data-open='game-difficulty' class="open-game-difficulty overlay far fa-play-circle"></i>
 
                   <h4 class="color-black">Flags</h4>
                   <i class="mt-20 color-black fas fa-flag"></i>
@@ -58,6 +58,10 @@
                    <span class='color-white'><%= index %>.</span>
                    <img class='mh-10' src='/images/<%= gender %>.png'>
                   <span class="color-white"><%= user.username %></span>
+                  <% if (username === user.username) {%>
+                    <span class="color-white ml-10">(you)</span>
+                  <% } %>
+
                  </div>
                  <div class="flex v-center">
                    <span class="color-white"><%= user.games > 1 ?  `${user.games} games` : `${user.games} game`%></span>
@@ -72,10 +76,13 @@
                    <span class='color-white'><%= rank %>.</span>
                    <img class='mh-10' src='/images/<%= gender %>.png'>
                   <span class="color-white"><%= username %></span>
+                  <span class="color-white ml-10">(you)</span>
                  </div>
                  <div class="flex v-center">
-                   <span class="color-white"><%= "da" %> games</span>
-                   <span class="color-white ml-20"><%=  %> points</span>
+                   <span class="color-white"><%= games %> games</span>
+                   <span class="color-white ml-20"><%= points %> points</span>
+
+
                  </div>
               </li>
              <%}%>
@@ -125,7 +132,7 @@
 
     </div>
   </section>
-  <section id='game-main' class='pv-60 colorbg-purple'>
+  <section id='game-main' class='pv-30 colorbg-purple'>
     <div class="game-init modal open">
       <div class="inner colorbg-purple p-50">
         <h2 class="color-white">Game will start in</h2>
@@ -151,7 +158,16 @@
     </div>
   </section>
 
+<section id="game-result" class="modal">
+  <div class="inner colorbg-purple p-50 text-center">
+    <h2  class="game-result-title color-white mb-10"></h2>
+    <span class="game-result-solved color-white"></span>
+    <div class="flex mt-20">
+      <button class="mr-10 button-1 colorbg-pink" type="button" >Restart</button ><a href="/" class="button-1 colorbg-grey">exit</a>
+    </div>
+  </div>
 
+</section>
 
 
 
