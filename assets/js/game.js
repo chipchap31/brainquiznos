@@ -19,6 +19,8 @@ function Game() {
   this.hintTime = 0;
   this.gameTime = 0;
   this.choices = [];
+  this.clicks = 0;
+  this.id = "";
 }
 
 var tileConfig = {
@@ -4157,9 +4159,17 @@ Game.prototype.getTheme = function(data) {
 
 Game.prototype.init = async function(gameMode) {
   var _ = this;
+  // set items to global
   _.gameMode = gameMode;
   _.hintTime = tileConfig.hintTime[_.gameMode];
   _.gameTime = tileConfig.gameTime[_.gameMode];
+
+  // save the game
+
+  _.id = await postData("/game/new", {
+    points: tileConfig.points[_.gameMode],
+    mode: _.gameMode
+  });
   let newData = [...data]
     .map((x, i) => ({ imgSrc: x.urls.thumb, i }))
     .filter((x, i) => i < tileConfig.total[_.gameMode]);
@@ -4179,11 +4189,6 @@ Game.prototype.init = async function(gameMode) {
   });
 
   window.interval = setInterval(() => _.startCountDown(), 1000);
-  try {
-    const updatedGame = await postData("/user/update-game", {});
-  } catch (e) {
-    console.log(e);
-  }
 };
 
 Game.prototype.startCountDown = function() {
@@ -4203,13 +4208,20 @@ Game.prototype.startCountDown = function() {
   _.readyTime--;
   gameInitTime.innerHTML = `${sec < 10 ? sec : sec}`;
 };
-
+Game.prototype.startNow = function() {
+  clearInterval(window.interval);
+  var _ = this;
+  window.interval = null;
+  window.interval = setInterval(() => _.hintCountDown(), 1000);
+  _.showTiles();
+  $gameInit.classList.remove("open");
+};
 Game.prototype.hintCountDown = function() {
   var _ = this;
   var min = Math.floor((_.hintTime / 60) % 60);
   var sec = Math.floor((_.hintTime / 1) % 60);
-
-  if (_.hintTime <= 0) {
+  var gameStarted = _.hintTime <= 0;
+  if (gameStarted) {
     clearInterval(window.interval);
     window.interval = null;
     _.hideTiles();
@@ -4224,8 +4236,10 @@ Game.prototype.hintCountDown = function() {
             ? setTimeout(() => _.proccessChoices(), 1000)
             : null;
         }
+        _.clicks++;
       });
     });
+
     window.interval = setInterval(() => _.gameCountDown(), 1000);
   }
   _.hintTime--;
@@ -4237,8 +4251,17 @@ Game.prototype.gameCountDown = function() {
   var min = Math.floor((_.gameTime / 60) % 60);
   var sec = Math.floor((_.gameTime / 1) % 60);
   var tileToSolve = tileConfig.total[_.gameMode] * 2;
-
-  if ($tileSolved.length >= tileToSolve && _.gameTime >= 0) {
+  var userWon = $tileSolved.length >= tileToSolve && _.gameTime >= 0;
+  var userLost = _.gameTime <= 0 && $tileSolved.length <= tileToSolve;
+  var resultConfig = {
+    won: {
+      title: "Well Done"
+    },
+    lose: {
+      title: ""
+    }
+  };
+  if (userWon) {
     // tiles are solved completely
     clearInterval(window.interval);
     window.interval = null;
@@ -4246,10 +4269,16 @@ Game.prototype.gameCountDown = function() {
       points: tileConfig.points[_.gameMode],
       won: true
     });
+    postData("/game/new", {
+      points: tileConfig.points[_.gameMode],
+      won: true,
+      clicks: _.clicks
+    });
     $gameResult.classList.add("open");
   }
 
-  if (_.gameTime <= 0 && $tileSolved.length <= tileToSolve) {
+  if (userLost) {
+    console.log(_.id);
     // user fails to solve the puzzles
     clearInterval(window.interval);
     window.interval = null;
@@ -4257,6 +4286,7 @@ Game.prototype.gameCountDown = function() {
       points: tileConfig.points[_.gameMode],
       won: false
     });
+
     $gameResult.classList.add("open");
   }
 
@@ -4293,11 +4323,11 @@ Game.prototype.hideTiles = function() {
   }
 };
 
-Game.prototype.onPauseGame = function() {
+Game.prototype.stopCountDown = function() {
   var _ = this;
   _.hideTiles();
   clearInterval(window.interval);
-  $gamePauseModal.classList.add("open");
+
   window.interval = null;
 };
 
@@ -4317,6 +4347,15 @@ Game.prototype.resumeGame = function() {
     _.showTiles();
     window.interval = setInterval(() => _.hintCountDown(), 1000);
   }
+};
+Game.prototype.resetGame = function() {
+  var _ = this;
+  Array.from($tiles).forEach(el => el.remove());
+
+  _.gameTime = 0;
+  _.hintTime = 0;
+
+  _.init(_.gameMode);
 };
 
 var game = new Game();
