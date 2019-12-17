@@ -4,7 +4,10 @@ const mongoose = require("mongoose");
 /* GET home page. */
 router.get("/", async (req, res, next) => {
   const USERS = mongoose.model("users");
+  const GAMES = mongoose.model("games");
+
   const user = req.session.user || false;
+  const games = user ? await GAMES.find({ _user: user }) : null;
   const userFind = user ? await USERS.findById(user) : null;
 
   if (!user) {
@@ -24,7 +27,7 @@ router.get("/", async (req, res, next) => {
       gender: userFind.gender,
       username: userFind.username,
       points: userFind.points,
-      games: userFind.games,
+      games: games.length,
       userAll,
       rank
     });
