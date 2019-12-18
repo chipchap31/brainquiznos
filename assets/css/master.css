@@ -1324,28 +1324,20 @@ h5 {
   display: block;
 }
 
-#game-main .tile-container.easy {
-  justify-content: center;
-  display: grid;
-  grid-template-columns: 120px 120px 120px 120px 120px;
-  grid-template-rows: 120px 120px 120px 120px;
-  grid-column-gap: 20px;
-  grid-row-gap: 20px;
-}
-#game-main .tile-container.easy .tile {
+#game-main .tile-container .tile {
   background-color: white;
   border-radius: 5px;
   cursor: pointer;
   transition: 200ms;
 }
-#game-main .tile-container.easy .tile img {
+#game-main .tile-container .tile img {
   transition: 200ms;
   opacity: 0;
   width: 100%;
   height: 100%;
   border-radius: 5px;
 }
-#game-main .tile-container.easy .tile.show img {
+#game-main .tile-container .tile.show img {
   opacity: 1;
   border-radius: 5px;
 }
@@ -1360,6 +1352,30 @@ h5 {
 }
 #game-main .pause-button:hover, #game-main .reset-button:hover {
   transform: scale(1.2);
+}
+#game-main .tile-container.easy {
+  justify-content: center;
+  display: grid;
+  grid-template-columns: 120px 120px 120px 120px 120px;
+  grid-template-rows: 120px 120px 120px 120px;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
+}
+#game-main .tile-container.normal {
+  justify-content: center;
+  display: grid;
+  grid-template-columns: 120px 120px 120px 120px 120px 120px;
+  grid-template-rows: 120px 120px 120px 120px 120px 120px;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
+}
+#game-main .tile-container.hard {
+  justify-content: center;
+  display: grid;
+  grid-template-columns: 100px 100px 100px 100px 100px 100px;
+  grid-template-rows: 100px 100px 100px 100px 100px 100px;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
 }
 
 .modal {
@@ -1385,6 +1401,13 @@ h5 {
 .modal.open {
   opacity: 1;
   pointer-events: all;
+}
+
+#personal-stats svg .domain, #personal-stats svg .tick line {
+  stroke: #6a34eb;
+}
+#personal-stats svg text {
+  fill: white;
 }
 
 #hero {

@@ -49,8 +49,8 @@
     li:not(:first-child)
       margin-top: 15px
 
-$dimensions: 120px
-
+$d: 120px
+$dh: 100px
 #game-home
   display: none
 #game-home.open
@@ -91,13 +91,8 @@ $dimensions: 120px
   display: block
 
 #game-main
-  .tile-container.easy
-    justify-content: center
-    display: grid
-    grid-template-columns: $dimensions $dimensions $dimensions $dimensions $dimensions
-    grid-template-rows: $dimensions $dimensions $dimensions $dimensions
-    grid-column-gap: 20px
-    grid-row-gap: 20px
+  .tile-container
+
     .tile
       background-color: white
       border-radius: 5px
@@ -126,3 +121,24 @@ $dimensions: 120px
     transition: 200ms
     &:hover
       transform: scale(1.2)
+  .tile-container.easy
+    justify-content: center
+    display: grid
+    grid-template-columns: $d $d $d $d $d
+    grid-template-rows: $d $d $d $d
+    grid-column-gap: 20px
+    grid-row-gap: 20px
+  .tile-container.normal
+    justify-content: center
+    display: grid
+    grid-template-columns: $d $d $d $d $d $d
+    grid-template-rows: $d $d $d $d $d $d
+    grid-column-gap: 20px
+    grid-row-gap: 20px
+  .tile-container.hard
+    justify-content: center
+    display: grid
+    grid-template-columns: $dh $dh $dh $dh $dh $dh
+    grid-template-rows: $dh $dh $dh $dh $dh $dh
+    grid-column-gap: 20px
+    grid-row-gap: 20px

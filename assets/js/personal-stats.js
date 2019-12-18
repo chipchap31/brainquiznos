@@ -1,7 +1,7 @@
 var margin = { top: 10, right: 30, bottom: 30, left: 60 },
   width = 500 - margin.left - margin.right,
   height = 300 - margin.top - margin.bottom;
-var xFormat = "%d-%b-%Y";
+
 var canvas = d3
   .select("#personal-stats")
   .append("svg")
@@ -11,19 +11,24 @@ var canvas = d3
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 d3.json("/game/fetch", function(data) {
-  var formatDate = d3.timeFormat("%Y-%m-%d");
+  var initXaxis = [];
   let $data = data.map(x => ({
     date: new Date(x.datePlayed),
 
     points: x.points
   }));
-  console.log($data);
+  var today = new Date();
+  let tomorrow = new Date();
+  tomorrow.setDate(today.getDate() + 1);
+  console.log($data.length > 0);
   var xAxis = d3
     .scaleTime()
     .domain(
-      d3.extent($data, function(d) {
-        return d.date;
-      })
+      $data.length > 1
+        ? d3.extent($data, function(d) {
+            return d.date;
+          })
+        : [new Date(), tomorrow]
     )
     .range([0, width]);
 
@@ -50,7 +55,7 @@ d3.json("/game/fetch", function(data) {
     .append("path")
     .datum($data)
     .attr("fill", "none")
-    .attr("stroke", "white")
+    .attr("stroke", "#d62af6")
     .attr("stroke-width", 1.5)
     .attr(
       "d",
@@ -69,14 +74,14 @@ d3.json("/game/fetch", function(data) {
     .enter()
     .append("circle")
 
-    .attr("r", 3)
+    .attr("r", 2)
     .attr("cx", function(d) {
       return x(d.date);
     })
     .attr("cy", function(d) {
       return y(d.points);
     })
-    .attr("fill", "#d62af6");
+    .attr("fill", "white");
 });
 canvas
   .append("text")

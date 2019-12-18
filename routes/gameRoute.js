@@ -10,14 +10,29 @@ router.get("/fetch", async (req, res) => {
 });
 router.post("/new", async (req, res) => {
   const GAME = mongoose.model("games");
-  console.log(req.body);
-  const { points } = req.body;
+
+  const { mode } = req.body;
   try {
     const newGame = await new GAME({
       _user: req.session.user,
-      points
+      mode
     }).save();
     res.send(newGame._id);
+  } catch (e) {
+    console.log(e);
+  }
+});
+router.post("/update", async (req, res) => {
+  const GAME = mongoose.model("games");
+  const { id, points, clicks, won } = req.body;
+  try {
+    const findGame = await GAME.findById(id);
+    await findGame.updateOne({
+      points,
+      clicks,
+      won
+    });
+    res.send({});
   } catch (e) {
     console.log(e);
   }

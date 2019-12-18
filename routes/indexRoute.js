@@ -20,7 +20,7 @@ router.get("/", async (req, res, next) => {
       points: -1
     });
     const rank = $fetchUser.map(e => e.id).indexOf(user) + 1;
-    const userAll = $fetchUser.filter((x, i) => i < 7);
+    const userAll = $fetchUser.filter((x, i) => i < 6);
 
     res.render("interface", {
       user,
