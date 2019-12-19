@@ -1276,6 +1276,11 @@ h5 {
   margin-top: 15px;
 }
 
+.leaderboard.limit {
+  max-height: 70vh;
+  overflow-y: scroll;
+}
+
 #game-home {
   display: none;
 }
@@ -1403,10 +1408,10 @@ h5 {
   pointer-events: all;
 }
 
-#personal-stats svg .domain, #personal-stats svg .tick line {
+svg .domain, svg .tick line {
   stroke: #6a34eb;
 }
-#personal-stats svg text {
+svg text {
   fill: white;
 }
 

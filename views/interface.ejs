@@ -119,7 +119,7 @@
       <div class="inner p-70 colorbg-purple">
         <div class="mb-50">
           <i class="color-pink fas fas fa-caret-left"></i>
-          <a role='button' data-open='game-difficulty' class="close-game-difficulty color-white" href="#">
+          <a  class="close-game-difficulty color-white" href="/">
           back
           </a>
         </div>
@@ -135,11 +135,11 @@
           </li>
           <li role="button" data-open="game-main" data-close='game-home game-difficulty' onclick="game.init('normal')" class='normal color-white colorbg-pink flex h-center v-center d-col'>
             <h4>Normal</h4>
-            <p class="title-sub">4x5</p>
+            <p class="title-sub">4x6</p>
           </li>
           <li role="button" data-open="game-main" data-close='game-home game-difficulty' onclick="game.init('hard')" class='hard color-white colorbg-pink flex h-center v-center d-col'>
             <h4>Hard</h4>
-            <p class="title-sub">4x5</p>
+            <p class="title-sub">5x6</p>
           </li>
 
         </ul>
@@ -200,7 +200,8 @@
     <h3  class="game-reset-title color-white mb-10">Are you sure you want to reset the game.</h3>
     <span class="game-reset-solved color-white"></span>
     <div class="flex mt-20">
-      <button role='button' data-open="game-reset" onclick="game.resetGame();" class="mr-10 button-1 colorbg-pink" type="button">Restart</button ><a href="/" class="button-1 colorbg-grey">continue</a>
+      <button role='button' data-open="game-reset" onclick="game.resetGame();" class="mr-10 button-1 colorbg-pink" type="button">Restart</button >
+        <button onclick="game.resumeGame()" class="button-1 colorbg-grey">continue</button>
     </div>
   </div>
 
@@ -208,4 +209,4 @@
 
 
 <main>
-<%- include("layout/footer", {user}) %>
+<%- include("layout/footer", {user, renderGlider: true}) %>

@@ -7,7 +7,7 @@ var gameInitTime = $.querySelector(".game-init-time");
 var $selected = $.getElementsByClassName("show");
 var $tileSolved = $.getElementsByClassName("solved");
 var $gameResult = $.getElementById("game-result");
-
+var $gameResetModal = $.getElementById("game-reset");
 var $gameResultSolved = $.querySelector(".game-result-solved");
 var $pauseButton = $.querySelector(".pause-button");
 var $gamePauseModal = $.getElementById("game-pause");
@@ -4213,8 +4213,8 @@ Game.prototype.startCountDown = function() {
   gameInitTime.innerHTML = `${sec < 10 ? sec : sec}`;
 };
 Game.prototype.startNow = function() {
-  clearInterval(window.interval);
   var _ = this;
+  clearInterval(window.interval);
   window.interval = null;
   window.interval = setInterval(() => _.hintCountDown(), 1000);
   _.showTiles();
@@ -4225,6 +4225,7 @@ Game.prototype.hintCountDown = function() {
   var min = Math.floor((_.hintTime / 60) % 60);
   var sec = Math.floor((_.hintTime / 1) % 60);
   var gameStarted = _.hintTime <= 0;
+
   if (gameStarted) {
     clearInterval(window.interval);
     window.interval = null;
@@ -4346,7 +4347,7 @@ Game.prototype.resumeGame = function() {
   var _ = this;
   // $.getElementById("game-result")
   $gamePauseModal.classList.remove("open");
-
+  $gameResetModal.classList.remove("open");
   clearInterval(window.interval);
   window.interval = null;
 
@@ -4361,6 +4362,8 @@ Game.prototype.resumeGame = function() {
 };
 Game.prototype.resetGame = function() {
   $gameResult.classList.remove("open");
+  clearInterval(window.interval);
+  window.interval = null;
   var _ = this;
   Array.from($tiles).forEach(el => el.remove());
 
