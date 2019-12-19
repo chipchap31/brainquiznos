@@ -43,7 +43,7 @@ router.post("/signup", async function(req, res, next) {
         gender
       });
       userNew.save();
-      return res.render("signup-success", { username, firstname });
+      return res.render("signup-success", { username });
     });
   }
 });
@@ -90,16 +90,6 @@ router.get("/logout", (req, res) => {
   res.redirect("/");
 });
 
-router.post("/update-game", async (req, res) => {
-  const USERS = mongoose.model("users");
-
-  const userFind = await USERS.findById(req.session.user);
-  await userFind.updateOne({
-    games: userFind.games + 1
-  });
-
-  return res.send({});
-});
 router.post("/update-points", async (req, res) => {
   const USERS = mongoose.model("users");
   const { points, won } = req.body;
@@ -111,8 +101,10 @@ router.post("/update-points", async (req, res) => {
       await findUser.updateOne({ points: findUser.points + points });
     } else {
       // should subtract
-      console.log("subtracted");
-      await findUser.updateOne({ points: findUser.points - points });
+
+      findUser.points > 0
+        ? await findUser.updateOne({ points: findUser.points - points })
+        : null;
     }
     const updatedData = await USERS.findById(req.session.user);
     return res.send({ points: updatedData.points });

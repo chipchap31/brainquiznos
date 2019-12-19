@@ -53,9 +53,14 @@
   </div>
 </section>
 <% if (user) {%>
-<script src="/js/glider.min.js" charset="utf-8"></script>
-<script src="/js/interface.js" charset="utf-8"></script>
+  <% if (renderGlider) {%>
+    <script src="/js/glider.min.js" charset="utf-8"></script>
+    <script src="/js/interface.js" charset="utf-8"></script>
+  <%}%>
+
+
 <script src="/js/game.js" charset="utf-8"></script>
+<script src="/js/graph.js" charset="utf-8"></script>
 <% } %>
 
 

@@ -43,6 +43,21 @@
               <button role="button" aria-label="Next" class="glider-next"><i class="color-pink fas fas fa-caret-right"></i></button>
               <div role="tablist" class="dots"></div>
           </div>
+
+
+
+
+
+        </div>
+
+
+
+        <div class="mt-20">
+          <h3 class="color-white">points history</h3>
+
+        <div id="personal-stats" class="mt-20">
+
+        </div>
         </div>
         </div>
 
@@ -104,7 +119,7 @@
       <div class="inner p-70 colorbg-purple">
         <div class="mb-50">
           <i class="color-pink fas fas fa-caret-left"></i>
-          <a role='button' data-open='game-difficulty' class="close-game-difficulty color-white" href="#">
+          <a  class="close-game-difficulty color-white" href="/">
           back
           </a>
         </div>
@@ -118,13 +133,13 @@
             <h4>Easy</h4>
             <p class="title-sub">4x5</p>
           </li>
-          <li class='normal color-white colorbg-pink flex h-center v-center d-col'>
+          <li role="button" data-open="game-main" data-close='game-home game-difficulty' onclick="game.init('normal')" class='normal color-white colorbg-pink flex h-center v-center d-col'>
             <h4>Normal</h4>
-            <p class="title-sub">4x5</p>
+            <p class="title-sub">4x6</p>
           </li>
-          <li class='hard color-white colorbg-pink flex h-center v-center d-col'>
+          <li role="button" data-open="game-main" data-close='game-home game-difficulty' onclick="game.init('hard')" class='hard color-white colorbg-pink flex h-center v-center d-col'>
             <h4>Hard</h4>
-            <p class="title-sub">4x5</p>
+            <p class="title-sub">5x6</p>
           </li>
 
         </ul>
@@ -135,20 +150,22 @@
   <section id='game-main' class='pv-30 colorbg-purple'>
     <div class="game-init modal open">
       <div class="inner colorbg-purple p-50">
-        <h2 class="color-white">Game will start in</h2>
+        <h3 class="color-white">Game will start in</h3>
         <div class="text-center mt-20">
           <h3 class="game-init-time color-white">5</h3>
         </div>
-
+        <div class="flex mt-30 h-center">
+          <button onclick="game.startNow();" class="button-1 colorbg-pink" type="button" >Start now</button >
+        </div>
       </div>
 
     </div>
     <div class="container">
       <div class="flex h-center mb-30">
         <div class="flex v-center">
-          <i onclick="game.onPauseGame();" class="pause-button fas fa-pause-circle color-pink mr-20"></i>
+          <i onclick="game.stopCountDown();" role='button' data-open="game-pause" class="pause-button fas fa-pause-circle color-pink mr-20"></i>
           <h2 class='game-main-time color-white'>00:00</h2>
-          <i class="reset-button fas fa-undo-alt color-pink ml-20"></i>
+          <i onclick="game.stopCountDown();" role="button" data-open="game-reset" class="reset-button fas fa-undo-alt color-pink ml-20"></i>
         </div>
 
       </div>
@@ -160,8 +177,8 @@
   </section>
   <section id="game-pause" class="modal">
     <div class="inner colorbg-purple p-50 text-center">
-      <h2  class="game-result-title color-white mb-10">The game is paused</h2>
-      <span class="game-result-solved color-white"></span>
+      <h3  class="game-pause-title color-white mb-10">The game is paused</h3>
+      <span class="game-pause-solved color-white"></span>
       <div class="flex mt-30 h-center">
         <button onclick="game.resumeGame();" class="button-1 colorbg-pink" type="button" >Continue</button >
       </div>
@@ -170,16 +187,26 @@
   </section>
 <section id="game-result" class="modal">
   <div class="inner colorbg-purple p-50 text-center">
-    <h2  class="game-result-title color-white mb-10"></h2>
+    <h3  class="game-result-title color-white mb-10"></h3>
     <span class="game-result-solved color-white"></span>
     <div class="flex mt-20">
-      <button class="mr-10 button-1 colorbg-pink" type="button">Restart</button ><a href="/" class="button-1 colorbg-grey">exit</a>
+      <button class="mr-10 button-1 colorbg-pink" onclick="game.resetGame();" type="button">Restart</button ><a href="/" class="button-1 colorbg-grey">exit</a>
+    </div>
+  </div>
+
+</section>
+<section id="game-reset" class="modal">
+  <div class="inner colorbg-purple p-50 text-center">
+    <h3  class="game-reset-title color-white mb-10">Are you sure you want to reset the game.</h3>
+    <span class="game-reset-solved color-white"></span>
+    <div class="flex mt-20">
+      <button role='button' data-open="game-reset" onclick="game.resetGame();" class="mr-10 button-1 colorbg-pink" type="button">Restart</button >
+        <button onclick="game.resumeGame()" class="button-1 colorbg-grey">continue</button>
     </div>
   </div>
 
 </section>
 
 
-
 <main>
-<%- include("layout/footer", {user}) %>
+<%- include("layout/footer", {user, renderGlider: true}) %>

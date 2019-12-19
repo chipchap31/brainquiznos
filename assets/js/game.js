@@ -7,7 +7,7 @@ var gameInitTime = $.querySelector(".game-init-time");
 var $selected = $.getElementsByClassName("show");
 var $tileSolved = $.getElementsByClassName("solved");
 var $gameResult = $.getElementById("game-result");
-var $gameResultTitle = $.querySelector(".game-result-title");
+var $gameResetModal = $.getElementById("game-reset");
 var $gameResultSolved = $.querySelector(".game-result-solved");
 var $pauseButton = $.querySelector(".pause-button");
 var $gamePauseModal = $.getElementById("game-pause");
@@ -19,23 +19,30 @@ function Game() {
   this.hintTime = 0;
   this.gameTime = 0;
   this.choices = [];
+  this.clicks = 0;
+  this.id = "";
 }
 
 var tileConfig = {
   total: {
-    easy: 10
+    easy: 10,
+    normal: 12,
+    hard: 15
   },
   hintTime: {
-    easy: 15
+    easy: 2,
+    normal: 1,
+    hard: 2
   },
   gameTime: {
-    easy: 60
+    easy: 2,
+    normal: 2,
+    hard: 2
   },
-  points: {
-    easy: 10
-  },
-  pointsDeducted: {
-    easy: -10
+  multiplier: {
+    easy: 0.3,
+    normal: 0.5,
+    hard: 0.7
   }
 };
 
@@ -4157,9 +4164,16 @@ Game.prototype.getTheme = function(data) {
 
 Game.prototype.init = async function(gameMode) {
   var _ = this;
+  // set items to global
   _.gameMode = gameMode;
   _.hintTime = tileConfig.hintTime[_.gameMode];
   _.gameTime = tileConfig.gameTime[_.gameMode];
+
+  // save the game
+
+  _.id = await postData("/game/new", {
+    mode: _.gameMode
+  });
   let newData = [...data]
     .map((x, i) => ({ imgSrc: x.urls.thumb, i }))
     .filter((x, i) => i < tileConfig.total[_.gameMode]);
@@ -4172,18 +4186,13 @@ Game.prototype.init = async function(gameMode) {
 
     $li.classList.add(x.i, "tile");
     $img.src = x.imgSrc;
-
+    $img.setAttribute("draggable", "false");
     $li.appendChild($img);
     $tileContainer.classList.add(_.gameMode);
     $tileContainer.appendChild($li);
   });
 
   window.interval = setInterval(() => _.startCountDown(), 1000);
-  try {
-    const updatedGame = await postData("/user/update-game", {});
-  } catch (e) {
-    console.log(e);
-  }
 };
 
 Game.prototype.startCountDown = function() {
@@ -4203,13 +4212,21 @@ Game.prototype.startCountDown = function() {
   _.readyTime--;
   gameInitTime.innerHTML = `${sec < 10 ? sec : sec}`;
 };
-
+Game.prototype.startNow = function() {
+  var _ = this;
+  clearInterval(window.interval);
+  window.interval = null;
+  window.interval = setInterval(() => _.hintCountDown(), 1000);
+  _.showTiles();
+  $gameInit.classList.remove("open");
+};
 Game.prototype.hintCountDown = function() {
   var _ = this;
   var min = Math.floor((_.hintTime / 60) % 60);
   var sec = Math.floor((_.hintTime / 1) % 60);
+  var gameStarted = _.hintTime <= 0;
 
-  if (_.hintTime <= 0) {
+  if (gameStarted) {
     clearInterval(window.interval);
     window.interval = null;
     _.hideTiles();
@@ -4224,8 +4241,11 @@ Game.prototype.hintCountDown = function() {
             ? setTimeout(() => _.proccessChoices(), 1000)
             : null;
         }
+
+        _.clicks++;
       });
     });
+
     window.interval = setInterval(() => _.gameCountDown(), 1000);
   }
   _.hintTime--;
@@ -4237,27 +4257,49 @@ Game.prototype.gameCountDown = function() {
   var min = Math.floor((_.gameTime / 60) % 60);
   var sec = Math.floor((_.gameTime / 1) % 60);
   var tileToSolve = tileConfig.total[_.gameMode] * 2;
+  var userWon = $tileSolved.length >= tileToSolve && _.gameTime >= 0;
+  var userLost = _.gameTime <= 0 && $tileSolved.length <= tileToSolve;
 
-  if ($tileSolved.length >= tileToSolve && _.gameTime >= 0) {
+  var pointsToChange = Math.ceil(
+    tileConfig.multiplier[_.gameMode] * _.gameTime
+  );
+
+  if (userWon) {
     // tiles are solved completely
+    var $gameResultTitle = $.querySelector(".game-result-title");
     clearInterval(window.interval);
     window.interval = null;
     postData("/user/update-points", {
-      points: tileConfig.points[_.gameMode],
+      points: pointsToChange,
+      won: true
+    });
+    postData("/game/update", {
+      id: _.id,
+      points: pointsToChange,
+      clicks: _.clicks,
       won: true
     });
     $gameResult.classList.add("open");
+    $.querySelector(".game-result-title").innerHTML = "Victory";
   }
 
-  if (_.gameTime <= 0 && $tileSolved.length <= tileToSolve) {
+  if (userLost) {
     // user fails to solve the puzzles
+
+    $gameResult.classList.add("open");
     clearInterval(window.interval);
     window.interval = null;
     postData("/user/update-points", {
-      points: tileConfig.points[_.gameMode],
+      points: pointsToChange,
       won: false
     });
-    $gameResult.classList.add("open");
+    postData("/game/update", {
+      id: _.id,
+      points: pointsToChange,
+      clicks: _.clicks,
+      won: false
+    });
+    $.querySelector(".game-result-title").innerHTML = "Defeat";
   }
 
   $gameMainTime.innerHTML = `0${min}:${sec < 10 ? "0" + sec : sec}`;
@@ -4293,19 +4335,19 @@ Game.prototype.hideTiles = function() {
   }
 };
 
-Game.prototype.onPauseGame = function() {
+Game.prototype.stopCountDown = function() {
   var _ = this;
   _.hideTiles();
   clearInterval(window.interval);
-  $gamePauseModal.classList.add("open");
+
   window.interval = null;
 };
 
 Game.prototype.resumeGame = function() {
   var _ = this;
-
+  // $.getElementById("game-result")
   $gamePauseModal.classList.remove("open");
-
+  $gameResetModal.classList.remove("open");
   clearInterval(window.interval);
   window.interval = null;
 
@@ -4317,6 +4359,18 @@ Game.prototype.resumeGame = function() {
     _.showTiles();
     window.interval = setInterval(() => _.hintCountDown(), 1000);
   }
+};
+Game.prototype.resetGame = function() {
+  $gameResult.classList.remove("open");
+  clearInterval(window.interval);
+  window.interval = null;
+  var _ = this;
+  Array.from($tiles).forEach(el => el.remove());
+
+  _.gameTime = 0;
+  _.hintTime = 0;
+
+  _.init(_.gameMode);
 };
 
 var game = new Game();
