@@ -1,7 +1,6 @@
 <%- include("layout/header", {user ,gender, username}) %>
 
-<main>
-  <section id="game-home" class='open colorbg-purple pv-40'>
+<section id="game-home" class='open colorbg-purple pv-40'>
     <div class="container">
       <div class="row flex h-space-between">
         <div class="col">
@@ -43,11 +42,6 @@
               <button role="button" aria-label="Next" class="glider-next"><i class="color-pink fas fas fa-caret-right"></i></button>
               <div role="tablist" class="dots"></div>
           </div>
-
-
-
-
-
         </div>
 
 
@@ -55,7 +49,7 @@
         <div class="mt-20">
           <h3 class="color-white">points history</h3>
 
-        <div id="personal-stats" class="mt-20">
+        <div id="points-stats" class="mt-20">
 
         </div>
         </div>
@@ -71,7 +65,7 @@
                <li class='colorbg-violet p-10 flex h-space-between'>
                  <div class="flex v-center">
                    <span class='color-white'><%= index %>.</span>
-                   <img class='mh-10' src='/images/<%= gender %>.png'>
+                   <img class='mh-10' src='/images/<%= gender %>.png' alt='gender-image'>
                   <span class="color-white"><%= user.username %></span>
                   <% if (username === user.username) {%>
                     <span class="color-white ml-10">(you)</span>
@@ -85,11 +79,11 @@
               </li>
              <% }) %>
 
-             <%if(rank > 6){%>
+             <% if(rank > 6){ %>
                <li class='colorbg-violet p-10 flex h-space-between'>
                  <div class="flex v-center">
                    <span class='color-white'><%= rank %>.</span>
-                   <img class='mh-10' src='/images/<%= gender %>.png'>
+                   <img class='mh-10' src='/images/<%= gender %>.png' alt='gender-image'>
                   <span class="color-white"><%= username %></span>
                   <span class="color-white ml-10">(you)</span>
                  </div>
@@ -103,9 +97,6 @@
              <%}%>
 
           </ul>
-
-
-
         </div>
       </div>
 
@@ -201,12 +192,12 @@
     <span class="game-reset-solved color-white"></span>
     <div class="flex mt-20">
       <button role='button' data-open="game-reset" onclick="game.resetGame();" class="mr-10 button-1 colorbg-pink" type="button">Restart</button >
-        <button onclick="game.resumeGame()" class="button-1 colorbg-grey">continue</button>
+        <button onclick="game.resumeGame();" class="button-1 colorbg-grey">continue</button>
     </div>
   </div>
 
 </section>
 
 
-<main>
+
 <%- include("layout/footer", {user, renderGlider: true}) %>
