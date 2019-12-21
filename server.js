@@ -2,6 +2,8 @@ require("dotenv").config();
 let express = require("express");
 let app = express();
 const path = require("path");
+console.log(process.env.NODE_ENV);
+const DEV = process.env.NODE_ENV === "development";
 const bodyParser = require("body-parser");
 // routes
 const indexRouter = require("./routes/indexRoute");
@@ -29,7 +31,7 @@ mongoose.connect(
 );
 app.use(
   cookieSession({
-    keys: ["key1", "key2"]
+    keys: [process.env.COOKIE_KEY_1, process.env.COOKIE_KEY_2]
   })
 );
 app.use(function(req, res, next) {
@@ -48,4 +50,6 @@ app.use("/user", userRouter);
 app.use("/game", gameRouter);
 
 app.use("/unsplash", unsplashRouter);
-app.listen(PORT, () => console.log(`App is running on port ${PORT}`));
+app.listen(PORT, () =>
+  console.log(`App is running @ port ${PORT} on ${DEV ? "dev" : "prod"} mode.`)
+);
