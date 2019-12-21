@@ -29,7 +29,8 @@ router.get("/", async (req, res, next) => {
       points: userFind.points,
       games: games.length,
       userAll,
-      rank
+      rank,
+      life: userFind.life
     });
   }
 });
@@ -101,14 +102,20 @@ router.get("/stats", async function(req, res, next) {
     // get the average user's average clicks
 
     const avgClicks =
-      fetchGame.reduce((prev, curr) => ({
-        clicks: prev.clicks + curr.clicks
-      })).clicks / fetchGame.length;
+      fetchGame.reduce(
+        (prev, curr) => ({
+          clicks: prev.clicks + curr.clicks
+        }),
+        []
+      ).clicks / fetchGame.length;
 
     const avgPoints =
-      fetchGame.reduce((prev, curr) => ({
-        points: prev.points + curr.points
-      })).points / fetchGame.length;
+      fetchGame.reduce(
+        (prev, curr) => ({
+          points: prev.points + curr.points
+        }),
+        []
+      ).points / fetchGame.length;
 
     return res.render("stats", {
       user,

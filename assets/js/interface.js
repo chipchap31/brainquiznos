@@ -9,7 +9,13 @@ document.addEventListener(
 
       var openData = document.getElementById(openId);
 
-      element.addEventListener("click", () => {
+      element.addEventListener("click", function() {
+        if (
+          this.classList.contains("glider-next") ||
+          this.classList.contains("glider-prev")
+        ) {
+          return false;
+        }
         if (openData.classList.contains("open")) {
           openData.classList.remove("open");
         } else {

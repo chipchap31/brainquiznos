@@ -43,7 +43,7 @@ router.post("/signup", async function(req, res, next) {
         gender
       });
       userNew.save();
-      return res.render("signup-success", { username });
+      return res.render("signup-success", { user: false, username });
     });
   }
 });

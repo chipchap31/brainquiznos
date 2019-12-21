@@ -1,4 +1,4 @@
-<%- include("layout/header", {user ,gender, username}) %>
+<%- include("layout/header", {user ,gender, username, life}) %>
 
 <section id="game-home" class='open colorbg-purple pv-40'>
     <div class="container">
@@ -23,23 +23,26 @@
                   <h4 class="color-black">Flags</h4>
                   <i class="mt-20 color-black fas fa-flag"></i>
                 </div>
-                <div class='text-center'>
+                <div onclick="game.getTheme('cars')" class='text-center'>
 
-                    <i class="open-game-difficulty overlay far fa-play-circle"></i>
+                    <i role='button' data-open='game-difficulty' class="open-game-difficulty overlay far fa-play-circle"></i>
 
                   <h4 class="color-black">Cars</h4>
                   <i class="mt-20 color-black fas fa-car"></i>
 
                 </div>
-                <div class='text-center'>
+                <div onclick="game.getTheme('nature')" class='text-center'>
 
-                    <i class="open-game-difficulty overlay far fa-play-circle"></i>
+                    <i role='button' data-open='game-difficulty' class="open-game-difficulty overlay far fa-play-circle"></i>
 
-                  <h4 class="color-black" >Sport</h4>
+                  <h4 class="color-black">Nature</h4>
+                  <i class="mt-20 color-black fas fa-tree"></i>
+
                 </div>
+
               </div>
-              <button role="button" aria-label="Previous" class="glider-prev"><i class="color-pink fas fa-caret-left"></i></button>
-              <button role="button" aria-label="Next" class="glider-next"><i class="color-pink fas fas fa-caret-right"></i></button>
+              <button role="button"  aria-label="Previous" class="glider-prev"><i class="color-pink fas fa-caret-left"></i></button>
+              <button role="button"  aria-label="Next" class="glider-next"><i class="color-pink fas fas fa-caret-right"></i></button>
               <div role="tablist" class="dots"></div>
           </div>
         </div>
@@ -47,7 +50,11 @@
 
 
         <div class="mt-20">
-          <h3 class="color-white">points history</h3>
+          <div class='flex v-center '>
+            <h3 class="color-white">points history</h3>
+            <a href="/stats" class='title-sub ml-20 color-pink'>expand</a>
+          </div>
+
 
         <div id="points-stats" class="mt-20">
 
@@ -61,7 +68,7 @@
 
           <ul>
              <% userAll.forEach(function(user, index){ %>
-               <% index++%>
+               <% index++ %>
                <li class='colorbg-violet p-10 flex h-space-between'>
                  <div class="flex v-center">
                    <span class='color-white'><%= index %>.</span>
@@ -162,7 +169,6 @@
       </div>
 
       <ul class="tile-container hidden">
-
       </ul>
     </div>
   </section>
@@ -179,7 +185,8 @@
 <section id="game-result" class="modal">
   <div class="inner colorbg-purple p-50 text-center">
     <h3  class="game-result-title color-white mb-10"></h3>
-    <span class="game-result-solved color-white"></span>
+    <span class="game-result-solved color-white"></span> <br>
+      <span class="game-result-points color-white"></span>
     <div class="flex mt-20">
       <button class="mr-10 button-1 colorbg-pink" onclick="game.resetGame();" type="button">Restart</button ><a href="/" class="button-1 colorbg-grey">exit</a>
     </div>

@@ -1232,6 +1232,7 @@ h5 {
   position: absolute;
   top: 0;
   left: 0;
+  color: #d62af6;
   height: 100%;
   display: flex;
   justify-content: center;
@@ -1242,6 +1243,10 @@ h5 {
 }
 .glider-wrapper .glider-slide .overlay:hover {
   opacity: 1;
+}
+
+.glider-wrapper .glider-slide > i {
+  font-size: 40px;
 }
 
 .glider-next {
