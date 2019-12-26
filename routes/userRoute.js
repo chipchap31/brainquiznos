@@ -7,7 +7,6 @@ const bcrypt = require("bcrypt");
 router.post("/signup", async function(req, res, next) {
   const USERS = mongoose.model("users");
   const { username, email, password, password2, gender } = req.body;
-
   const userExist = await USERS.findOne({ email, username });
 
   // displays an error when user does not
@@ -37,7 +36,6 @@ router.post("/signup", async function(req, res, next) {
     bcrypt.hash(password, 10, async function(err, hash) {
       const userNew = await new USERS({
         username,
-
         email,
         password: hash,
         gender
@@ -47,41 +45,62 @@ router.post("/signup", async function(req, res, next) {
     });
   }
 });
-
 router.post("/login", async (req, res) => {
+  // enable user to login
+  // throw error if account already exist
   const { username, password, remember } = req.body;
+
+  // user gave permission to save the session
   const userSave = remember ? JSON.parse(remember) : false;
   const USERS = mongoose.model("users");
-  const user = await USERS.findOne({ username });
-  const match = user ? await bcrypt.compare(password, user.password) : false;
+  try {
+    // find the user on the database
+    const fetchUser = await USERS.findOne({ username });
 
-  // no user find with the given
-  // username is found
-  if (!user) {
-    return res.render("login", {
-      user: false,
-      err: true,
-      errMessage: {
-        username: "Account does not exist.",
-        password: false
-      }
-    });
-  } else if (!match) {
-    return res.render("login", {
-      user: false,
-      err: true,
-      errMessage: {
-        username: false,
-        password: "Password does not match."
-      }
-    });
-  } else {
-    if (userSave) {
-      req.session.maxAge = 30 * 24 * 60 * 60 * 1000;
+    // compare the password using bcrypt
+    const match = fetchUser
+      ? await bcrypt.compare(password, fetchUser.password)
+      : false;
+
+    // render some error message to the user
+    if (!fetchUser) {
+      return res.render("login", {
+        user: false,
+        err: true,
+        errMessage: {
+          username: "Account does not exist.",
+          password: false
+        }
+      });
+    } else if (!match) {
+      return res.render("login", {
+        user: false,
+        err: true,
+        errMessage: {
+          username: false,
+          password: "Password does not match."
+        }
+      });
+    } else {
+      const thirtyDays = 30 * 24 * 60 * 60 * 1000;
+      // increase the maximum age of cookie
+      // enable save data to cookie
+      userSave ? (req.session.maxAge = thirtyDays) : null;
+
+      const dataToSave = {
+        id: fetchUser._id,
+        username: fetchUser.username,
+        gender: fetchUser.gender,
+        games: fetchUser.games,
+        life: fetchUser.life,
+        points: fetchUser.points
+      };
+      // start the session
+      req.session.user = dataToSave;
+      return res.redirect("/");
     }
-
-    req.session.user = user._id;
-    return res.redirect("/");
+  } catch (e) {
+    throw new Error(e);
   }
 });
 
@@ -104,6 +123,10 @@ router.post("/update-points", async (req, res) => {
 
       findUser.points > 0
         ? await findUser.updateOne({ points: findUser.points - points })
+        : null;
+
+      findUser.life > 0
+        ? await findUser.updateOne({ life: findUser.life - 1 })
         : null;
     }
     const updatedData = await USERS.findById(req.session.user);

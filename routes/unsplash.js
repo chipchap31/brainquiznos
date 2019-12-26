@@ -12,7 +12,6 @@ router.get("/:theme", async (req, res, next) => {
     .photos(req.params.theme, 1, 15, { orientation: "portrait" })
     .then(response => response.json())
     .then(response => {
-      console.log(response.results.length);
       res.send(response.results);
     });
 });

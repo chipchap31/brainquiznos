@@ -1,0 +1,39 @@
+<%- include("layout/header", {user ,gender, username, life}) %>
+
+<main class="colorbg-purple">
+  <section id="leaderboard" class="pv-60 ">
+    <div class="container">
+      <h2 class="color-white">Leaderboard</h2>
+      <div class="leaderboard limit col-5">
+
+
+        <ul class="mt-20">
+           <% userAll.forEach(function(user, index){ %>
+             <% index++%>
+             <li class='colorbg-violet p-10 flex h-space-between'>
+               <div class="flex v-center">
+                 <span class='color-white'><%= index %>.</span>
+                 <img class='mh-10' src='/images/<%= gender %>.png'>
+                <span class="color-white"><%= user.username %></span>
+                <% if (username === user.username) {%>
+                  <span class="color-white ml-10">(you)</span>
+                <% } %>
+
+               </div>
+               <div class="flex v-center">
+                 <span class="color-white"><%= user.games > 1 ?  `${user.games} games` : `${user.games} game`%></span>
+                 <span class="color-white ml-20"><%= user.points %> points</span>
+               </div>
+            </li>
+           <% }) %>
+
+
+
+        </ul>
+
+
+
+    </div>
+  </section>
+</main>
+<%- include("layout/footer", {renderGlider:false}) %>
