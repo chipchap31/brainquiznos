@@ -13,7 +13,7 @@ var $pauseButton = $.querySelector(".pause-button");
 var $gamePauseModal = $.getElementById("game-pause");
 function Game() {
   this.gameMode = null;
-  this.readyTime = 5;
+  this.readyTime = 1;
   this.theme = null;
   this.tileData = [];
   this.hintTime = 0;
@@ -30,12 +30,12 @@ var tileConfig = {
     hard: 15
   },
   hintTime: {
-    easy: 15,
+    easy: 1,
     normal: 10,
     hard: 10
   },
   gameTime: {
-    easy: 60,
+    easy: 1,
     normal: 90,
     hard: 120
   },

@@ -4,10 +4,11 @@ const mongoose = require("mongoose");
 
 router.get("/fetch", async (req, res) => {
   const GAMES = mongoose.model("games");
-  const user = req.session.user || false;
-  const fetchGames = user ? await GAMES.find({ _user: user }) : null;
+  const id = req.session.user ? req.session.user.id : false;
+  const fetchGames = id ? await GAMES.find({ _user: id }) : null;
   res.send(fetchGames);
 });
+
 router.post("/new", async (req, res) => {
   const GAME = mongoose.model("games");
 
@@ -32,6 +33,7 @@ router.post("/update", async (req, res) => {
       clicks,
       won
     });
+
     res.send({});
   } catch (e) {
     console.log(e);

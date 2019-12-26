@@ -24,14 +24,22 @@
           >Brain<span class="color-pink">Quiznos</span></a
         >
         <div class="flex v-center">
-          <ul class="flex">
+          <% if (loggedIn) { %>
+          <ul class="flex mr-10">
             <% for(var i= 0; i < life; i++){%>
-              <li><i class="fas fa-heart color-pink mr-20"></i></li>
+              <li><i class="life fas fa-heart color-pink mr-10"></i></li>
             <%}%>
+            <% if(life < 5){ %>
+              <% for(var i = 0; i < 5 - life; i++){%>
+              <li><i class="dead fas fa-heart color-black mr-10"></i></li>
+              <%}%>
+            <% }%>
+
           </ul>
+          <% } %>
           <ul class="flex v-center">
 
-            <% if (user) { %>
+            <% if (loggedIn) { %>
             <li class="profile">
               <img src="/images/<%= gender %>.png" alt='profile'>
               <ul class="profile-menu">
