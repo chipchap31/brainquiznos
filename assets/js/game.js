@@ -97,7 +97,6 @@ Game.prototype.init = async function(gameMode) {
 
 Game.prototype.startCountDown = function() {
   var _ = this;
-
   var min = Math.floor((_.readyTime / 60) % 60);
   var sec = Math.floor((_.readyTime / 1) % 60);
   if (_.readyTime <= 0) {
@@ -285,8 +284,42 @@ Game.prototype.resetGame = function() {
 
 var game = new Game();
 
-// post function
+function Life(time) {
+  this.time = time;
+  this.init(time);
+}
 
+Life.prototype.init = function(data) {
+  this.time = data;
+  window.lifeCount = setInterval(() => this.countdown(), 1000);
+};
+Life.prototype.countdown = function() {
+  var _ = this;
+  const target = document.querySelector("#life-timer span");
+
+  var min = Math.floor((_.time / 60) % 60);
+  var sec = Math.floor((_.time / 1) % 60);
+  if (_.time < 0) {
+    clearInterval(window.lifeCount);
+    window.lifeCount = null;
+  }
+  target.innerHTML = `${min}:${sec < 10 ? "0" + sec : sec}`;
+  --_.time;
+};
+document.addEventListener("DOMContentLoaded", function(event) {
+  const target = document.getElementById("life-timer");
+  if (!target) {
+    return false;
+  }
+  const dateReplenish = new Date(target.getAttribute("data-replenish"));
+  const datePlayed = new Date(Date.now());
+
+  const diff = (dateReplenish - datePlayed) / 1000;
+
+  const life = new Life(diff);
+});
+
+// post function
 function postData(path, body) {
   return fetch(path, {
     method: "post",

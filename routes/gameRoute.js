@@ -15,28 +15,30 @@ router.post("/new", async (req, res) => {
   const { mode } = req.body;
   try {
     const newGame = await new GAME({
-      _user: req.session.user,
+      _user: req.session.user.id,
       mode
     }).save();
     res.send(newGame._id);
   } catch (e) {
-    console.log(e);
+    throw new Error(e);
   }
 });
 router.post("/update", async (req, res) => {
   const GAME = mongoose.model("games");
   const { id, points, clicks, won } = req.body;
   try {
+    const replenishDate = new Date(Date.now() + 10 * 60 * 1000);
     const findGame = await GAME.findById(id);
     await findGame.updateOne({
       points,
       clicks,
-      won
+      won,
+      replenishDate: won ? Date.now() : replenishDate
     });
 
     res.send({});
   } catch (e) {
-    console.log(e);
+    throw new Error(e);
   }
 });
 module.exports = router;

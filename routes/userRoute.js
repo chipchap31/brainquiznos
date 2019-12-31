@@ -113,23 +113,23 @@ router.post("/update-points", async (req, res) => {
   const USERS = mongoose.model("users");
   const { points, won } = req.body;
   try {
-    const findUser = await USERS.findById(req.session.user);
+    const findUser = await USERS.findById(req.session.user.id);
 
     if (won) {
       // should add
       await findUser.updateOne({ points: findUser.points + points });
     } else {
       // should subtract
-
-      findUser.points > 0
-        ? await findUser.updateOne({ points: findUser.points - points })
-        : null;
-
-      findUser.life > 0
-        ? await findUser.updateOne({ life: findUser.life - 1 })
-        : null;
+      const shouldSubtract = findUser.life > 0;
+      console.log(shouldSubtract);
+      await findUser.updateOne({
+        points: findUser.points - points,
+        life: shouldSubtract ? findUser.life - 1 : findUser.life
+      });
     }
-    const updatedData = await USERS.findById(req.session.user);
+
+    const updatedData = await USERS.findById(req.session.user.id);
+    console.log(updatedData);
     return res.send({ points: updatedData.points });
   } catch (e) {
     console.log(e);

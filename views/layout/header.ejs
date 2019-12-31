@@ -37,6 +37,12 @@
 
           </ul>
           <% } %>
+          <%if(life < 5){%>
+            <div id="life-timer" data-replenish="<%= replenishDate  %>" data-datePlayed="<%= datePlayed  %>">
+              <span  class="color-white mr-20">10:00</span>
+            </div>
+          <%}%>
+
           <ul class="flex v-center">
 
             <% if (loggedIn) { %>
@@ -46,17 +52,9 @@
                 <li class="mt-10"><%= username %></li>
                 <li class="mt-20"><a href="/leaderboard">Leaderboard</a></li>
                 <li class="mt-10"><a href="/stats">Stats</a></li>
-
-
                 <li class="mt-20"><a class="button-1 colorbg-pink" href="/user/logout">log out</a></li>
               </ul>
             </li>
-
-
-
-
-
-
             <% }else{ %>
               <li><a class="color-white text-up" href="/login">login</a></li>
               <li class="ml-20">
