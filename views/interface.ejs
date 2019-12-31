@@ -52,7 +52,7 @@
         <div class="mt-20">
           <div class='flex v-center '>
             <h3 class="color-white">points history</h3>
-            <a href="/stats" class='title-sub ml-20 color-pink'>expand</a>
+            <a href="/stats" class='link ml-20 color-pink'>(more)</a>
           </div>
 
 
@@ -64,7 +64,10 @@
 
 
         <div class="leaderboard col-5">
-          <h3 class="color-white mb-20">Leaderboard</h3>
+          <div class="flex v-center mb-20">
+            <h3 class="color-white ">Leaderboard</h3>
+            <a href="/leaderboard" class='link ml-20 color-pink'>(more)</a>
+          </div>
 
           <ul>
              <% fetchAllUser.forEach(function(user, index){ %>

@@ -6,23 +6,42 @@ router.get("/", async (req, res, next) => {
   const loggedIn = Boolean(req.session.user) || false;
   const id = loggedIn ? req.session.user.id : false;
   const USERS = mongoose.model("users");
+  const GAMES = mongoose.model("games");
   try {
     if (!loggedIn) {
       res.render("index", { loggedIn: false });
     } else {
       const essentials = "username games points gender"; // get only the required info
 
+      const lostGames = await GAMES.find({
+        _user: id
+      }).$where(function() {
+        return this.replenishDate > Date.now();
+      });
+      console.log(lostGames);
+      const replenishDate =
+        lostGames.length > 0
+          ? lostGames[0].replenishDate
+          : new Date(Date.now());
+
+      const datePlayed =
+        lostGames.length > 0 ? lostGames[0].datePlayed : new Date(Date.now());
+
       let fetchAllUser = await USERS.find({}, essentials).sort({ points: -1 });
       // get just six of the top users
       fetchAllUser = fetchAllUser.filter((x, i) => i < 6);
-
+      const fetchUser = await USERS.findById(id);
       const userCurrentRank = fetchAllUser.map(e => e.id).indexOf(id) + 1;
+
       // render game interface
       res.render("interface", {
         loggedIn,
         userCurrentRank,
         ...req.session.user,
-        fetchAllUser
+        fetchAllUser,
+        life: fetchUser.life,
+        replenishDate,
+        datePlayed
       });
     }
   } catch (e) {
@@ -55,13 +74,17 @@ router.get("/login", function(req, res, next) {
 router.get("/leaderboard", async function(req, res, next) {
   const USERS = mongoose.model("users");
   const GAMES = mongoose.model("games");
+  const loggedIn = req.session.user || false;
 
-  const user = req.session.user || false;
-  const games = user ? await GAMES.find({ _user: user }) : null;
-  const userFind = user ? await USERS.findById(user) : null;
+  if (!loggedIn) {
+    return res.render("login");
+  }
+  const id = req.session.user.id;
+  const games = await GAMES.find({ _user: id });
+  const userFind = await USERS.findById(id);
 
-  if (!user) {
-    res.render("index", { user });
+  if (!loggedIn) {
+    res.render("index", { loggedIn });
   } else {
     const $fetchUser = await USERS.find(
       {},
@@ -69,11 +92,11 @@ router.get("/leaderboard", async function(req, res, next) {
     ).sort({
       points: -1
     });
-    const rank = $fetchUser.map(e => e.id).indexOf(user) + 1;
+    const rank = $fetchUser.map(e => e.id).indexOf(id) + 1;
     const userAll = $fetchUser;
 
     res.render("leaderboard", {
-      user,
+      loggedIn,
       gender: userFind.gender,
       username: userFind.username,
       points: userFind.points,
@@ -85,17 +108,18 @@ router.get("/leaderboard", async function(req, res, next) {
   }
 });
 router.get("/stats", async function(req, res, next) {
-  const user = req.session.user || false;
-  console.log(user);
-  if (!user) {
-    return res.redirect("/");
-  }
   const GAMES = mongoose.model("games");
   const USERS = mongoose.model("users");
 
+  const loggedIn = req.session.user || false;
+
+  if (!loggedIn) {
+    return res.redirect("/login");
+  }
+  const id = req.session.user.id;
   try {
-    const fetchGame = await GAMES.find({ _user: user });
-    const fetchUser = await USERS.findById({ _id: user }, "gender username");
+    const fetchGame = await GAMES.find({ _user: id });
+    const fetchUser = await USERS.findById({ _id: id }, "gender username");
     // get the average user's average clicks
 
     const avgClicks =
@@ -115,7 +139,7 @@ router.get("/stats", async function(req, res, next) {
       ).points / fetchGame.length;
 
     return res.render("stats", {
-      user,
+      loggedIn,
       gender: fetchUser.gender,
       username: fetchUser.username,
       games: fetchGame.length,
