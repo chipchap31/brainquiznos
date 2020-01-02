@@ -21,6 +21,10 @@ function Game() {
   this.choices = [];
   this.clicks = 0;
   this.id = "";
+  this.lives = 0;
+  this.lifeTime = 0;
+  this.dateIndex = 0;
+  this.dateReplenish = [];
 }
 
 var tileConfig = {
@@ -46,6 +50,66 @@ var tileConfig = {
   }
 };
 
+Game.prototype.initLife = function(date) {
+  clearInterval(window.lifeCountDown);
+  window.lifeCountDown = null;
+  var _ = this;
+
+  _.dateReplenish = date;
+
+  var shouldReplenish = _.lives >= 0;
+
+  const diff = (new Date(date[0].replenishDate) - new Date(Date.now())) / 1000;
+  _.lifeTime = diff;
+
+  if (shouldReplenish) {
+    window.lifeCountDown = setInterval(() => _.lifeCountDown(), 1000);
+  }
+};
+Game.prototype.lifeCountDown = function() {
+  var _ = this;
+  const target = document.querySelector("#life-timer span");
+
+  var min = Math.floor((_.lifeTime / 60) % 60);
+  var sec = Math.floor((_.lifeTime / 1) % 60);
+
+  if (_.lifeTime <= 0) {
+    clearInterval(window.lifeCountDown);
+    window.lifeCountDown = null;
+
+    if (_.dateReplenish.length > 0) {
+      clearInterval(window.lifeCountDown);
+      window.lifeCountDown = null;
+
+      _.dateReplenish.shift();
+
+      _.lifeAdd();
+      postData("/user/add-life", {});
+      if (_.dateReplenish.length > 0) {
+        return _.initLife(_.dateReplenish);
+      }
+
+      window.lifeCountDown = setInterval(() => _.lifeCountDown(), 1000);
+    }
+
+    return (target.innerHTML = "0:00");
+  }
+  target.innerHTML = `${min}:${sec < 10 ? "0" + sec : sec}`;
+
+  --_.lifeTime;
+};
+
+Game.prototype.lifeAdd = function() {
+  const lives = $.getElementsByClassName("life");
+  const active = $.getElementsByClassName("on");
+  const inactive = $.getElementsByClassName("off").length;
+  const index = lives.length - inactive;
+
+  lives[index].classList.add("on");
+  lives[index].classList.remove("off");
+  lives[index].classList.add("color-pink");
+  lives[index].classList.remove("color-black");
+};
 Game.prototype.getTheme = async function(theme) {
   var _ = this;
   _.theme = theme;
@@ -58,10 +122,9 @@ Game.prototype.getTheme = async function(theme) {
       });
     });
   } catch (e) {
-    console.log(e);
+    throw new Error(e);
   }
 };
-
 Game.prototype.init = async function(gameMode) {
   var _ = this;
   // set items to global
@@ -281,42 +344,28 @@ Game.prototype.resetGame = function() {
 
   _.init(_.gameMode);
 };
-
 var game = new Game();
 
-function Life(time) {
-  this.time = time;
-  this.init(time);
-}
+// function Life(time) {
+//   this.time = time;
+//   this.init(time);
+// }
 
-Life.prototype.init = function(data) {
-  this.time = data;
-  window.lifeCount = setInterval(() => this.countdown(), 1000);
-};
-Life.prototype.countdown = function() {
-  var _ = this;
-  const target = document.querySelector("#life-timer span");
+// Life.prototype.init = function(data) {
+//   this.time = data;
+//   window.lifeCount = setInterval(() => this.countdown(), 1000);
+// };
 
-  var min = Math.floor((_.time / 60) % 60);
-  var sec = Math.floor((_.time / 1) % 60);
-  if (_.time < 0) {
-    clearInterval(window.lifeCount);
-    window.lifeCount = null;
-  }
-  target.innerHTML = `${min}:${sec < 10 ? "0" + sec : sec}`;
-  --_.time;
-};
 document.addEventListener("DOMContentLoaded", function(event) {
-  const target = document.getElementById("life-timer");
-  if (!target) {
-    return false;
-  }
-  const dateReplenish = new Date(target.getAttribute("data-replenish"));
-  const datePlayed = new Date(Date.now());
-
-  const diff = (dateReplenish - datePlayed) / 1000;
-
-  const life = new Life(diff);
+  // if (!target) {
+  //   return false;
+  // }
+  // const dateReplenish = new Date(target.getAttribute("data-replenish"));
+  // const datePlayed = new Date(Date.now());
+  //
+  // const diff = (dateReplenish - datePlayed) / 1000;
+  //
+  // const life = new Life(diff);
 });
 
 // post function

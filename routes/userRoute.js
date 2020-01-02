@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
-// users signs up
+const requireLogin = require("../middlewares/requireLogin");
 
 router.post("/signup", async function(req, res, next) {
   const USERS = mongoose.model("users");
@@ -65,7 +65,7 @@ router.post("/login", async (req, res) => {
     // render some error message to the user
     if (!fetchUser) {
       return res.render("login", {
-        user: false,
+        loggedIn: false,
         err: true,
         errMessage: {
           username: "Account does not exist.",
@@ -74,7 +74,7 @@ router.post("/login", async (req, res) => {
       });
     } else if (!match) {
       return res.render("login", {
-        user: false,
+        loggedIn: false,
         err: true,
         errMessage: {
           username: false,
@@ -109,11 +109,12 @@ router.get("/logout", (req, res) => {
   res.redirect("/");
 });
 
-router.post("/update-points", async (req, res) => {
+router.post("/update-points", requireLogin, async (req, res) => {
   const USERS = mongoose.model("users");
   const { points, won } = req.body;
+  const id = req.session.user.id;
   try {
-    const findUser = await USERS.findById(req.session.user.id);
+    const findUser = await USERS.findById(id);
 
     if (won) {
       // should add
@@ -121,18 +122,41 @@ router.post("/update-points", async (req, res) => {
     } else {
       // should subtract
       const shouldSubtract = findUser.life > 0;
-      console.log(shouldSubtract);
+
       await findUser.updateOne({
         points: findUser.points - points,
         life: shouldSubtract ? findUser.life - 1 : findUser.life
       });
     }
 
-    const updatedData = await USERS.findById(req.session.user.id);
-    console.log(updatedData);
-    return res.send({ points: updatedData.points });
+    const updatedData = await USERS.findById(id);
+
+    req.session.user.points = updatedData.points;
+    return res.send({});
   } catch (e) {
-    console.log(e);
+    throw new Error(e);
+  }
+});
+
+router.post("/add-life", requireLogin, async (req, res, next) => {
+  const USERS = mongoose.model("users");
+
+  const id = req.session.user.id;
+  try {
+    const fetchUser = await USERS.findById(id);
+    const shouldAdd = fetchUser.life <= 4;
+
+    await fetchUser.updateOne({
+      life: shouldAdd ? fetchUser.life + 1 : fetchUser.life
+    });
+
+    req.session.user.life = shouldAdd
+      ? req.session.user.life + 1
+      : req.session.user.life;
+
+    res.send({});
+  } catch (e) {
+    throw new Error(e);
   }
 });
 module.exports = router;
