@@ -1,4 +1,4 @@
-<%- include("layout/header") %>
+<%- include("layout/header", {loggedIn}) %>
 <main>
   <section id="login" class="pv-60 colorbg-purple">
     <div class="container">
@@ -9,7 +9,7 @@
       <div class="row  flex h-center">
         <div class="col-3">
           <form class="form mt-20" action="/user/login" method="post">
-        
+
             <label class='mt-10 color-white' for="username">Username</label>
             <input class='<%= errMessage.username ? "err-input" : null %> mt-10' id='username' type="text" name="username" placeholder="Your username" required>
 

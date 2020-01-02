@@ -27,21 +27,22 @@
           <% if (loggedIn) { %>
           <ul class="flex mr-10">
             <% for(var i= 0; i < life; i++){%>
-              <li><i class="life fas fa-heart color-pink mr-10"></i></li>
+              <li class="life on color-pink"><i class="fas fa-heart  mr-10"></i></li>
             <%}%>
             <% if(life < 5){ %>
               <% for(var i = 0; i < 5 - life; i++){%>
-              <li><i class="dead fas fa-heart color-black mr-10"></i></li>
+              <li class="life off color-black"><i class="fas fa-heart  mr-10"></i></li>
               <%}%>
             <% }%>
 
           </ul>
-          <% } %>
-          <%if(life < 5){%>
-            <div id="life-timer" data-replenish="<%= replenishDate  %>" data-datePlayed="<%= datePlayed  %>">
-              <span  class="color-white mr-20">10:00</span>
+
+            <div id="life-timer">
+              <span  class="color-white mr-20">0:00</span>
             </div>
-          <%}%>
+
+          <% } %>
+
 
           <ul class="flex v-center">
 
