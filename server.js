@@ -25,7 +25,7 @@ mongoose.connect(
   { useNewUrlParser: true, useUnifiedTopology: true },
   function(err) {
     if (!err) {
-      console.log("connected to mongodb");
+      DEV ? console.log("connected to mongodb") : null;
     }
   }
 );

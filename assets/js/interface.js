@@ -4,7 +4,7 @@ document.addEventListener(
     var btnCollection = document.querySelectorAll("[role='button'");
 
     btnCollection.forEach(element => {
-      var openId = element.getAttribute("data-open");
+      var openId = element.getAttribute("data-open") || false;
       var closeList = element.getAttribute("data-close") || false;
 
       var openData = document.getElementById(openId);

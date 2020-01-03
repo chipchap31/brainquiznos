@@ -8,7 +8,6 @@ router.get("/", requireLogin, async (req, res, next) => {
   const USERS = mongoose.model("users");
   const GAMES = mongoose.model("games");
   try {
-    let replenishDate, datePlayed;
     const essentials = "username games points gender"; // get only the required info
 
     // find if there are any lost games that are waiting to replenish
@@ -20,7 +19,7 @@ router.get("/", requireLogin, async (req, res, next) => {
     ).$where(function() {
       return this.replenishDate > Date.now();
     });
-
+    req.session.user.replenishDate = lostGames;
     // const replenishDate =
     //   lostGames.length > 0 ? lostGames[0].replenishDate : new Date(Date.now());
     //
@@ -41,8 +40,7 @@ router.get("/", requireLogin, async (req, res, next) => {
       loggedIn: true,
       userCurrentRank,
       ...req.session.user,
-      fetchAllUser,
-      replenishDate: lostGames
+      fetchAllUser
     });
   } catch (e) {
     throw new Error(e);
