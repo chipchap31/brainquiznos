@@ -1,24 +1,29 @@
-function Graph(target, xAxis, yAxis) {
+function Graph() {
+  this.target = null;
+  this.xAxis = null;
+  this.yAxis = null;
+}
+
+Graph.prototype.init = function(target, xAxis, yAxis) {
+  var _ = this;
   this.target = target;
   this.xAxis = xAxis;
   this.yAxis = yAxis;
-  this.init();
-}
+  var container = document.getElementById(_.target);
 
-Graph.prototype.init = function() {
-  var _ = this;
   var margin = { top: 10, right: 30, bottom: 30, left: 60 },
-    width = 500 - margin.left - margin.right,
-    height = 300 - margin.top - margin.bottom;
-
+    width = container.offsetWidth - margin.left - margin.right,
+    height = container.offsetHeight - margin.top - margin.bottom;
+  console.log(width, height);
   var canvas = d3
     .select(`#${_.target}`)
     .append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+    .append("g")
+
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
   d3.json("/game/fetch", function(data) {
     var initXaxis = [];
     let $data = data.map(x => ({
@@ -50,6 +55,7 @@ Graph.prototype.init = function() {
       .range([0, width]);
     canvas
       .append("g")
+
       .attr("transform", "translate(0," + height + ")")
       .call(d3.axisBottom(xAxis).ticks(5));
     var y = d3
@@ -108,6 +114,23 @@ Graph.prototype.init = function() {
     .style("text-anchor", "middle")
     .text(_.xAxis.charAt(0).toUpperCase() + _.xAxis.slice(1));
 };
+Graph.prototype.redraw = function() {
+  var _ = this;
 
-new Graph("points-stats", "time", "points");
-new Graph("clicks-stats", "time", "clicks");
+  var container = document.getElementById(_.target);
+  var windowWidth = window.innerWidth;
+
+  var margin = { top: 10, right: 30, bottom: 30, left: 60 },
+    width = container.offsetWidth - margin.left - margin.right,
+    height = container.offsetHeight - margin.top - margin.bottom;
+  var canvas = d3
+    .select(`#${_.target}`)
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom);
+};
+const pointStats = new Graph();
+pointStats.init("points-stats", "time", "points");
+window.onresize = function() {
+  console.log("onresize");
+  pointStats.redraw();
+};
