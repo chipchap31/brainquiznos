@@ -1391,13 +1391,53 @@ h5 {
   grid-row-gap: 20px;
 }
 
+#points-stats {
+  width: 460px;
+  height: 400px;
+}
+
 @media only screen and (max-width: 375px) {
   .container {
-    max-width: 100%;
+    max-width: 95%;
+  }
+
+  [class*=col-] {
+    width: 100%;
+  }
+
+  header .life i {
+    margin-right: 2px;
+  }
+  header #life-timer span {
+    margin-right: 5px;
+  }
+  header .life-container {
+    margin-right: 5px;
   }
 
   #game-home .row {
     flex-direction: column;
+  }
+  #game-home .row .glider-wrapper {
+    overflow: hidden;
+    width: 100%;
+  }
+  #game-home .leaderboard {
+    margin-top: 20px;
+    font-size: 14px;
+  }
+
+  #social .container {
+    max-width: 80%;
+  }
+
+  #leaderboard {
+    font-size: 14px;
+  }
+
+  #points-stats {
+    width: 360px;
+    height: 300px;
   }
 }
 .modal {
