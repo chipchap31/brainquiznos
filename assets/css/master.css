@@ -1391,6 +1391,15 @@ h5 {
   grid-row-gap: 20px;
 }
 
+@media only screen and (max-width: 375px) {
+  .container {
+    max-width: 100%;
+  }
+
+  #game-home .row {
+    flex-direction: column;
+  }
+}
 .modal {
   position: fixed;
   top: 0;

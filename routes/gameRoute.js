@@ -35,20 +35,21 @@ router.post("/update", async (req, res) => {
   let replenishDate;
 
   try {
+    const secondsToAdd = 10 * 60 * 1000;
     const lostGames = await GAME.find({
       _user: req.session.user.id
     }).$where(function() {
       return this.replenishDate > Date.now();
     });
-
-    replenishDate = new Date(Date.now() + 1 * 30 * 1000);
+    console.log(lostGames.length);
+    replenishDate = new Date(Date.now() + secondsToAdd);
     // get the replenishdate of previous game
 
     if (lostGames.length > 0) {
       const latestGame = await GAME.find({ _user: req.session.user.id }).sort({
         datePlayed: -1
       });
-      replenishDate = latestGame[1].replenishDate.getTime() + 1 * 30 * 1000;
+      replenishDate = latestGame[1].replenishDate.getTime() + secondsToAdd;
     }
 
     const findGame = await GAME.findById(req.body.id);

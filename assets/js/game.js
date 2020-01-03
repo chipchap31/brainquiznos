@@ -7,13 +7,16 @@ var gameInitTime = $.querySelector(".game-init-time");
 var $selected = $.getElementsByClassName("show");
 var $tileSolved = $.getElementsByClassName("solved");
 var $gameResult = $.getElementById("game-result");
+var $gameDifficulty = $.getElementById("game-difficulty");
 var $gameResetModal = $.getElementById("game-reset");
 var $gameResultSolved = $.querySelector(".game-result-solved");
 var $pauseButton = $.querySelector(".pause-button");
 var $gamePauseModal = $.getElementById("game-pause");
+var $gamePreventModal = $.getElementById("game-prevent");
+
 function Game() {
   this.gameMode = null;
-  this.readyTime = 1;
+  this.readyTime = 5;
   this.theme = null;
   this.tileData = [];
   this.hintTime = 0;
@@ -23,7 +26,6 @@ function Game() {
   this.id = "";
   this.lives = 0;
   this.lifeTime = 0;
-  this.dateIndex = 0;
   this.dateReplenish = [];
 }
 
@@ -34,12 +36,12 @@ var tileConfig = {
     hard: 15
   },
   hintTime: {
-    easy: 1,
+    easy: 15,
     normal: 10,
     hard: 10
   },
   gameTime: {
-    easy: 1,
+    easy: 90,
     normal: 90,
     hard: 120
   },
@@ -113,6 +115,13 @@ Game.prototype.lifeAdd = function() {
 Game.prototype.getTheme = async function(theme) {
   var _ = this;
   _.theme = theme;
+  const livesLeft = $.getElementsByClassName("on");
+
+  if (livesLeft.length <= 0) {
+    return $gamePreventModal.classList.add("open");
+  }
+
+  $gameDifficulty.classList.add("open");
   try {
     const fetchImgs = await fetch(`/unsplash/${_.theme}`).then(function(
       response
@@ -345,28 +354,6 @@ Game.prototype.resetGame = function() {
   _.init(_.gameMode);
 };
 var game = new Game();
-
-// function Life(time) {
-//   this.time = time;
-//   this.init(time);
-// }
-
-// Life.prototype.init = function(data) {
-//   this.time = data;
-//   window.lifeCount = setInterval(() => this.countdown(), 1000);
-// };
-
-document.addEventListener("DOMContentLoaded", function(event) {
-  // if (!target) {
-  //   return false;
-  // }
-  // const dateReplenish = new Date(target.getAttribute("data-replenish"));
-  // const datePlayed = new Date(Date.now());
-  //
-  // const diff = (dateReplenish - datePlayed) / 1000;
-  //
-  // const life = new Life(diff);
-});
 
 // post function
 function postData(path, body) {

@@ -11,21 +11,21 @@
               <div class="glider">
                   <div onclick="game.getTheme('sport')" class='text-center'>
 
-                    <i role='button' data-open='game-difficulty'  class="open-game-difficulty overlay far fa-play-circle"></i>
+                    <i class="open-game-difficulty overlay far fa-play-circle"></i>
 
                   <h4 class="color-black">Sport</h4>
                   <i class="mt-20 color-black fas fa-running"></i>
                 </div>
                 <div onclick="game.getTheme('flags')" class='text-center'>
 
-                    <i role='button' data-open='game-difficulty' class="open-game-difficulty overlay far fa-play-circle"></i>
+                    <i class="open-game-difficulty overlay far fa-play-circle"></i>
 
                   <h4 class="color-black">Flags</h4>
                   <i class="mt-20 color-black fas fa-flag"></i>
                 </div>
                 <div onclick="game.getTheme('cars')" class='text-center'>
 
-                    <i role='button' data-open='game-difficulty' class="open-game-difficulty overlay far fa-play-circle"></i>
+                    <i class="open-game-difficulty overlay far fa-play-circle"></i>
 
                   <h4 class="color-black">Cars</h4>
                   <i class="mt-20 color-black fas fa-car"></i>
@@ -33,7 +33,7 @@
                 </div>
                 <div onclick="game.getTheme('nature')" class='text-center'>
 
-                    <i role='button' data-open='game-difficulty' class="open-game-difficulty overlay far fa-play-circle"></i>
+                    <i class="open-game-difficulty overlay far fa-play-circle"></i>
 
                   <h4 class="color-black">Nature</h4>
                   <i class="mt-20 color-black fas fa-tree"></i>
@@ -188,8 +188,8 @@
 <section id="game-result" class="modal">
   <div class="inner colorbg-purple p-50 text-center">
     <h3  class="game-result-title color-white mb-10"></h3>
-    <span class="game-result-solved color-white"></span> <br>
-      <span class="game-result-points color-white"></span>
+    <span class="game-result-solved color-white mt-10"></span> <br>
+      <span class="game-result-points color-white mt-10"></span>
     <div class="flex mt-20">
       <button class="mr-10 button-1 colorbg-pink" onclick="game.resetGame();" type="button">Restart</button ><a href="/" class="button-1 colorbg-grey">exit</a>
     </div>
@@ -207,7 +207,16 @@
   </div>
 
 </section>
+<section id="game-prevent" class="modal">
+  <div class="inner colorbg-purple p-50 text-center">
+    <h3  class="game-reset-title color-white mb-10">You don't have any lives yet!</h3>
+    <div class="flex h-center mt-20">
+      <button  role='button' data-open='game-prevent' class="button-1 colorbg-pink">close</button>
+    </div>
 
+  </div>
+
+</section>
 
 
 <%- include("layout/footer", {loggedIn, renderGlider: true, replenishDate}) %>
