@@ -1,87 +1,110 @@
-var ctx = document.getElementById("points-stats").getContext("2d");
-async function fetchAllGames() {
-  return await fetch("/game/fetch")
-    .then(res => res.json())
-    .then(res => {
-      return res;
-    });
-}
-const points = fetchAllGames().then(data => data);
-(async () => {
-  let response = await fetch("/game/fetch");
-  let games = await response.json();
-  var timeFormat = "MM/DD/YYYY HH:mm";
-  var chart = new Chart(ctx, {
-    // The type of chart we want to create
-    type: "line",
+(async function() {
+  var $ = document;
+  var response = await fetch("/game/fetch");
+  var games = await response.json();
 
-    // The data for our dataset
-    data: {
-      datasets: [
-        {
-          fill: false,
-          label: "Gained of points",
-          data: games.map((doc, i) => {
-            return { x: new Date(doc.datePlayed), y: doc.points };
-          }),
-          labels: ["Red", "Blue", "Purple", "Yellow"],
-          backgroundColor: [
-            "rgba(255, 99, 132, 0.2)",
-            "rgba(54, 162, 235, 0.2)",
-            "rgba(255, 206, 86, 0.2)",
-            "rgba(75, 192, 192, 0.2)",
-            "rgba(153, 102, 255, 0.2)",
-            "rgba(255, 159, 64, 0.2)"
-          ],
-          borderColor: [
-            "rgba(255, 99, 132, 1)",
-            "rgba(54, 162, 235, 1)",
-            "rgba(255, 206, 86, 1)",
-            "rgba(75, 192, 192, 1)",
-            "rgba(153, 102, 255, 1)",
-            "rgba(255, 159, 64, 1)"
-          ],
-          borderWidth: 1
-        }
-      ]
-    },
+  function Graph(target, mode, yAxis, width, height) {
+    var _ = this;
 
-    // Configuration options go here
-    options: {
-      legend: {
-        labels: {
-          fontColor: "white"
+    _.target = target;
+    _.mode = mode;
+    _.yAxis = yAxis;
+    _.width = width;
+    _.height = height;
+    _.init();
+  }
+
+  Graph.prototype.init = function() {
+    var _ = this;
+    var timeFormat = "dddd";
+
+    const data = games
+      .filter(doc => {
+        if (_.mode === "all") {
+          return true;
         }
-      },
-      responsiveAnimationDuration: 1,
-      scales: {
-        xAxes: [
+        return doc.mode === _.mode;
+      })
+      .map((doc, i) => {
+        return { x: doc.datePlayed, y: doc[_.yAxis] };
+      });
+
+    // set dimensions
+
+    var ctx = $.getElementById(_.target).getContext("2d");
+    console.log(data);
+    var chart = new Chart(ctx, {
+      // The type of chart we want to create
+      type: "line",
+
+      // The data for our dataset
+      data: {
+        labels: data.map(date => date.x),
+        datasets: [
           {
-            type: "time",
-            time: {
-              parser: timeFormat
-            },
-            scaleLabel: {
-              display: true,
-              labelString: "Date",
-              fontColor: "white"
-            },
-            ticks: {
-              max: 8,
-              min: 5,
-              stepSize: 2,
-              fontColor: "white"
-            }
-          }
-        ],
-        yAxes: [
-          {
-            ticks: {
-              fontColor: "white"
-            }
+            label: `Gained ${_.yAxis} ${
+              _.mode !== "all" ? "(" + _.mode + " " + "mode)" : ""
+            }`,
+            data,
+
+            backgroundColor: "rgba(255, 99, 132, 0.2)",
+            borderColor: "rgba(255, 99, 132, 1)",
+            borderWidth: 1
           }
         ]
+      },
+
+      // Configuration options go here
+      options: {
+        legend: {
+          labels: {
+            fontColor: "white"
+          }
+        },
+        responsiveAnimationDuration: 1,
+        scales: {
+          xAxes: [
+            {
+              type: "time",
+              time: {
+                tooltipFormat: "ll HH:mm"
+              },
+              scaleLabel: {
+                display: true,
+                labelString: "Date",
+                fontColor: "white"
+              },
+              ticks: {
+                fontColor: "white"
+              }
+            }
+          ],
+          yAxes: [
+            {
+              ticks: {
+                fontColor: "white",
+                beginAtZero: true
+              }
+            }
+          ]
+        }
       }
-    }
+    });
+    chart.canvas.parentNode.style.height = `${_.height}px`;
+    chart.canvas.parentNode.style.width = `${_.width}px`;
+  };
+
+  var getAllGraphs = $.querySelectorAll("[role='graph'");
+  var graphArray = Array.from(getAllGraphs).map(graph => {
+    return {
+      yAxis: graph.getAttribute("data-yAxis"),
+      mode: graph.getAttribute("data-mode"),
+      width: graph.getAttribute("data-width"),
+      height: graph.getAttribute("data-height"),
+      target: graph.getAttribute("id")
+    };
+  });
+  graphArray.forEach(graph => {
+    new Graph(graph.target, graph.mode, graph.yAxis, graph.width, graph.height);
   });
 })();

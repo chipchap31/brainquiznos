@@ -50,14 +50,16 @@
 
 
         <div class="mt-20">
-          <div class='flex v-center '>
+          <div class='flex v-center'>
             <h3 class="color-white">points history</h3>
             <a href="/stats" class='link ml-20 color-pink'>(more)</a>
           </div>
 
 
-        
-        <canvas id="points-stats" class="mt-20"></canvas>
+
+        <div class="chart-container">
+        <canvas data-width='480' data-height="400" id="points-stats" role='graph' data-mode='all' data-yAxis='points' class="mt-20"></canvas>
+        </div>
         </div>
         </div>
 

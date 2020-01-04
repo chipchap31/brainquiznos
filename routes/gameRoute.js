@@ -7,20 +7,26 @@ router.get("/fetch", requireLogin, async (req, res) => {
   const GAMES = mongoose.model("games");
   const id = req.session.user.id;
   const fetchGames = await GAMES.find({ _user: id });
-  req.session.user.games = fetchGames.length;
   res.send(fetchGames);
 });
 
-router.post("/new", async (req, res) => {
+router.post("/new", requireLogin, async (req, res) => {
   const GAME = mongoose.model("games");
-
+  const USER = mongoose.model("users");
+  const id = req.session.user.id;
   const { mode } = req.body;
   try {
     const newGame = await new GAME({
-      _user: req.session.user.id,
+      _user: id,
       mode
     }).save();
-    req.session.user.games = req.session.user.games + 1;
+
+    const gameAmount = await GAME.find({ _user: id });
+    const fetchUser = await USER.findById(id);
+    await fetchUser.updateOne({
+      games: gameAmount.length
+    });
+
     res.send(newGame._id);
   } catch (e) {
     throw new Error(e);
@@ -41,7 +47,7 @@ router.post("/update", async (req, res) => {
     }).$where(function() {
       return this.replenishDate > Date.now();
     });
-    console.log(lostGames.length);
+
     replenishDate = new Date(Date.now() + secondsToAdd);
     // get the replenishdate of previous game
 

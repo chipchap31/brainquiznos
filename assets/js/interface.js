@@ -38,10 +38,8 @@ document.addEventListener(
       rewind: true,
       responsive: [
         {
-          // screens greater than >= 775px
           breakpoint: 375,
           settings: {
-            // Set to `auto` and provide item width to adjust to viewport
             slidesToShow: 1.5,
             slidesToScroll: 1,
             itemWidth: 90,
