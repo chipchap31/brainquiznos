@@ -11,6 +11,7 @@ router.get("/", requireLogin, async (req, res, next) => {
     const essentials = "username games points gender"; // get only the required info
 
     // find if there are any lost games that are waiting to replenish
+
     const lostGames = await GAMES.find(
       {
         _user: id
@@ -20,6 +21,7 @@ router.get("/", requireLogin, async (req, res, next) => {
       return this.replenishDate > Date.now();
     });
     req.session.user.replenishDate = lostGames;
+
     // const replenishDate =
     //   lostGames.length > 0 ? lostGames[0].replenishDate : new Date(Date.now());
     //
@@ -35,6 +37,7 @@ router.get("/", requireLogin, async (req, res, next) => {
 
     const fetchUser = await USERS.findById(id);
     req.session.user.life = fetchUser.life;
+
     // render game interface
     res.render("interface", {
       loggedIn: true,
