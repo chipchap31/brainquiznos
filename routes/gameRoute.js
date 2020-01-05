@@ -13,6 +13,7 @@ router.get("/fetch", requireLogin, async (req, res) => {
 router.post("/new", requireLogin, async (req, res) => {
   const GAME = mongoose.model("games");
   const USER = mongoose.model("users");
+  const secondsToAdd = 10 * 60 * 1000;
   const id = req.session.user.id;
   const { mode } = req.body;
   try {
@@ -52,6 +53,7 @@ router.post("/update", async (req, res) => {
     // get the replenishdate of previous game
 
     if (lostGames.length > 0) {
+      // if there are lost games
       const latestGame = await GAME.find({ _user: req.session.user.id }).sort({
         datePlayed: -1
       });

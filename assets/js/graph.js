@@ -17,38 +17,50 @@
   Graph.prototype.init = function() {
     var _ = this;
     var timeFormat = "dddd";
-
-    const data = games
-      .filter(doc => {
-        if (_.mode === "all") {
-          return true;
-        }
-        return doc.mode === _.mode;
-      })
-      .map((doc, i) => {
-        return { x: doc.datePlayed, y: doc[_.yAxis] };
-      });
+    const returnPoints = mode => {
+      return games
+        .filter(doc => {
+          return doc.mode === mode;
+        })
+        .map((doc, i) => {
+          return { x: doc.datePlayed, y: doc.points };
+        });
+    };
 
     // set dimensions
 
     var ctx = $.getElementById(_.target).getContext("2d");
-    console.log(data);
+
     var chart = new Chart(ctx, {
       // The type of chart we want to create
       type: "line",
 
       // The data for our dataset
       data: {
-        labels: data.map(date => date.x),
+        labels: returnPoints("easy").map(date => date.x),
         datasets: [
           {
-            label: `Gained ${_.yAxis} ${
-              _.mode !== "all" ? "(" + _.mode + " " + "mode)" : ""
-            }`,
-            data,
-
+            label: "Easy",
+            data: returnPoints("easy"),
+            fill: false,
             backgroundColor: "rgba(255, 99, 132, 0.2)",
             borderColor: "rgba(255, 99, 132, 1)",
+            borderWidth: 1
+          },
+          {
+            label: "Normal",
+            data: returnPoints("normal"),
+            fill: false,
+            backgroundColor: "rgba(0, 102, 0,0.2)",
+            borderColor: "rgba(0, 102, 0, 1)",
+            borderWidth: 1
+          },
+          {
+            label: "Hard",
+            data: returnPoints("hard"),
+            fill: false,
+            backgroundColor: "rgba(0, 0, 153, 0.2)",
+            borderColor: "rgba(0, 0, 153, 1)",
             borderWidth: 1
           }
         ]
@@ -81,6 +93,11 @@
           ],
           yAxes: [
             {
+              scaleLabel: {
+                display: true,
+                labelString: "Points",
+                fontColor: "white"
+              },
               ticks: {
                 fontColor: "white",
                 beginAtZero: true

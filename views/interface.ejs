@@ -51,14 +51,14 @@
 
         <div class="mt-20">
           <div class='flex v-center'>
-            <h3 class="color-white">points history</h3>
-            <a href="/stats" class='link ml-20 color-pink'>(more)</a>
+            <h3 class="color-white">gained points</h3>
+            <a href="/stats" class='link ml-20 color-pink'>(expand)</a>
           </div>
 
 
 
         <div class="chart-container">
-        <canvas data-width='480' data-height="400" id="points-stats" role='graph' data-mode='all' data-yAxis='points' class="mt-20"></canvas>
+        <canvas data-width='480' data-height="180" id="points-stats" role='graph' data-mode='all' data-yAxis='points' class="mt-20"></canvas>
         </div>
         </div>
         </div>
@@ -85,14 +85,14 @@
                  </div>
                  <div class="flex v-center">
                    <span class="color-white"><%= user.games > 1 ?  `${user.games} games` : `${user.games} game`%></span>
-                   <span class="color-white ml-20"><%= user.points %> points</span>
+                   <span class="points color-white ml-20"><%= user.points %> points</span>
                  </div>
               </li>
              <% }) %>
 
              <% if(userCurrentRank > 6){ %>
                <li class='colorbg-violet p-10 flex h-space-between'>
-                 <div class="flex v-center">
+                 <div class="data flex v-center">
                    <span class='color-white'><%= userCurrentRank %>.</span>
                    <img class='mh-10' src='/images/<%= gender %>.png' alt='gender-image'>
                   <span class="color-white"><%= username %></span>

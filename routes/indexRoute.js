@@ -8,10 +8,7 @@ router.get("/", requireLogin, async (req, res, next) => {
   const USERS = mongoose.model("users");
   const GAMES = mongoose.model("games");
   try {
-    const essentials = "username games points gender"; // get only the required info
-
     // find if there are any lost games that are waiting to replenish
-
     const lostGames = await GAMES.find(
       {
         _user: id
@@ -20,30 +17,35 @@ router.get("/", requireLogin, async (req, res, next) => {
     ).$where(function() {
       return this.replenishDate > Date.now();
     });
-    req.session.user.replenishDate = lostGames;
 
-    // const replenishDate =
-    //   lostGames.length > 0 ? lostGames[0].replenishDate : new Date(Date.now());
-    //
-    // const datePlayed =
-    //   lostGames.length > 0 ? lostGames[0].datePlayed : new Date(Date.now());
+    req.session.user.replenishDate = lostGames; // set to cookie
+    // ---------------- end
 
-    let fetchAllUser = await USERS.find({}, essentials).sort({ points: -1 });
-    // get just six of the top users
+    // fetch all users for the leaderboards
+    const essentials = "username games points gender"; // get only required fields
+    const fetchAllUser = await USERS.find({}, essentials).sort({ points: -1 });
 
-    const userCurrentRank = fetchAllUser.map(e => e.id).indexOf(id) + 1;
+    const userCurrentRank = fetchAllUser.map(e => e.id).indexOf(id) + 1; // get user's current rank
 
-    fetchAllUser = fetchAllUser.filter((x, i) => i < 7);
+    const reduceAllUser = fetchAllUser.filter((x, i) => i < 7); // return only 7
+    // ----------------- end
 
+    // update life back to five if all finished replenishing
     const fetchUser = await USERS.findById(id);
-    req.session.user.life = fetchUser.life;
+    if (lostGames.length <= 0) {
+      await fetchUser.updateOne({ life: 5 });
+    }
+    // -------------- end
+
+    const updatedUser = await USERS.findById(id);
+    req.session.user.life = updatedUser.life;
 
     // render game interface
     res.render("interface", {
       loggedIn: true,
       userCurrentRank,
       ...req.session.user,
-      fetchAllUser
+      fetchAllUser: reduceAllUser
     });
   } catch (e) {
     throw new Error(e);
