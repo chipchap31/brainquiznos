@@ -17,6 +17,7 @@ const cookieSession = require("cookie-session");
 const PORT = process.env.PORT || 8000;
 const fetch = require("node-fetch");
 global.fetch = fetch;
+
 require("./models/userModel");
 require("./models/gameModel");
 app.use(logger("dev"));
