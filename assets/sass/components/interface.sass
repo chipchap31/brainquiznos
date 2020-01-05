@@ -41,7 +41,7 @@
   opacity: 1
 
 .leaderboard
-  width: 100%
+
   ul
     li
       border-radius: 5px
@@ -157,82 +157,3 @@ $dh: 100px
 #points-stats
   width: 460px
   height: 400px
-
-
-
-
-@media only screen and (max-width: 375px)
-  .container
-    max-width: 95%
-    width: 100%
-  [class*="col-"]
-    width: 100%
-  [class*="col"]
-    width: 100%
-  .button
-    display: inline
-  header
-    .profile-menu
-      left: -120px
-      .button
-        display: inline
-    .life
-      i
-        margin-right: 2px
-    .profile img
-      height: 30px
-      width: 30px
-    #life-timer
-      span
-        margin-right: 5px
-    .life-container
-      margin-right: 5px
-  #game-home
-    .row
-      flex-direction: column
-      .glider-wrapper
-        overflow: hidden
-        width: 100%
-    .leaderboard
-      margin-top: 20px
-      font-size: 14px
-
-  #leaderboard
-    font-size: 14px
-  #points-stats
-    width: 360px
-    height: 300px
-  #game-home .chart-container
-    width: 100% !important
-  #stats
-    text-align: center
-    .row
-      margin: 0
-  #stats .chart-container
-    width: 100% !important
-    height: 170px !important
-  #stats .games
-    flex-direction: column
-    margin-top: 0
-    .col
-      margin: 30px 0 60px 0 !important
-  .leaderboard
-    max-width: 95%
-    .points
-      margin-left: 5px
-    li
-      span
-        white-space: nowrap
-
-  #social
-
-      h2
-        line-height: 40px
-      .links-bottom
-        flex-direction: column
-        li
-          margin-bottom: 10px
-          a
-            white-space: nowrap
-      .col-10
-        flex-direction: column
