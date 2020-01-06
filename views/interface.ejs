@@ -3,7 +3,7 @@
 <section id="game-home" class='open colorbg-purple pv-40'>
     <div class="container">
       <div class="row flex h-space-between">
-        <div class="col">
+        <div class="col-6">
           <h3 class='color-white mb-10'>Start playing</h3>
           <p class='color-white title-sub  mb-20'>Choose a theme that suits you.</p>
           <div class="glider-wrapper">
@@ -50,7 +50,7 @@
 
 
         <div class="mt-20">
-          <div class='flex v-center'>
+          <div class='gained-points flex v-center'>
             <h3 class="color-white">gained points</h3>
             <a href="/stats" class='link ml-20 color-pink'>(expand)</a>
           </div>
@@ -190,8 +190,8 @@
 <section id="game-result" class="modal">
   <div class="inner colorbg-purple p-50 text-center">
     <h3  class="game-result-title color-white mb-10"></h3>
-    <span class="game-result-solved color-white mt-10"></span> <br>
-      <span class="game-result-points color-white mt-10"></span>
+    <div class="game-result-solved color-white mt-10"></div>
+      <div class="game-result-points color-white mt-10"></div>
     <div class="flex mt-20">
       <button class="mr-10 button-1 colorbg-pink" onclick="game.resetGame();" type="button">Restart</button ><a href="/" class="button-1 colorbg-grey">exit</a>
     </div>
@@ -200,7 +200,7 @@
 </section>
 <section id="game-reset" class="modal">
   <div class="inner colorbg-purple p-50 text-center">
-    <h3  class="game-reset-title color-white mb-10">Are you sure you want to reset the game.</h3>
+    <h3  class="game-reset-title color-white mb-10">Reset game</h3>
     <span class="game-reset-solved color-white"></span>
     <div class="flex mt-20">
       <button role='button' data-open="game-reset" onclick="game.resetGame();" class="mr-10 button-1 colorbg-pink" type="button">Restart</button >
