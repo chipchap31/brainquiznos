@@ -1116,13 +1116,15 @@ h5 {
   transition: 200ms;
   border: none;
   cursor: pointer;
+  text-align: center;
 }
 .button:hover, .button-submit:hover, .button-2:hover, .button-1:hover {
   transform: scale(1.1);
 }
 
 .button-1 {
-  padding: 10px 36px;
+  padding: 10px 5px;
+  width: 150px !important;
   border-radius: 5px;
   font-size: 16px;
 }
@@ -1209,6 +1211,7 @@ h5 {
 }
 .profile-menu li .button-1 {
   white-space: nowrap;
+  width: 120px !important;
 }
 .profile-menu li a {
   color: #4d4d4d;
@@ -1302,7 +1305,7 @@ h5 {
   font-size: 12px;
 }
 #game-home .gained-points {
-  flex-direction: column;
+  flex-direction: row;
 }
 #game-home .gained-points h3 {
   margin-bottom: 5px;
@@ -1461,6 +1464,9 @@ h5 {
   background-image: url("/images/hero-bg.jpg");
   display: block;
 }
+#hero h1 {
+  line-height: 50px;
+}
 
 #newsletter input {
   font-size: 18px;
@@ -1517,19 +1523,12 @@ h5 {
     width: 100%;
   }
 
-  .button, .button-1, .button-2, .button-submit {
-    display: inline;
-  }
-
   header .profile-menu {
     left: -120px;
     background-size: 100% 100%;
     background-repeat: no-repeat;
     background-image: url("/images/dropdown-bg-right.png");
     display: block;
-  }
-  header .profile-menu .button, header .profile-menu .button-1, header .profile-menu .button-2, header .profile-menu .button-submit {
-    display: inline;
   }
   header .life i {
     margin-right: 2px;
@@ -1551,6 +1550,9 @@ h5 {
   #game-home .row .glider-wrapper {
     overflow: hidden;
     width: 100%;
+  }
+  #game-home .gained-points {
+    flex-direction: column;
   }
   #game-home .leaderboard {
     margin-top: 20px;
@@ -1621,7 +1623,10 @@ h5 {
     display: none;
   }
   #hero .container h1 {
-    margin-bottom: 70px;
+    margin-bottom: 30px;
+  }
+  #hero .container .title-sub-wrapper {
+    margin-bottom: 50px;
   }
 
   #newsletter form {
@@ -1670,6 +1675,13 @@ h5 {
   #game-result .flex .button-1 {
     margin-top: 5px;
   }
+
+  #signup-success .row:nth-of-type(2) {
+    margin: 15px 0;
+  }
+  #signup-success img {
+    width: 200px;
+  }
 }
 @media only screen and (max-width: 768px) and (min-width: 601px) {
   .container {
@@ -1683,10 +1695,6 @@ h5 {
 
   .modal .inner {
     max-width: 300px;
-  }
-
-  .button, .button-1, .button-2, .button-submit {
-    display: inline;
   }
 
   header .profile-menu {
@@ -1837,6 +1845,13 @@ h5 {
   }
   #game-result .flex .button-1 {
     margin-top: 5px;
+  }
+
+  #signup-success .row:nth-of-type(2) {
+    margin: 15px 0;
+  }
+  #signup-success img {
+    width: 250px;
   }
 }
 
