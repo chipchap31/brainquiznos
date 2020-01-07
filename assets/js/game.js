@@ -2,6 +2,8 @@ var $ = document;
 var $tileContainer = $.querySelector(".tile-container");
 var $gameInit = $.querySelector(".game-init");
 var $tiles = $.getElementsByClassName("tile");
+var $gameMainView = $.getElementById("game-main");
+var $gameHomeView = $.getElementById("game-home");
 var $gameMainTime = $.querySelector(".game-main-time");
 var gameInitTime = $.querySelector(".game-init-time");
 var $selected = $.getElementsByClassName("show");
@@ -51,10 +53,18 @@ var tileConfig = {
     hard: 0.7
   }
 };
-
+//data-open="game-main" data-close='game-home game-difficulty'
+// @param {array} date - contains dates when to replenish each of the missing life
+/**
+ * @desc Invokes @method "lifeCountDown" when the user's lives fall under 5
+ * @method initLife
+ * @param {array} array of dates
+ * @return nothing
+ **/
 Game.prototype.initLife = function(date) {
   clearInterval(window.lifeCountDown);
   window.lifeCountDown = null;
+  console.log(date);
   var _ = this;
 
   _.dateReplenish = date;
@@ -82,7 +92,6 @@ Game.prototype.lifeCountDown = function() {
     if (_.dateReplenish.length > 0) {
       clearInterval(window.lifeCountDown);
       window.lifeCountDown = null;
-
       _.dateReplenish.shift();
 
       _.lifeAdd();
@@ -112,6 +121,13 @@ Game.prototype.lifeAdd = function() {
   lives[index].classList.add("color-pink");
   lives[index].classList.remove("color-black");
 };
+
+/**
+ * gets the preferred theme of the user
+ * @method getTheme
+ * @param {String} theme
+ * @return {null}
+ **/
 Game.prototype.getTheme = async function(theme) {
   var _ = this;
   _.theme = theme;
@@ -122,49 +138,50 @@ Game.prototype.getTheme = async function(theme) {
   }
 
   $gameDifficulty.classList.add("open");
-  try {
-    const fetchImgs = await fetch(`/unsplash/${_.theme}`).then(function(
-      response
-    ) {
-      response.json().then(function(data) {
-        _.tileData = data;
-      });
+
+  Game.prototype.init = async function(gameMode) {
+    var _ = this;
+
+    $gameMainView.classList.add("open");
+    $gameHomeView.classList.remove("open");
+    $gameDifficulty.classList.remove("open");
+    // set items to global
+    _.gameMode = gameMode;
+    _.hintTime = tileConfig.hintTime[_.gameMode];
+    _.gameTime = tileConfig.gameTime[_.gameMode];
+
+    // save the game
+
+    _.id = await postData("/game/new", {
+      mode: _.gameMode
     });
-  } catch (e) {
-    throw new Error(e);
-  }
-};
-Game.prototype.init = async function(gameMode) {
-  var _ = this;
-  // set items to global
-  _.gameMode = gameMode;
-  _.hintTime = tileConfig.hintTime[_.gameMode];
-  _.gameTime = tileConfig.gameTime[_.gameMode];
+    window.interval = setInterval(() => _.startCountDown(), 1000);
+    try {
+      await fetch(`/unsplash/${_.theme}`).then(function(response) {
+        response.json().then(function(data) {
+          data = data
+            .map((x, i) => ({ imgSrc: x.urls.thumb, i }))
+            .filter((x, i) => i < tileConfig.total[_.gameMode]);
 
-  // save the game
+          data = [...data, ...data].sort(() => 0.5 - Math.random());
 
-  _.id = await postData("/game/new", {
-    mode: _.gameMode
-  });
-  let newData = [..._.tileData]
-    .map((x, i) => ({ imgSrc: x.urls.thumb, i }))
-    .filter((x, i) => i < tileConfig.total[_.gameMode]);
+          data.forEach(x => {
+            var $li = document.createElement("li");
+            var $img = document.createElement("img");
 
-  newData = [...newData, ...newData].sort(() => 0.5 - Math.random());
-
-  newData.forEach(x => {
-    var $li = document.createElement("li");
-    var $img = document.createElement("img");
-
-    $li.classList.add(x.i, "tile");
-    $img.src = x.imgSrc;
-    $img.setAttribute("draggable", "false");
-    $li.appendChild($img);
-    $tileContainer.classList.add(_.gameMode);
-    $tileContainer.appendChild($li);
-  });
-
-  window.interval = setInterval(() => _.startCountDown(), 1000);
+            $li.classList.add(x.i, "tile");
+            $img.src = x.imgSrc;
+            $img.setAttribute("draggable", "false");
+            $li.appendChild($img);
+            $tileContainer.classList.add(_.gameMode);
+            $tileContainer.appendChild($li);
+          });
+        });
+      });
+    } catch (e) {
+      throw new Error(e);
+    }
+  };
 };
 
 Game.prototype.startCountDown = function() {
@@ -191,6 +208,7 @@ Game.prototype.startNow = function() {
   _.showTiles();
   $gameInit.classList.remove("open");
 };
+
 Game.prototype.hintCountDown = function() {
   var _ = this;
   var min = Math.floor((_.hintTime / 60) % 60);
@@ -342,10 +360,11 @@ Game.prototype.resumeGame = function() {
   }
 };
 Game.prototype.resetGame = function() {
-  $gameResult.classList.remove("open");
   clearInterval(window.interval);
   window.interval = null;
+  $gameResult.classList.remove("open");
   var _ = this;
+
   Array.from($tiles).forEach(el => el.remove());
 
   _.gameTime = 0;
@@ -355,7 +374,13 @@ Game.prototype.resetGame = function() {
 };
 var game = new Game();
 
-// post function
+/**
+ * Reusable post function
+ * @method postData
+ * @param {String} path - server route
+ * @param {Object} body - request body
+ * @return {JSON} returns array or object
+ **/
 function postData(path, body) {
   return fetch(path, {
     method: "post",

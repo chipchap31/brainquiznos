@@ -9,14 +9,12 @@
     width: 100%
   [class*="col"]
     width: 100%
-  .button
-    display: inline
+
   header
     .profile-menu
       left: -120px
       +background-image("/images/dropdown-bg-right.png")
-      .button
-        display: inline
+
     .life
       i
         margin-right: 2px
@@ -34,6 +32,8 @@
       .glider-wrapper
         overflow: hidden
         width: 100%
+    .gained-points
+      flex-direction: column
     .leaderboard
       margin-top: 20px
       font-size: 14px
@@ -84,7 +84,10 @@
       .hero-image
         display: none
       h1
-        margin-bottom: 70px
+        margin-bottom: 30px
+      .title-sub-wrapper
+        margin-bottom: 50px
+
 
   #newsletter
     form
@@ -122,7 +125,11 @@
       flex-direction: column
       .button-1
         margin-top: 5px
-
+  #signup-success
+    .row:nth-of-type(2)
+      margin: 15px 0
+    img
+      width: 200px
 @media only screen and (max-width: 768px) and (min-width:601px)
   .container
     max-width: 95%
@@ -133,8 +140,7 @@
     .inner
       max-width: 300px
 
-  .button
-    display: inline
+
   header
     .profile-menu
       left: -120px
@@ -246,3 +252,8 @@
       flex-direction: column
       .button-1
         margin-top: 5px
+  #signup-success
+    .row:nth-of-type(2)
+      margin: 15px 0
+    img
+      width: 250px

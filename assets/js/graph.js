@@ -2,7 +2,16 @@
   var $ = document;
   var response = await fetch("/game/fetch");
   var games = await response.json();
+  /**
+   * Draws the graph
+   * @class Graph
+   * @param {String} target - get the id of targeted html element
+   * @param {String} mode - get the required game mode
+   * example if "easy"; it will only rendered easy games
+   * @param {String} yAxis - get the required field i.e. [points] or [clicks]
 
+   * @return invokes a @method init()
+   **/
   function Graph(target, mode, yAxis, width, height) {
     var _ = this;
 
@@ -27,8 +36,6 @@
         });
     };
 
-    // set dimensions
-
     var ctx = $.getElementById(_.target).getContext("2d");
 
     var chart = new Chart(ctx, {
@@ -51,8 +58,8 @@
             label: "Normal",
             data: returnPoints("normal"),
             fill: false,
-            backgroundColor: "rgba(0, 102, 0,0.2)",
-            borderColor: "rgba(0, 102, 0, 1)",
+            backgroundColor: "rgb(153, 255, 51,0.2)",
+            borderColor: "rgb(153, 255, 51,1)",
             borderWidth: 1
           },
           {
@@ -107,8 +114,6 @@
         }
       }
     });
-    chart.canvas.parentNode.style.height = `${_.height}px`;
-    chart.canvas.parentNode.style.width = `${_.width}px`;
   };
 
   var getAllGraphs = $.querySelectorAll("[role='graph'");
@@ -116,12 +121,10 @@
     return {
       yAxis: graph.getAttribute("data-yAxis"),
       mode: graph.getAttribute("data-mode"),
-      width: graph.getAttribute("data-width"),
-      height: graph.getAttribute("data-height"),
       target: graph.getAttribute("id")
     };
   });
   graphArray.forEach(graph => {
-    new Graph(graph.target, graph.mode, graph.yAxis, graph.width, graph.height);
+    new Graph(graph.target, graph.mode, graph.yAxis);
   });
 })();

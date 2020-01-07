@@ -7,8 +7,9 @@ const requireLogin = require("../middlewares/requireLogin");
 router.post("/signup", async function(req, res, next) {
   const USERS = mongoose.model("users");
   const { username, email, password, password2, gender } = req.body;
-  const userExist = await USERS.findOne({ email, username });
-
+  const uniqueEmail = await USERS.findOne({ email });
+  const uniqueUsername = await USERS.findOne({ username });
+  const userExist = Boolean(uniqueEmail) || Boolean(uniqueEmail);
   // displays an error when user does not
   // have any number in their username
 
@@ -16,16 +17,16 @@ router.post("/signup", async function(req, res, next) {
 
   if (validation.err) {
     res.render("signup", {
-      user: false,
+      loggedIn: false,
       err: true,
       errMessage: validation.errMessage
     });
   } else if (userExist) {
     res.render("signup", {
-      user: false,
+      loggedIn: false,
       err: true,
       errMessage: {
-        username: "Account already exist.",
+        username: "Username or email already exist!",
         password: false,
         email: false
       }
@@ -41,7 +42,7 @@ router.post("/signup", async function(req, res, next) {
         gender
       });
       userNew.save();
-      return res.render("signup-success", { user: false, username });
+      return res.render("signup-success", { loggedIn: false, username });
     });
   }
 });
@@ -118,7 +119,10 @@ router.post("/update-points", requireLogin, async (req, res) => {
 
     if (won) {
       // should add
-      await findUser.updateOne({ points: findUser.points + points });
+      await findUser.updateOne({
+        points: findUser.points + points,
+        life: findUser.life + 1
+      });
     } else {
       // should subtract
       const shouldSubtract = findUser.life > 0;

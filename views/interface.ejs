@@ -4,7 +4,7 @@
     <div class="container">
       <div class="row flex h-space-between">
         <div class="col-6">
-          <h3 class='color-white mb-10'>Start playing</h3>
+          <h1 class='color-white mb-10'>Start playing</h1>
           <p class='color-white title-sub  mb-20'>Choose a theme that suits you.</p>
           <div class="glider-wrapper">
             <div class="glider-contain">
@@ -49,24 +49,24 @@
 
 
 
-        <div class="mt-20">
-          <div class='gained-points flex v-center'>
-            <h3 class="color-white">gained points</h3>
+
+          <div class='gained-points flex v-center mt-20'>
+            <h4 class="color-white">gained points</h4>
             <a href="/stats" class='link ml-20 color-pink'>(expand)</a>
           </div>
 
 
 
-        <div class="chart-container">
-        <canvas data-width='480' data-height="180" id="points-stats" role='graph' data-mode='all' data-yAxis='points' class="mt-20"></canvas>
+
+        <canvas id="points-stats" role='graph' data-mode='all' data-yAxis='points' class="mt-20"></canvas>
+
         </div>
-        </div>
-        </div>
+
 
 
         <div class="leaderboard col-5">
           <div class="flex v-center mb-20">
-            <h3 class="color-white ">Leaderboard</h3>
+            <h4 class="color-white ">Leaderboard</h4>
             <a href="/leaderboard" class='link ml-20 color-pink'>(more)</a>
           </div>
 
@@ -76,7 +76,7 @@
                <li class='colorbg-violet p-10 flex h-space-between'>
                  <div class="flex v-center">
                    <span class='color-white'><%= index %>.</span>
-                   <img class='mh-10' src='/images/<%= gender %>.png' alt='gender-image'>
+                   <img class='mh-10' src='/images/<%= user.gender %>.png' alt='gender-image'>
                   <span class="color-white"><%= user.username %></span>
                   <% if (username === user.username) {%>
                     <span class="color-white ml-10">(you)</span>
@@ -132,15 +132,15 @@
         </div>
 
         <ul class="flex h-space-around">
-          <li onclick="game.init('easy')" role="button" data-open="game-main" data-close='game-home game-difficulty' class='easy color-white colorbg-pink flex h-center v-center d-col'>
+          <li onclick="game.init('easy')"  class='easy color-white colorbg-pink flex h-center v-center d-col'>
             <h4>Easy</h4>
             <p class="title-sub">4x5</p>
           </li>
-          <li role="button" data-open="game-main" data-close='game-home game-difficulty' onclick="game.init('normal')" class='normal color-white colorbg-pink flex h-center v-center d-col'>
+          <li onclick="game.init('normal')" class='normal color-white colorbg-pink flex h-center v-center d-col'>
             <h4>Normal</h4>
             <p class="title-sub">4x6</p>
           </li>
-          <li role="button" data-open="game-main" data-close='game-home game-difficulty' onclick="game.init('hard')" class='hard color-white colorbg-pink flex h-center v-center d-col'>
+          <li   onclick="game.init('hard')" class='hard color-white colorbg-pink flex h-center v-center d-col'>
             <h4>Hard</h4>
             <p class="title-sub">5x6</p>
           </li>
