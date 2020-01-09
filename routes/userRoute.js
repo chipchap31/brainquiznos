@@ -183,9 +183,9 @@ function validate(data) {
   for (var key in data) {
     switch (key) {
       case "username":
-        if (data[key].length < 6 || data[key].length > 12) {
+        if (data[key].length < 6 || data[key].length >= 15) {
           err.push({
-            [key]: "Username must be between 6 to 12 characters long."
+            [key]: "Username must be between 6 to 15 characters long."
           });
         }
         break;
