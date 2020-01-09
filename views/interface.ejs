@@ -4,7 +4,7 @@
     <div class="container">
       <div class="row flex h-space-between">
         <div class="col-6">
-          <h1 class='color-white mb-10'>Start playing</h1>
+          <h1 class='color-white mb-10'>Play now!</h1>
           <p class='color-white title-sub  mb-20'>Choose a theme that suits you.</p>
           <div class="glider-wrapper">
             <div class="glider-contain">
@@ -116,10 +116,10 @@
     <div class="container">
 
       <div class="inner p-70 colorbg-purple">
-        <div class="mb-50">
+        <div class="mb-20">
 
 
-          <a  class="close-game-difficulty color-white flex" href="/">
+          <a id="button-back"  class="color-white flex" href="/">
           <i class="fas fa-arrow-circle-left"></i>
           </a>
         </div>
@@ -148,7 +148,7 @@
     </div>
   </section>
   <section id='game-main' class='pv-30 colorbg-purple'>
-    <div class="game-init modal open">
+    <div class="game-init modal">
       <div class="inner colorbg-purple p-50">
         <h3 class="color-white">Good Luck!</h3>
         <div class="text-center mt-20">
@@ -163,9 +163,9 @@
 
     </div>
     <div class="container">
-      <div class="flex h-center mb-30">
-        <div id='game-helper' class="color-white">
-          this is the helper
+      <div class="game-info flex h-center mb-30">
+        <div class="helper text-center color-white mb-10">
+
         </div>
         <div class="flex v-center">
           <i onclick="game.stopCountDown();" role='button' data-open="game-pause" class="pause-button fas fa-pause-circle color-pink mr-20"></i>
@@ -206,7 +206,7 @@
   <div class="inner colorbg-purple p-50 text-center">
     <h3  class="game-reset-title color-white mb-10">Reset game</h3>
     <div class="mt-10">
-      <span class="color-white">You will lose <span id='game-reset-pointsLost'></span>points and a life if you reset.</span>
+      <span class="color-white">You will lose <span id='game-reset-pointsLost'></span> points and a life if you reset.</span>
     </div>
     <div class="flex mt-20">
       <button onclick="game.resumeGame();" class="button-1 colorbg-pink">continue</button>
@@ -223,12 +223,14 @@
       <p class="color-white">Please come back in <span  id="life-modal-timer" class="color-pink"></span>.</p>
     </div>
     <div class="flex h-center mt-20">
-      <button  role='button' data-open='game-prevent' class="button-1 colorbg-pink">close</button>
+      <a href='/'class="button-1 colorbg-pink">close</a>
     </div>
 
   </div>
 
 </section>
-
+<div id="loader-wrapper">
+  <div class="loader"></div>
+</div>
 
 <%- include("layout/footer", {loggedIn, renderGlider: true, replenishDate}) %>
