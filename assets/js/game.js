@@ -29,6 +29,7 @@ function Game() {
   this.lives = 0;
   this.lifeTime = 0;
   this.dateReplenish = [];
+  this.match = 0;
 }
 
 var tileConfig = {
@@ -39,11 +40,11 @@ var tileConfig = {
   },
   hintTime: {
     easy: 15,
-    normal: 10,
-    hard: 10
+    normal: 15,
+    hard: 15
   },
   gameTime: {
-    easy: 90,
+    easy: 60,
     normal: 90,
     hard: 120
   },
@@ -230,15 +231,21 @@ Game.prototype.hintCountDown = function() {
 
     Array.from($tiles).forEach(el => {
       el.addEventListener("click", function() {
+        // fix the bug -> when user double clicks an image it adds to _.choices
+
         if (_.choices.length <= 1) {
-          this.classList.add("show");
-          _.choices.push(this.classList[0]);
+          // open the image clicked
+
+          if (!this.classList.contains("show")) {
+            // the image is open already
+            this.classList.add("show");
+            _.choices.push(this.classList[0]);
+          }
+
           _.choices.length >= 2
             ? setTimeout(() => _.proccessChoices(), 1000)
             : null;
         }
-
-        _.clicks++;
       });
     });
 
@@ -262,6 +269,7 @@ Game.prototype.gameCountDown = function() {
 
   if (userWon) {
     // tiles are solved completely
+    console.log(`${Math.ceil((_.match / _.clicks) * 100)}%`);
     var $gameResultTitle = $.querySelector(".game-result-title");
     clearInterval(window.interval);
     window.interval = null;
@@ -287,7 +295,7 @@ Game.prototype.gameCountDown = function() {
 
   if (userLost) {
     // user fails to solve the puzzles
-
+    console.log(`${Math.ceil((_.match / _.clicks) * 100)}%`);
     $gameResult.classList.add("open");
     clearInterval(window.interval);
     window.interval = null;
@@ -316,13 +324,15 @@ Game.prototype.proccessChoices = function() {
   // whenever a user clicks on a tile
   // it adds it to the choices array
   // whenever it is greater than two
-  console.log(_.choices);
+  _.clicks++;
   if (_.choices[0] !== _.choices[1]) {
     Array.from($selected).forEach(e => {
       !e.classList.contains("solved") ? e.classList.remove("show") : null;
     });
     _.choices.length = 0;
   } else {
+    _.match++;
+    // when user successfully match the images
     Array.from($selected).forEach(e => {
       e.classList.add("solved");
       _.choices.length = 0;
@@ -332,10 +342,8 @@ Game.prototype.proccessChoices = function() {
 
 Game.prototype.showTiles = function() {
   var _ = this;
-  console.log("showTiles");
 
   Array.from($tiles).forEach(x => {
-    console.log(x);
     x.classList.add("show");
   });
 };
@@ -391,7 +399,6 @@ Game.prototype.resetGame = async function() {
       clicks: _.clicks,
       won: false
     });
-    console.log(replenishDate);
 
     _.initLife([..._.dateReplenish, { replenishDate: replenishDate.date }]);
   } catch (e) {

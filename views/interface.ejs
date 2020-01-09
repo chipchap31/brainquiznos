@@ -55,14 +55,8 @@
             <a href="/stats" class='link ml-20 color-pink'>(expand)</a>
           </div>
 
-
-
-
         <canvas id="points-stats" role='graph' data-mode='all' data-yAxis='points' class="mt-20"></canvas>
-
         </div>
-
-
 
         <div class="leaderboard col-5">
           <div class="flex v-center mb-20">
@@ -73,7 +67,7 @@
           <ul>
              <% fetchAllUser.forEach(function(user, index){ %>
                <% index++ %>
-               <li class='<%=username === user.username ? "colorbg-dblue" : "colorbg-violet" %> p-10 flex h-space-between'>
+               <li style="background-color:<%=username === user.username ? "#5e20f1" : null %>;" class='colorbg-violet  p-10 flex h-space-between'>
                  <div class="flex v-center">
                    <span class='color-white'><%= index %>.</span>
                    <img class='mh-10' src='/images/<%= user.gender %>.png' alt='gender-image'>
@@ -94,12 +88,12 @@
                <%}%>
              <%}%>
              <% if(userCurrentRank > 6){ %>
-               <li class='colorbg-violet p-10 flex h-space-between'>
+               <li style="background-color: #5e20f1;"  class='colorbg-violet p-10 flex h-space-between'>
                  <div class="data flex v-center">
                    <span class='color-white'><%= userCurrentRank %>.</span>
                    <img class='mh-10' src='/images/<%= gender %>.png' alt='gender-image'>
                   <span class="username color-white"><%= username %></span>
-                  <span class="color-white ml-10">(you)</span>
+
                  </div>
                  <div class="flex v-center">
                    <span class="color-white"><%= games %> games</span>
@@ -170,6 +164,9 @@
     </div>
     <div class="container">
       <div class="flex h-center mb-30">
+        <div id='game-helper' class="color-white">
+          this is the helper
+        </div>
         <div class="flex v-center">
           <i onclick="game.stopCountDown();" role='button' data-open="game-pause" class="pause-button fas fa-pause-circle color-pink mr-20"></i>
           <h2 class='game-main-time color-white'>00:00</h2>
