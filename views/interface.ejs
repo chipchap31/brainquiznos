@@ -1,29 +1,29 @@
-<%- include("layout/header", {user ,gender, username}) %>
+<%- include("layout/header", {loggedIn ,gender, username, life}) %>
 
 <section id="game-home" class='open colorbg-purple pv-40'>
     <div class="container">
       <div class="row flex h-space-between">
-        <div class="col">
-          <h3 class='color-white mb-10'>Start playing</h3>
+        <div class="col-6">
+          <h1 class='color-white mb-10'>Play now!</h1>
           <p class='color-white title-sub  mb-20'>Choose a theme that suits you.</p>
           <div class="glider-wrapper">
             <div class="glider-contain">
               <div class="glider">
-                <div onclick="game.getTheme('sport')" class='text-center'>
+                  <div onclick="game.getTheme('sport')" class='text-center'>
 
-                    <i role='button' data-open='game-difficulty'  class="open-game-difficulty overlay far fa-play-circle"></i>
+                    <i class="open-game-difficulty overlay far fa-play-circle"></i>
 
                   <h4 class="color-black">Sport</h4>
                   <i class="mt-20 color-black fas fa-running"></i>
                 </div>
                 <div onclick="game.getTheme('flags')" class='text-center'>
 
-                    <i role='button' data-open='game-difficulty' class="open-game-difficulty overlay far fa-play-circle"></i>
+                    <i class="open-game-difficulty overlay far fa-play-circle"></i>
 
                   <h4 class="color-black">Flags</h4>
                   <i class="mt-20 color-black fas fa-flag"></i>
                 </div>
-                <div class='text-center'>
+                <div onclick="game.getTheme('cars')" class='text-center'>
 
                     <i class="open-game-difficulty overlay far fa-play-circle"></i>
 
@@ -31,61 +31,69 @@
                   <i class="mt-20 color-black fas fa-car"></i>
 
                 </div>
-                <div class='text-center'>
+                <div onclick="game.getTheme('nature')" class='text-center'>
 
                     <i class="open-game-difficulty overlay far fa-play-circle"></i>
 
-                  <h4 class="color-black" >Sport</h4>
+                  <h4 class="color-black">Nature</h4>
+                  <i class="mt-20 color-black fas fa-tree"></i>
+
                 </div>
+
               </div>
-              <button role="button" aria-label="Previous" class="glider-prev"><i class="color-pink fas fa-caret-left"></i></button>
-              <button role="button" aria-label="Next" class="glider-next"><i class="color-pink fas fas fa-caret-right"></i></button>
+              <button role="button"  aria-label="Previous" class="glider-prev"><i class="color-pink fas fa-caret-left"></i></button>
+              <button role="button"  aria-label="Next" class="glider-next"><i class="color-pink fas fas fa-caret-right"></i></button>
               <div role="tablist" class="dots"></div>
           </div>
         </div>
 
 
 
-        <div class="mt-20">
-          <h3 class="color-white">points history</h3>
 
-        <div id="points-stats" class="mt-20">
+          <div class='gained-points flex v-center mt-20'>
+            <h4 class="color-white">gained points</h4>
+            <a href="/stats" class='link ml-20 color-pink'>(expand)</a>
+          </div>
 
+        <canvas id="points-stats" role='graph' data-mode='all' data-yAxis='points' class="mt-20"></canvas>
         </div>
-        </div>
-        </div>
-
 
         <div class="leaderboard col-5">
-          <h3 class="color-white mb-20">Leaderboard</h3>
+          <div class="flex v-center mb-20">
+            <h4 class="color-white ">Leaderboard</h4>
+            <a href="/leaderboard" class='link ml-20 color-pink'>(more)</a>
+          </div>
 
           <ul>
-             <% userAll.forEach(function(user, index){ %>
-               <% index++%>
-               <li class='colorbg-violet p-10 flex h-space-between'>
+             <% fetchAllUser.forEach(function(user, index){ %>
+               <% index++ %>
+               <li style="background-color:<%=username === user.username ? "#5e20f1" : null %>;" class='colorbg-violet  p-10 flex h-space-between'>
                  <div class="flex v-center">
                    <span class='color-white'><%= index %>.</span>
-                   <img class='mh-10' src='/images/<%= gender %>.png' alt='gender-image'>
-                  <span class="color-white"><%= user.username %></span>
-                  <% if (username === user.username) {%>
-                    <span class="color-white ml-10">(you)</span>
-                  <% } %>
+                   <img class='mh-10' src='/images/<%= user.gender %>.png' alt='gender-image'>
+                  <span class="username color-white"><%= user.username %></span>
+
 
                  </div>
                  <div class="flex v-center">
                    <span class="color-white"><%= user.games > 1 ?  `${user.games} games` : `${user.games} game`%></span>
-                   <span class="color-white ml-20"><%= user.points %> points</span>
+                   <span class="points color-white ml-20"><%= user.points %> points</span>
                  </div>
               </li>
              <% }) %>
-
-             <% if(rank > 6){ %>
-               <li class='colorbg-violet p-10 flex h-space-between'>
-                 <div class="flex v-center">
-                   <span class='color-white'><%= rank %>.</span>
+             <% if (fetchAllUser.length < 6) { %>
+               <%for (var i =0; i < 7 - fetchAllUser.length ; i++){ %>
+                 <li class='leaderboard-placeholder colorbg-violet '>
+                </li>
+               <%}%>
+             <%}%>
+             <% if(userCurrentRank > 6){ %>
+               <li style="background-color: #5e20f1;"  class='colorbg-violet p-10 flex h-space-between'>
+                 <div class="data flex v-center">
+                   <span class='color-white'><%= userCurrentRank %>.</span>
                    <img class='mh-10' src='/images/<%= gender %>.png' alt='gender-image'>
-                  <span class="color-white"><%= username %></span>
-                  <span class="color-white ml-10">(you)</span>
+                  <span class="username color-white"><%= username %></span>
+
                  </div>
                  <div class="flex v-center">
                    <span class="color-white"><%= games %> games</span>
@@ -108,10 +116,11 @@
     <div class="container">
 
       <div class="inner p-70 colorbg-purple">
-        <div class="mb-50">
-          <i class="color-pink fas fas fa-caret-left"></i>
-          <a  class="close-game-difficulty color-white" href="/">
-          back
+        <div class="mb-20">
+
+
+          <a id="button-back"  class="color-white flex" href="/">
+          <i class="fas fa-arrow-circle-left"></i>
           </a>
         </div>
         <div class="text-center">
@@ -120,15 +129,15 @@
         </div>
 
         <ul class="flex h-space-around">
-          <li onclick="game.init('easy')" role="button" data-open="game-main" data-close='game-home game-difficulty' class='easy color-white colorbg-pink flex h-center v-center d-col'>
+          <li onclick="game.init('easy')"  class='easy color-white colorbg-pink flex h-center v-center d-col'>
             <h4>Easy</h4>
             <p class="title-sub">4x5</p>
           </li>
-          <li role="button" data-open="game-main" data-close='game-home game-difficulty' onclick="game.init('normal')" class='normal color-white colorbg-pink flex h-center v-center d-col'>
+          <li onclick="game.init('normal')" class='normal color-white colorbg-pink flex h-center v-center d-col'>
             <h4>Normal</h4>
             <p class="title-sub">4x6</p>
           </li>
-          <li role="button" data-open="game-main" data-close='game-home game-difficulty' onclick="game.init('hard')" class='hard color-white colorbg-pink flex h-center v-center d-col'>
+          <li   onclick="game.init('hard')" class='hard color-white colorbg-pink flex h-center v-center d-col'>
             <h4>Hard</h4>
             <p class="title-sub">5x6</p>
           </li>
@@ -139,20 +148,25 @@
     </div>
   </section>
   <section id='game-main' class='pv-30 colorbg-purple'>
-    <div class="game-init modal open">
+    <div class="game-init modal">
       <div class="inner colorbg-purple p-50">
-        <h3 class="color-white">Game will start in</h3>
+        <h3 class="color-white">Good Luck!</h3>
         <div class="text-center mt-20">
-          <h3 class="game-init-time color-white">5</h3>
+          <span class="color-white">Click on two tiles to find mathching images.</span>
         </div>
         <div class="flex mt-30 h-center">
-          <button onclick="game.startNow();" class="button-1 colorbg-pink" type="button" >Start now</button >
+          <button onclick="game.startNow();" class="button-1 colorbg-pink" type="button" >Start now</button>
+          <a href="/" class="button-1 colorbg-grey" >Cancel</a>
+
         </div>
       </div>
 
     </div>
     <div class="container">
-      <div class="flex h-center mb-30">
+      <div class="game-info flex h-center mb-30">
+        <div class="helper text-center color-white mb-10">
+
+        </div>
         <div class="flex v-center">
           <i onclick="game.stopCountDown();" role='button' data-open="game-pause" class="pause-button fas fa-pause-circle color-pink mr-20"></i>
           <h2 class='game-main-time color-white'>00:00</h2>
@@ -161,17 +175,18 @@
 
       </div>
 
-      <ul class="tile-container hidden">
-
+      <ul class="tile-container">
       </ul>
     </div>
   </section>
   <section id="game-pause" class="modal">
     <div class="inner colorbg-purple p-50 text-center">
-      <h3  class="game-pause-title color-white mb-10">The game is paused</h3>
+      <h3  class="game-pause-title color-white mb-10">paused</h3>
       <span class="game-pause-solved color-white"></span>
       <div class="flex mt-30 h-center">
+
         <button onclick="game.resumeGame();" class="button-1 colorbg-pink" type="button" >Continue</button >
+        <a class="button-1 colorbg-grey " href="/">exit</a>
       </div>
     </div>
 
@@ -179,25 +194,43 @@
 <section id="game-result" class="modal">
   <div class="inner colorbg-purple p-50 text-center">
     <h3  class="game-result-title color-white mb-10"></h3>
-    <span class="game-result-solved color-white"></span>
+    <div class="game-result-solved color-white mt-10"></div>
+      <div class="game-result-points color-white mt-10"></div>
     <div class="flex mt-20">
-      <button class="mr-10 button-1 colorbg-pink" onclick="game.resetGame();" type="button">Restart</button ><a href="/" class="button-1 colorbg-grey">exit</a>
+      <button class="button-1 colorbg-pink" onclick="game.resetGame();" type="button">Restart</button ><a href="/" class="button-1 colorbg-grey">exit</a>
     </div>
   </div>
 
 </section>
 <section id="game-reset" class="modal">
   <div class="inner colorbg-purple p-50 text-center">
-    <h3  class="game-reset-title color-white mb-10">Are you sure you want to reset the game.</h3>
-    <span class="game-reset-solved color-white"></span>
+    <h3  class="game-reset-title color-white mb-10">Reset game</h3>
+    <div class="mt-10">
+      <span class="color-white">You will lose <span id='game-reset-pointsLost'></span> points and a life if you reset.</span>
+    </div>
     <div class="flex mt-20">
-      <button role='button' data-open="game-reset" onclick="game.resetGame();" class="mr-10 button-1 colorbg-pink" type="button">Restart</button >
-        <button onclick="game.resumeGame();" class="button-1 colorbg-grey">continue</button>
+      <button onclick="game.resumeGame();" class="button-1 colorbg-pink">continue</button>
+      <button role='button' data-open="game-reset" onclick="game.resetGame();" class="button-1 colorbg-grey" type="button">Restart</button >
+
     </div>
   </div>
 
 </section>
+<section id="game-prevent" class="modal">
+  <div class="inner colorbg-purple p-50 text-center">
+    <h4  class="game-reset-title color-white mb-10">No more lives.</h4>
+    <div class="mt-20">
+      <p class="color-white">Please come back in <span  id="life-modal-timer" class="color-pink"></span>.</p>
+    </div>
+    <div class="flex h-center mt-20">
+      <a href='/'class="button-1 colorbg-pink">close</a>
+    </div>
 
+  </div>
 
+</section>
+<div id="loader-wrapper">
+  <div class="loader"></div>
+</div>
 
-<%- include("layout/footer", {user, renderGlider: true}) %>
+<%- include("layout/footer", {loggedIn, renderGlider: true, replenishDate}) %>

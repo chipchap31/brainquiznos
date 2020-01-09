@@ -2,6 +2,8 @@ require("dotenv").config();
 let express = require("express");
 let app = express();
 const path = require("path");
+console.log(process.env.NODE_ENV);
+const DEV = process.env.NODE_ENV === "development";
 const bodyParser = require("body-parser");
 // routes
 const indexRouter = require("./routes/indexRoute");
@@ -15,6 +17,7 @@ const cookieSession = require("cookie-session");
 const PORT = process.env.PORT || 8000;
 const fetch = require("node-fetch");
 global.fetch = fetch;
+
 require("./models/userModel");
 require("./models/gameModel");
 app.use(logger("dev"));
@@ -23,13 +26,13 @@ mongoose.connect(
   { useNewUrlParser: true, useUnifiedTopology: true },
   function(err) {
     if (!err) {
-      console.log("connected to mongodb");
+      DEV ? console.log("connected to mongodb") : null;
     }
   }
 );
 app.use(
   cookieSession({
-    keys: ["key1", "key2"]
+    keys: [process.env.COOKIE_KEY_1, process.env.COOKIE_KEY_2]
   })
 );
 app.use(function(req, res, next) {
@@ -48,4 +51,6 @@ app.use("/user", userRouter);
 app.use("/game", gameRouter);
 
 app.use("/unsplash", unsplashRouter);
-app.listen(PORT, () => console.log(`App is running on port ${PORT}`));
+app.listen(PORT, () =>
+  console.log(`App is running @ port ${PORT} on ${DEV ? "dev" : "prod"} mode.`)
+);

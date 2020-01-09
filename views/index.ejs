@@ -4,11 +4,14 @@
       <div class="container flex h-space-around">
         <div class="col-5">
           <h1 class="color-white text-bold">
-            Test your brain with fun puzzles!
+            The ultimate memory game online
           </h1>
-          <a class="button-2 mt-50 colorbg-pink" href="/signup">Create an account for free!</a>
+          <div class="title-sub-wrapper mt-10">
+            <span class="title-sub color-white">Create an account now and start training your brain.</span>
+          </div>
+          <a class="button-2 mt-50 colorbg-pink" href="/signup">Sign up free</a>
         </div>
-        <img src="/images/hero-image.png" alt="hero-image" />
+        <img class="hero-image" src="/images/hero-image.png" alt="hero-image" />
       </div>
     </section>
 
@@ -34,4 +37,4 @@
       </div>
     </section>
   </main>
-<%- include('layout/footer', {user}) %>
+<%- include('layout/footer', {loggedIn}) %>

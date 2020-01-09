@@ -2,14 +2,14 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
-// users signs up
+const requireLogin = require("../middlewares/requireLogin");
 
 router.post("/signup", async function(req, res, next) {
   const USERS = mongoose.model("users");
   const { username, email, password, password2, gender } = req.body;
-
-  const userExist = await USERS.findOne({ email, username });
-
+  const uniqueEmail = await USERS.findOne({ email });
+  const uniqueUsername = await USERS.findOne({ username });
+  const userExist = Boolean(uniqueEmail) || Boolean(uniqueEmail);
   // displays an error when user does not
   // have any number in their username
 
@@ -17,16 +17,16 @@ router.post("/signup", async function(req, res, next) {
 
   if (validation.err) {
     res.render("signup", {
-      user: false,
+      loggedIn: false,
       err: true,
       errMessage: validation.errMessage
     });
   } else if (userExist) {
     res.render("signup", {
-      user: false,
+      loggedIn: false,
       err: true,
       errMessage: {
-        username: "Account already exist.",
+        username: "Username or email already exist!",
         password: false,
         email: false
       }
@@ -37,51 +37,71 @@ router.post("/signup", async function(req, res, next) {
     bcrypt.hash(password, 10, async function(err, hash) {
       const userNew = await new USERS({
         username,
-
         email,
         password: hash,
         gender
       });
       userNew.save();
-      return res.render("signup-success", { username });
+      return res.render("signup-success", { loggedIn: false, username });
     });
   }
 });
-
 router.post("/login", async (req, res) => {
+  // enable user to login
+  // throw error if account already exist
   const { username, password, remember } = req.body;
+
+  // user gave permission to save the session
   const userSave = remember ? JSON.parse(remember) : false;
   const USERS = mongoose.model("users");
-  const user = await USERS.findOne({ username });
-  const match = user ? await bcrypt.compare(password, user.password) : false;
+  try {
+    // find the user on the database
+    const fetchUser = await USERS.findOne({ username });
 
-  // no user find with the given
-  // username is found
-  if (!user) {
-    return res.render("login", {
-      user: false,
-      err: true,
-      errMessage: {
-        username: "Account does not exist.",
-        password: false
-      }
-    });
-  } else if (!match) {
-    return res.render("login", {
-      user: false,
-      err: true,
-      errMessage: {
-        username: false,
-        password: "Password does not match."
-      }
-    });
-  } else {
-    if (userSave) {
-      req.session.maxAge = 30 * 24 * 60 * 60 * 1000;
+    // compare the password using bcrypt
+    const match = fetchUser
+      ? await bcrypt.compare(password, fetchUser.password)
+      : false;
+
+    // render some error message to the user
+    if (!fetchUser) {
+      return res.render("login", {
+        loggedIn: false,
+        err: true,
+        errMessage: {
+          username: "Account does not exist.",
+          password: false
+        }
+      });
+    } else if (!match) {
+      return res.render("login", {
+        loggedIn: false,
+        err: true,
+        errMessage: {
+          username: false,
+          password: "Password does not match."
+        }
+      });
+    } else {
+      const thirtyDays = 30 * 24 * 60 * 60 * 1000;
+      // increase the maximum age of cookie
+      // enable save data to cookie
+      userSave ? (req.session.maxAge = thirtyDays) : null;
+
+      const dataToSave = {
+        id: fetchUser._id,
+        username: fetchUser.username,
+        gender: fetchUser.gender,
+        games: fetchUser.games,
+        life: fetchUser.life,
+        points: fetchUser.points
+      };
+      // start the session
+      req.session.user = dataToSave;
+      return res.redirect("/");
     }
-
-    req.session.user = user._id;
-    return res.redirect("/");
+  } catch (e) {
+    throw new Error(e);
   }
 });
 
@@ -90,26 +110,69 @@ router.get("/logout", (req, res) => {
   res.redirect("/");
 });
 
-router.post("/update-points", async (req, res) => {
+router.post("/update-points", requireLogin, async (req, res) => {
   const USERS = mongoose.model("users");
   const { points, won } = req.body;
+  const id = req.session.user.id;
   try {
-    const findUser = await USERS.findById(req.session.user);
+    const findUser = await USERS.findById(id);
 
     if (won) {
       // should add
-      await findUser.updateOne({ points: findUser.points + points });
+      await findUser.updateOne({
+        points: findUser.points + points
+      });
     } else {
-      // should subtract
+      // user lost the game run this block
+      const shouldSubtract = findUser.life > 0;
+      if (findUser.points - points <= 0) {
+        // if points will past zero
+        await findUser.updateOne({
+          // dont go subtract behind zero
 
-      findUser.points > 0
-        ? await findUser.updateOne({ points: findUser.points - points })
-        : null;
+          points: 0,
+          life: findUser.life - 1
+        });
+      } else {
+        // if it will not result to zero
+        await findUser.updateOne({
+          // dont go subtract behind zero
+
+          points: findUser.points - points,
+          life: findUser.life - 1
+        });
+      }
     }
-    const updatedData = await USERS.findById(req.session.user);
-    return res.send({ points: updatedData.points });
+
+    const updatedData = await USERS.findById(id);
+
+    req.session.user.points = updatedData.points;
+    req.session.user.life = updatedData.life;
+    return res.send({});
   } catch (e) {
-    console.log(e);
+    throw new Error(e);
+  }
+});
+
+router.post("/update-life", requireLogin, async (req, res, next) => {
+  const USERS = mongoose.model("users");
+
+  const id = req.session.user.id;
+  try {
+    const fetchUser = await USERS.findById(id);
+    const shouldAdd = fetchUser.life <= 4;
+
+    await fetchUser.updateOne({
+      life: shouldAdd ? fetchUser.life + 1 : fetchUser.life
+    });
+
+    const updatedUser = await USERS.findById(id);
+
+    req.session.user.life = updatedUser.life;
+
+    res.send({});
+  } catch (e) {
+    throw new Error(e);
   }
 });
 module.exports = router;
@@ -120,8 +183,10 @@ function validate(data) {
   for (var key in data) {
     switch (key) {
       case "username":
-        if (data[key].length < 7) {
-          err.push({ [key]: "Username must contain at least 8 characters." });
+        if (data[key].length < 6 || data[key].length > 12) {
+          err.push({
+            [key]: "Username must be between 6 to 12 characters long."
+          });
         }
         break;
       case "email":

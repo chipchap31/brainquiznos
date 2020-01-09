@@ -13,43 +13,58 @@
       src="https://kit.fontawesome.com/13a1217e2a.js"
       crossorigin="anonymous"
     ></script>
-    <script src = "https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://momentjs.com/downloads/moment-with-locales.min.js" charset="utf-8"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
   </head>
 
   <body>
 
-    <header class="colorbg-dblue pv-10">
+    <header class="colorbg-dblue pv-20">
       <div class="container flex h-space-between v-center">
         <a href="/" class="brand-logo color-white text-bold text-clear"
           >Brain<span class="color-pink">Quiznos</span></a
         >
+        <div class="flex v-center">
+          <% if (loggedIn) { %>
+          <ul class="life-container flex mr-10">
+            <% for(var i= 0; i < life; i++){%>
+              <li class="life on color-pink"><i class="fas fa-heart  mr-10"></i></li>
+            <%}%>
+            <% if(life < 5){ %>
+              <% for(var i = 0; i < 5 - life; i++){%>
+              <li class="life off color-black"><i class="fas fa-heart  mr-10"></i></li>
+              <%}%>
+            <% }%>
 
-        <ul class="flex v-center">
+          </ul>
 
-          <% if (user) { %>
-          <li class="profile">
-            <img src="/images/<%= gender %>.png" alt='profile'>
-            <ul class="profile-menu">
-              <li class="mt-10"><%= username %></li>
-              <li class="mt-20"><a href="/leaderboard">Leaderboard</a></li>
-              <li class="mt-10"><a href="/stats">Stats</a></li>
+            <div id="life-timer">
+              <span  class="color-white mr-20">0:00</span>
+            </div>
+
+          <% } %>
 
 
-              <li class="mt-20"><a class="button-1 colorbg-pink" href="/user/logout">log out</a></li>
-            </ul>
-          </li>
+          <ul class="flex v-center">
 
-
-
-
-
-
-          <% }else{ %>
-            <li><a class="color-white text-up" href="/login">login</a></li>
-            <li class="ml-20">
-              <a class="button-1 colorbg-pink" href="/signup">signup</a>
+            <% if (loggedIn) { %>
+            <li class="profile">
+              <img src="/images/<%= gender %>.png" alt='profile'>
+              <ul class="profile-menu">
+                <li class="mt-10"><%= username %></li>
+                <li class="mt-20"><a href="/leaderboard">Leaderboard</a></li>
+                <li class="mt-10"><a href="/stats">Stats</a></li>
+                <li class="mt-20"><a class="button-1 colorbg-pink" href="/user/logout">log out</a></li>
+              </ul>
             </li>
-          <% }%>
-        </ul>
+            <% }else{ %>
+              <li><a class="color-white text-up" href="/login">login</a></li>
+              <li class="ml-20">
+                <a class="button-1 colorbg-pink" href="/signup">signup</a>
+              </li>
+            <% }%>
+          </ul>
+        </div>
+
       </div>
     </header>

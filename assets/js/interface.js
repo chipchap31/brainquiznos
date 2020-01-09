@@ -4,12 +4,18 @@ document.addEventListener(
     var btnCollection = document.querySelectorAll("[role='button'");
 
     btnCollection.forEach(element => {
-      var openId = element.getAttribute("data-open");
+      var openId = element.getAttribute("data-open") || false;
       var closeList = element.getAttribute("data-close") || false;
 
       var openData = document.getElementById(openId);
 
-      element.addEventListener("click", () => {
+      element.addEventListener("click", function() {
+        if (
+          this.classList.contains("glider-next") ||
+          this.classList.contains("glider-prev")
+        ) {
+          return false;
+        }
         if (openData.classList.contains("open")) {
           openData.classList.remove("open");
         } else {
@@ -30,7 +36,27 @@ document.addEventListener(
       slidesToShow: 2.5,
       draggable: true,
       rewind: true,
-
+      responsive: [
+        {
+          breakpoint: 375,
+          settings: {
+            slidesToShow: 1.5,
+            slidesToScroll: 1,
+            itemWidth: 90,
+            duration: 0.25
+          }
+        },
+        {
+          // screens greater than >= 1024px
+          breakpoint: 1024,
+          settings: {
+            slidesToShow: 2,
+            slidesToScroll: 1,
+            itemWidth: 150,
+            duration: 0.25
+          }
+        }
+      ],
       arrows: {
         prev: ".glider-prev",
         next: ".glider-next"
