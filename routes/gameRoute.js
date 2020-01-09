@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
 const requireLogin = require("../middlewares/requireLogin");
-
+const secondsToAdd = 1 * 20 * 1000;
 router.get("/fetch", requireLogin, async (req, res) => {
   const GAMES = mongoose.model("games");
   const id = req.session.user.id;
@@ -13,7 +13,7 @@ router.get("/fetch", requireLogin, async (req, res) => {
 router.post("/new", requireLogin, async (req, res) => {
   const GAME = mongoose.model("games");
   const USER = mongoose.model("users");
-  const secondsToAdd = 2 * 10 * 1000;
+
   const id = req.session.user.id;
   let replenishDate;
   const lostGames = await GAME.find({
@@ -27,7 +27,7 @@ router.post("/new", requireLogin, async (req, res) => {
     const latestGame = await GAME.find({ _user: req.session.user.id }).sort({
       datePlayed: -1
     });
-    console.log(latestGame);
+
     replenishDate = latestGame[0].replenishDate.getTime() + secondsToAdd;
   }
   const { mode } = req.body;
@@ -63,7 +63,6 @@ router.post("/update", async (req, res) => {
   let replenishDate;
 
   try {
-    const secondsToAdd = 10 * 60 * 1000;
     const lostGames = await GAME.find({
       _user: req.session.user.id
     }).$where(function() {
@@ -78,10 +77,12 @@ router.post("/update", async (req, res) => {
       const latestGame = await GAME.find({ _user: req.session.user.id }).sort({
         datePlayed: -1
       });
-      replenishDate = latestGame[1].replenishDate.getTime() + secondsToAdd;
+
+      replenishDate = lostGames[0].replenishDate.getTime();
     }
 
     const findGame = await GAME.findById(req.body.id);
+    console.log(findGame);
     await findGame.updateOne({
       points,
       clicks,
@@ -89,12 +90,9 @@ router.post("/update", async (req, res) => {
 
       replenishDate: won ? Date.now() : replenishDate
     });
-
-    if (!won) {
-      req.session.user.life = req.session.user.life - 1;
-    }
-
-    res.send({});
+    const updatedGame = await GAME.findById(req.body.id);
+    console.log(updatedGame);
+    res.send({ date: updatedGame.replenishDate });
   } catch (e) {
     throw new Error(e);
   }

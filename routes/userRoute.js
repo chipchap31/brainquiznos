@@ -120,8 +120,7 @@ router.post("/update-points", requireLogin, async (req, res) => {
     if (won) {
       // should add
       await findUser.updateOne({
-        points: findUser.points + points,
-        life: findUser.life + 1
+        points: findUser.points + points
       });
     } else {
       // should subtract
@@ -129,20 +128,21 @@ router.post("/update-points", requireLogin, async (req, res) => {
 
       await findUser.updateOne({
         points: findUser.points - points,
-        life: shouldSubtract ? findUser.life - 1 : findUser.life
+        life: findUser.life - 1
       });
     }
 
     const updatedData = await USERS.findById(id);
 
     req.session.user.points = updatedData.points;
+    req.session.user.life = updatedData.life;
     return res.send({});
   } catch (e) {
     throw new Error(e);
   }
 });
 
-router.post("/add-life", requireLogin, async (req, res, next) => {
+router.post("/update-life", requireLogin, async (req, res, next) => {
   const USERS = mongoose.model("users");
 
   const id = req.session.user.id;
@@ -154,9 +154,9 @@ router.post("/add-life", requireLogin, async (req, res, next) => {
       life: shouldAdd ? fetchUser.life + 1 : fetchUser.life
     });
 
-    req.session.user.life = shouldAdd
-      ? req.session.user.life + 1
-      : req.session.user.life;
+    const updatedUser = await USERS.findById(id);
+
+    req.session.user.life = updatedUser.life;
 
     res.send({});
   } catch (e) {

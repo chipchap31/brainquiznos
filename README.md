@@ -17,19 +17,56 @@ The game has three modes:
   - Hint time: 15 seconds
   - Game duration: 1:30 seconds
   - Total tiles: 20
+  - Points multiplier: (time left when puzzle was solved x 0.3)
 
 - Normal mode
 
   - Hint time: 10 seconds
   - Game duration: 1:30 seconds
   - Total tiles: 24
+  - Points multiplier: (time left when puzzle was solved x 0.5)
 
 - Hard mode
   - Hint time: 10 seconds
   - Game duration: 2 minutes
   - Total tiles: 30
+  - Points multiplier: (time left when puzzle was solved x 1)
+
+---
 
 ## UX
+
+I always start my UX process with research. The research involves comparing at least three existing memory game website and getting random users that justify my target audience.
+
+These are the list of websites that I have chosen to be tested:
+
+1.  [Webgamesonline](https://www.webgamesonline.com/memory/)
+2.  [Dkmgames](https://dkmgames.com/Memory/pairsrun.php)
+3.  [Helpfulgames](https://www.helpfulgames.com/subjects/brain-training/memory.html)
+
+### Feedback for each websites
+
+#### [Webgamesonline](https://www.webgamesonline.com/memory/)
+
+Webgamesonline is a really simple memory game. When the users initially the page, they didn't have any trouble to start the game. The main reason for this is because the main game is already visible to the users when loaded. The font size is greater than the ideal font size which is 16px. Except for the button's text and the time lapsed. The colour scheme is fantastic. Although, the colour of the solved images are the same with the unsolved. As a result, two of the users click on them by mistake.
+
+#### [Dkmgames](https://dkmgames.com/Memory/pairsrun.php)
+
+Dkmgames is a an awesome website, because it has multiple games within its website. It has a login system that let's you save your progress. The goal of the game is to complete each level that gets harder as you go along.
+
+In terms of usability, you have no controls at all. The font size are great and it is readable because it is greater than the ideal font size. The colour could be better because it is doesn't fit the context of the page. The page does not scale very well, because it images stays on the same place which is in to left of the page. As a result, some all of the users find it really difficult to click the images.
+
+[Helpfulgames](https://www.helpfulgames.com/subjects/brain-training)
+
+Helpfulgames is a bit similar to [Dkmgames](https://dkmgames.com/Memory/pairsrun.php)
+
+**Usability** - When the users load the website they were able to determine what the website is all about and started playing straight away
+
+**Font Size** - The font size is really greater than the ideal 16px so overall the font size is fine. Except for the button's text and the time.
+
+**Colour** - The overall colour palette is fantastic. The colour of the solved tiles are the same with the unsolved. As a result, two of my users clicked on them.
+
+**Scale** - The whole document does not scale at all for mobile landscape. The time that shows when the users started game became really small as well as the button to start a new game.
 
 Use this section to provide insight into your UX process, focusing on who this website is for, what it is that they want to achieve and how your project is the best way to help them achieve these things.
 

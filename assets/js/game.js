@@ -5,7 +5,7 @@ var $tiles = $.getElementsByClassName("tile");
 var $gameMainView = $.getElementById("game-main");
 var $gameHomeView = $.getElementById("game-home");
 var $gameMainTime = $.querySelector(".game-main-time");
-var gameInitTime = $.querySelector(".game-init-time");
+var $gameInitModal = $.querySelector(".game-init");
 var $selected = $.getElementsByClassName("show");
 var $tileSolved = $.getElementsByClassName("solved");
 var $gameResult = $.getElementById("game-result");
@@ -15,7 +15,7 @@ var $gameResultSolved = $.querySelector(".game-result-solved");
 var $pauseButton = $.querySelector(".pause-button");
 var $gamePauseModal = $.getElementById("game-pause");
 var $gamePreventModal = $.getElementById("game-prevent");
-
+var $gameResetPointsLost = $.getElementById("game-reset-pointsLost");
 function Game() {
   this.gameMode = null;
   this.readyTime = 5;
@@ -51,6 +51,11 @@ var tileConfig = {
     easy: 0.3,
     normal: 0.5,
     hard: 0.7
+  },
+  pointsLost: {
+    easy: 15,
+    normal: 10,
+    hard: 5
   }
 };
 //data-open="game-main" data-close='game-home game-difficulty'
@@ -64,7 +69,7 @@ var tileConfig = {
 Game.prototype.initLife = function(date) {
   clearInterval(window.lifeCountDown);
   window.lifeCountDown = null;
-  console.log(date);
+
   var _ = this;
 
   _.dateReplenish = date;
@@ -80,22 +85,22 @@ Game.prototype.initLife = function(date) {
 };
 Game.prototype.lifeCountDown = function() {
   var _ = this;
-  const target = document.querySelector("#life-timer span");
-
+  const target = $.querySelector("#life-timer span");
+  const target2 = $.getElementById("life-modal-timer");
   var min = Math.floor((_.lifeTime / 60) % 60);
   var sec = Math.floor((_.lifeTime / 1) % 60);
 
   if (_.lifeTime <= 0) {
     clearInterval(window.lifeCountDown);
     window.lifeCountDown = null;
-
+    $gamePreventModal.classList.remove("open");
     if (_.dateReplenish.length > 0) {
       clearInterval(window.lifeCountDown);
       window.lifeCountDown = null;
       _.dateReplenish.shift();
 
       _.lifeAdd();
-      postData("/user/add-life", {});
+      postData("/user/update-life", {});
       if (_.dateReplenish.length > 0) {
         return _.initLife(_.dateReplenish);
       }
@@ -106,13 +111,12 @@ Game.prototype.lifeCountDown = function() {
     return (target.innerHTML = "0:00");
   }
   target.innerHTML = `${min}:${sec < 10 ? "0" + sec : sec}`;
-
+  target2.innerHTML = `${min}:${sec < 10 ? "0" + sec : sec}`;
   --_.lifeTime;
 };
 
 Game.prototype.lifeAdd = function() {
   const lives = $.getElementsByClassName("life");
-  const active = $.getElementsByClassName("on");
   const inactive = $.getElementsByClassName("off").length;
   const index = lives.length - inactive;
 
@@ -121,6 +125,16 @@ Game.prototype.lifeAdd = function() {
   lives[index].classList.add("color-pink");
   lives[index].classList.remove("color-black");
 };
+Game.prototype.lifeRemove = function() {
+  const lives = $.getElementsByClassName("life");
+  const inactive = $.getElementsByClassName("on");
+  const index = inactive.length - 1;
+
+  lives[index].classList.add("off");
+  lives[index].classList.remove("on");
+  lives[index].classList.add("color-black");
+  lives[index].classList.remove("color-pink");
+};
 
 /**
  * gets the preferred theme of the user
@@ -128,7 +142,7 @@ Game.prototype.lifeAdd = function() {
  * @param {String} theme
  * @return {null}
  **/
-Game.prototype.getTheme = async function(theme) {
+Game.prototype.getTheme = function(theme) {
   var _ = this;
   _.theme = theme;
   const livesLeft = $.getElementsByClassName("on");
@@ -138,75 +152,68 @@ Game.prototype.getTheme = async function(theme) {
   }
 
   $gameDifficulty.classList.add("open");
+};
+Game.prototype.init = async function(gameMode) {
+  var _ = this;
+  _.gameMode = gameMode;
+  _.hintTime = tileConfig.hintTime[_.gameMode];
+  _.gameTime = tileConfig.gameTime[_.gameMode];
 
-  Game.prototype.init = async function(gameMode) {
-    var _ = this;
+  $gameResetPointsLost.innerHTML = tileConfig.pointsLost[_.gameMode];
+  $tileContainer.classList.add(_.gameMode);
 
-    $gameMainView.classList.add("open");
-    $gameHomeView.classList.remove("open");
-    $gameDifficulty.classList.remove("open");
-    // set items to global
-    _.gameMode = gameMode;
-    _.hintTime = tileConfig.hintTime[_.gameMode];
-    _.gameTime = tileConfig.gameTime[_.gameMode];
+  // add a placeholder before images are loaded
+  for (var i = 0; i < tileConfig.total[_.gameMode] * 2; i++) {
+    var $li = document.createElement("li");
 
-    // save the game
+    $li.classList.add("tile");
+    $tileContainer.appendChild($li);
+  }
 
+  /* * * end of code block * * */
+
+  $gameMainView.classList.add("open");
+  $gameHomeView.classList.remove("open");
+  $gameDifficulty.classList.remove("open");
+
+  try {
+    var $tiles = $.getElementsByClassName("tile");
+    const fetchImgs = await fetch(`/unsplash/${_.theme}`);
+    let imgsArray = await fetchImgs.json();
+
+    imgsArray = imgsArray
+      .map((x, i) => ({ imgSrc: x.urls.thumb, index: i }))
+      .filter((x, i) => i < tileConfig.total[_.gameMode]);
+
+    imgsArray = [...imgsArray, ...imgsArray].sort(() => 0.5 - Math.random());
+
+    Array.from($tiles).forEach((li, i) => {
+      var $img = document.createElement("img");
+      li.className = `${imgsArray[i].index} tile`;
+      $img.src = imgsArray[i].imgSrc;
+      $img.setAttribute("draggable", "false");
+      li.appendChild($img);
+    });
+    console.log($tiles);
+  } catch (e) {
+    throw new Error(e);
+  }
+};
+
+Game.prototype.startNow = async function() {
+  clearInterval(window.interval);
+  window.interval = null;
+  var _ = this;
+  $gameInitModal.classList.remove("open");
+  _.showTiles();
+  window.interval = setInterval(() => _.hintCountDown(), 1000);
+  try {
     _.id = await postData("/game/new", {
       mode: _.gameMode
     });
-    window.interval = setInterval(() => _.startCountDown(), 1000);
-    try {
-      await fetch(`/unsplash/${_.theme}`).then(function(response) {
-        response.json().then(function(data) {
-          data = data
-            .map((x, i) => ({ imgSrc: x.urls.thumb, i }))
-            .filter((x, i) => i < tileConfig.total[_.gameMode]);
-
-          data = [...data, ...data].sort(() => 0.5 - Math.random());
-
-          data.forEach(x => {
-            var $li = document.createElement("li");
-            var $img = document.createElement("img");
-
-            $li.classList.add(x.i, "tile");
-            $img.src = x.imgSrc;
-            $img.setAttribute("draggable", "false");
-            $li.appendChild($img);
-            $tileContainer.classList.add(_.gameMode);
-            $tileContainer.appendChild($li);
-          });
-        });
-      });
-    } catch (e) {
-      throw new Error(e);
-    }
-  };
-};
-
-Game.prototype.startCountDown = function() {
-  var _ = this;
-  var min = Math.floor((_.readyTime / 60) % 60);
-  var sec = Math.floor((_.readyTime / 1) % 60);
-  if (_.readyTime <= 0) {
-    clearInterval(window.interval);
-    window.interval = null;
-    $tileContainer.classList.remove("hidden");
-    $gameInit.classList.remove("open");
-
-    _.showTiles();
-    window.interval = setInterval(() => _.hintCountDown(), 1000);
+  } catch (e) {
+    throw new Error();
   }
-  _.readyTime--;
-  gameInitTime.innerHTML = `${sec < 10 ? sec : sec}`;
-};
-Game.prototype.startNow = function() {
-  var _ = this;
-  clearInterval(window.interval);
-  window.interval = null;
-  window.interval = setInterval(() => _.hintCountDown(), 1000);
-  _.showTiles();
-  $gameInit.classList.remove("open");
 };
 
 Game.prototype.hintCountDown = function() {
@@ -285,12 +292,12 @@ Game.prototype.gameCountDown = function() {
     clearInterval(window.interval);
     window.interval = null;
     postData("/user/update-points", {
-      points: pointsToChange,
+      points: tileConfig.pointsLost[_.gameMode],
       won: false
     });
     postData("/game/update", {
       id: _.id,
-      points: pointsToChange,
+      points: tileConfig.pointsLost[_.gameMode],
       clicks: _.clicks,
       won: false
     });
@@ -309,6 +316,7 @@ Game.prototype.proccessChoices = function() {
   // whenever a user clicks on a tile
   // it adds it to the choices array
   // whenever it is greater than two
+  console.log(_.choices);
   if (_.choices[0] !== _.choices[1]) {
     Array.from($selected).forEach(e => {
       !e.classList.contains("solved") ? e.classList.remove("show") : null;
@@ -324,8 +332,12 @@ Game.prototype.proccessChoices = function() {
 
 Game.prototype.showTiles = function() {
   var _ = this;
+  console.log("showTiles");
 
-  Array.from($tiles).forEach(x => x.classList.add("show"));
+  Array.from($tiles).forEach(x => {
+    console.log(x);
+    x.classList.add("show");
+  });
 };
 Game.prototype.hideTiles = function() {
   var _ = this;
@@ -359,18 +371,34 @@ Game.prototype.resumeGame = function() {
     window.interval = setInterval(() => _.hintCountDown(), 1000);
   }
 };
-Game.prototype.resetGame = function() {
+Game.prototype.resetGame = async function() {
   clearInterval(window.interval);
   window.interval = null;
   $gameResult.classList.remove("open");
   var _ = this;
+  _.lifeRemove();
 
-  Array.from($tiles).forEach(el => el.remove());
+  Array.from($tiles).forEach(x => x.remove());
 
   _.gameTime = 0;
   _.hintTime = 0;
+  $gameMainTime.innerHTML = "00:00";
+  $gameInitModal.classList.add("open");
+  try {
+    const replenishDate = await postData("/game/update", {
+      id: _.id,
+      points: tileConfig.pointsLost[_.gameMode],
+      clicks: _.clicks,
+      won: false
+    });
+    console.log(replenishDate);
 
-  _.init(_.gameMode);
+    _.initLife([..._.dateReplenish, { replenishDate: replenishDate.date }]);
+  } catch (e) {
+    throw new Error(e);
+  } finally {
+    _.init(_.gameMode);
+  }
 };
 var game = new Game();
 
