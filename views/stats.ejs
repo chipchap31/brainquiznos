@@ -1,13 +1,19 @@
 <%- include("layout/header", {loggedIn ,gender, username, life}) %>
 
 <main class="colorbg-purple">
-  <section id="stats" class="pv-50 ">
+  <section id="stats" class="pv-30 ">
     <div class="container">
         <div class="row flex  mt-30">
-          <div class="col-10">
+          <div class="col-7">
+            <div class="mb-20">
 
-              <h1 class="color-white">Gained Points</h1>
-              <div class="mv-10">
+
+              <a id="button-back"  class="color-white flex" href="/">
+              <i class="fas fa-arrow-circle-left"></i>
+              </a>
+            </div>
+              <h1 class="color-white mb-10">Gained Points</h1>
+              <div class="mb-30">
                 <span class="title-sub color-white">The graph shows the overall points you gained every game.</span>
               </div>
 
@@ -22,4 +28,4 @@
       </div>
   </section>
 </main>
-<%- include("layout/footer", {renderGlider:false}) %>
+<%- include("layout/footer", {renderGlider:false, replenishDate}) %>

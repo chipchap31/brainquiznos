@@ -16,6 +16,10 @@ var $pauseButton = $.querySelector(".pause-button");
 var $gamePauseModal = $.getElementById("game-pause");
 var $gamePreventModal = $.getElementById("game-prevent");
 var $gameResetPointsLost = $.getElementById("game-reset-pointsLost");
+var $gameHelper = $.querySelector("#game-main .helper");
+var $loader = $.getElementById("loader-wrapper");
+const $livesLeft = $.getElementsByClassName("on");
+
 function Game() {
   this.gameMode = null;
   this.readyTime = 5;
@@ -70,7 +74,7 @@ var tileConfig = {
 Game.prototype.initLife = function(date) {
   clearInterval(window.lifeCountDown);
   window.lifeCountDown = null;
-
+  console.log(date);
   var _ = this;
 
   _.dateReplenish = date;
@@ -112,7 +116,12 @@ Game.prototype.lifeCountDown = function() {
     return (target.innerHTML = "0:00");
   }
   target.innerHTML = `${min}:${sec < 10 ? "0" + sec : sec}`;
-  target2.innerHTML = `${min}:${sec < 10 ? "0" + sec : sec}`;
+  if (window.location.href) {
+  }
+  if (window.location.pathname === "/") {
+    target2.innerHTML = `${min}:${sec < 10 ? "0" + sec : sec}`;
+  }
+
   --_.lifeTime;
 };
 
@@ -146,9 +155,8 @@ Game.prototype.lifeRemove = function() {
 Game.prototype.getTheme = function(theme) {
   var _ = this;
   _.theme = theme;
-  const livesLeft = $.getElementsByClassName("on");
 
-  if (livesLeft.length <= 0) {
+  if ($livesLeft.length <= 0) {
     return $gamePreventModal.classList.add("open");
   }
 
@@ -178,6 +186,8 @@ Game.prototype.init = async function(gameMode) {
   $gameDifficulty.classList.remove("open");
 
   try {
+    $gameHelper.innerHTML = "Creating new game...";
+    $loader.classList.add("open");
     var $tiles = $.getElementsByClassName("tile");
     const fetchImgs = await fetch(`/unsplash/${_.theme}`);
     let imgsArray = await fetchImgs.json();
@@ -195,18 +205,24 @@ Game.prototype.init = async function(gameMode) {
       $img.setAttribute("draggable", "false");
       li.appendChild($img);
     });
-    console.log($tiles);
   } catch (e) {
     throw new Error(e);
+  } finally {
+    $gameHelper.innerHTML = "Game is ready.";
+    $loader.classList.remove("open");
+    $gameInitModal.classList.add("open");
   }
 };
 
 Game.prototype.startNow = async function() {
+  $gameInitModal.classList.remove("open");
+  if ($livesLeft.length <= 0) {
+    return $gamePreventModal.classList.add("open");
+  }
   clearInterval(window.interval);
   window.interval = null;
   var _ = this;
-  $gameInitModal.classList.remove("open");
-  _.showTiles();
+
   window.interval = setInterval(() => _.hintCountDown(), 1000);
   try {
     _.id = await postData("/game/new", {
@@ -215,6 +231,8 @@ Game.prototype.startNow = async function() {
   } catch (e) {
     throw new Error();
   }
+  _.showTiles();
+  $gameHelper.innerHTML = "Memorize the images shown.";
 };
 
 Game.prototype.hintCountDown = function() {
@@ -224,6 +242,8 @@ Game.prototype.hintCountDown = function() {
   var gameStarted = _.hintTime <= 0;
 
   if (gameStarted) {
+    $gameHelper.innerHTML = `${_.gameMode.charAt(0).toUpperCase() +
+      _.gameMode.slice(1)} Mode`;
     clearInterval(window.interval);
     window.interval = null;
     _.hideTiles();
@@ -269,7 +289,7 @@ Game.prototype.gameCountDown = function() {
 
   if (userWon) {
     // tiles are solved completely
-    console.log(`${Math.ceil((_.match / _.clicks) * 100)}%`);
+
     var $gameResultTitle = $.querySelector(".game-result-title");
     clearInterval(window.interval);
     window.interval = null;
@@ -295,7 +315,7 @@ Game.prototype.gameCountDown = function() {
 
   if (userLost) {
     // user fails to solve the puzzles
-    console.log(`${Math.ceil((_.match / _.clicks) * 100)}%`);
+
     $gameResult.classList.add("open");
     clearInterval(window.interval);
     window.interval = null;
@@ -383,6 +403,7 @@ Game.prototype.resetGame = async function() {
   clearInterval(window.interval);
   window.interval = null;
   $gameResult.classList.remove("open");
+
   var _ = this;
   _.lifeRemove();
 
@@ -405,6 +426,7 @@ Game.prototype.resetGame = async function() {
     throw new Error(e);
   } finally {
     _.init(_.gameMode);
+    id = null;
   }
 };
 var game = new Game();

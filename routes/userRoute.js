@@ -123,13 +123,25 @@ router.post("/update-points", requireLogin, async (req, res) => {
         points: findUser.points + points
       });
     } else {
-      // should subtract
+      // user lost the game run this block
       const shouldSubtract = findUser.life > 0;
+      if (findUser.points - points <= 0) {
+        // if points will past zero
+        await findUser.updateOne({
+          // dont go subtract behind zero
 
-      await findUser.updateOne({
-        points: findUser.points - points,
-        life: findUser.life - 1
-      });
+          points: 0,
+          life: findUser.life - 1
+        });
+      } else {
+        // if it will not result to zero
+        await findUser.updateOne({
+          // dont go subtract behind zero
+
+          points: findUser.points - points,
+          life: findUser.life - 1
+        });
+      }
     }
 
     const updatedData = await USERS.findById(id);
