@@ -73,14 +73,12 @@
           <ul>
              <% fetchAllUser.forEach(function(user, index){ %>
                <% index++ %>
-               <li class='colorbg-violet p-10 flex h-space-between'>
+               <li class='<%=username === user.username ? "colorbg-dblue" : "colorbg-violet" %> p-10 flex h-space-between'>
                  <div class="flex v-center">
                    <span class='color-white'><%= index %>.</span>
                    <img class='mh-10' src='/images/<%= user.gender %>.png' alt='gender-image'>
-                  <span class="color-white"><%= user.username %></span>
-                  <% if (username === user.username) {%>
-                    <span class="color-white ml-10">(you)</span>
-                  <% } %>
+                  <span class="username color-white"><%= user.username %></span>
+
 
                  </div>
                  <div class="flex v-center">
@@ -89,13 +87,18 @@
                  </div>
               </li>
              <% }) %>
-
+             <% if (fetchAllUser.length < 6) { %>
+               <%for (var i =0; i < 7 - fetchAllUser.length ; i++){ %>
+                 <li class='leaderboard-placeholder colorbg-violet '>
+                </li>
+               <%}%>
+             <%}%>
              <% if(userCurrentRank > 6){ %>
                <li class='colorbg-violet p-10 flex h-space-between'>
                  <div class="data flex v-center">
                    <span class='color-white'><%= userCurrentRank %>.</span>
                    <img class='mh-10' src='/images/<%= gender %>.png' alt='gender-image'>
-                  <span class="color-white"><%= username %></span>
+                  <span class="username color-white"><%= username %></span>
                   <span class="color-white ml-10">(you)</span>
                  </div>
                  <div class="flex v-center">
@@ -153,12 +156,14 @@
   <section id='game-main' class='pv-30 colorbg-purple'>
     <div class="game-init modal open">
       <div class="inner colorbg-purple p-50">
-        <h3 class="color-white">Game will start in</h3>
+        <h3 class="color-white">Good Luck!</h3>
         <div class="text-center mt-20">
-          <h3 class="game-init-time color-white">5</h3>
+          <span class="color-white">Click on two tiles to find mathching images.</span>
         </div>
         <div class="flex mt-30 h-center">
-          <button onclick="game.startNow();" class="button-1 colorbg-pink" type="button" >Start now</button >
+          <button onclick="game.startNow();" class="button-1 colorbg-pink" type="button" >Start now</button>
+          <a href="/" class="button-1 colorbg-grey" >Cancel</a>
+
         </div>
       </div>
 
@@ -173,16 +178,18 @@
 
       </div>
 
-      <ul class="tile-container hidden">
+      <ul class="tile-container">
       </ul>
     </div>
   </section>
   <section id="game-pause" class="modal">
     <div class="inner colorbg-purple p-50 text-center">
-      <h3  class="game-pause-title color-white mb-10">The game is paused</h3>
+      <h3  class="game-pause-title color-white mb-10">paused</h3>
       <span class="game-pause-solved color-white"></span>
       <div class="flex mt-30 h-center">
+
         <button onclick="game.resumeGame();" class="button-1 colorbg-pink" type="button" >Continue</button >
+        <a class="button-1 colorbg-grey " href="/">exit</a>
       </div>
     </div>
 
@@ -193,7 +200,7 @@
     <div class="game-result-solved color-white mt-10"></div>
       <div class="game-result-points color-white mt-10"></div>
     <div class="flex mt-20">
-      <button class="mr-10 button-1 colorbg-pink" onclick="game.resetGame();" type="button">Restart</button ><a href="/" class="button-1 colorbg-grey">exit</a>
+      <button class="button-1 colorbg-pink" onclick="game.resetGame();" type="button">Restart</button ><a href="/" class="button-1 colorbg-grey">exit</a>
     </div>
   </div>
 
@@ -201,17 +208,23 @@
 <section id="game-reset" class="modal">
   <div class="inner colorbg-purple p-50 text-center">
     <h3  class="game-reset-title color-white mb-10">Reset game</h3>
-    <span class="game-reset-solved color-white"></span>
+    <div class="mt-10">
+      <span class="color-white">You will lose <span id='game-reset-pointsLost'></span>points and a life if you reset.</span>
+    </div>
     <div class="flex mt-20">
-      <button role='button' data-open="game-reset" onclick="game.resetGame();" class="mr-10 button-1 colorbg-pink" type="button">Restart</button >
-        <button onclick="game.resumeGame();" class="button-1 colorbg-grey">continue</button>
+      <button onclick="game.resumeGame();" class="button-1 colorbg-pink">continue</button>
+      <button role='button' data-open="game-reset" onclick="game.resetGame();" class="button-1 colorbg-grey" type="button">Restart</button >
+
     </div>
   </div>
 
 </section>
 <section id="game-prevent" class="modal">
   <div class="inner colorbg-purple p-50 text-center">
-    <h3  class="game-reset-title color-white mb-10">You don't have any lives yet!</h3>
+    <h4  class="game-reset-title color-white mb-10">No more lives.</h4>
+    <div class="mt-20">
+      <p class="color-white">Please come back in <span  id="life-modal-timer" class="color-pink"></span>.</p>
+    </div>
     <div class="flex h-center mt-20">
       <button  role='button' data-open='game-prevent' class="button-1 colorbg-pink">close</button>
     </div>
