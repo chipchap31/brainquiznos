@@ -75,7 +75,7 @@ var tileConfig = {
 Game.prototype.initLife = function(date) {
   clearInterval(window.lifeCountDown);
   window.lifeCountDown = null;
-
+  console.log(date);
   var _ = this;
 
   _.dateReplenish = date;
@@ -403,19 +403,22 @@ Game.prototype.resumeGame = function() {
 Game.prototype.resetGame = async function() {
   clearInterval(window.interval);
   window.interval = null;
-
+  var _ = this;
+  var $tileSolved = $.getElementsByClassName("solved");
+  var tileToSolve = tileConfig.total[_.gameMode] * 2;
   $gameResult.classList.remove("open");
 
   var _ = this;
 
-  Array.from($tiles).forEach(x => x.remove());
-
   $gameMainTime.innerHTML = "00:00";
   $gameInitModal.classList.add("open");
-  try {
-    if (_.gameTime <= 0) {
-      // if game ends and user wants to restart
+  console.log($tileSolved.length);
+  var activeAndDone = $tileSolved.length < tileToSolve && _.gameTime > 0;
+  var activeAndUndone = $tileSolved.length < tileToSolve && _.gameTime > 0;
 
+  try {
+    if (activeAndUndone) {
+      // if user wants reset early
       _.lifeRemove();
       const replenishDate = await postData("/game/update", {
         id: _.id,
@@ -423,15 +426,8 @@ Game.prototype.resetGame = async function() {
         clicks: _.clicks,
         won: false
       });
-      _.initLife([..._.dateReplenish, { replenishDate: replenishDate.date }]);
-    } else {
-      // if user wants reset early
-
-      _.lifeRemove();
-      const replenishDate = await postData("/game/update", {
-        id: _.id,
+      postData("/user/update-points", {
         points: tileConfig.pointsLost[_.gameMode],
-        clicks: _.clicks,
         won: false
       });
       _.initLife([..._.dateReplenish, { replenishDate: replenishDate.date }]);
@@ -439,8 +435,13 @@ Game.prototype.resetGame = async function() {
   } catch (e) {
     throw new Error(e);
   } finally {
+    Array.from($tiles).forEach(x => x.remove());
     _.gameTime = 0;
     _.hintTime = 0;
+    postData("/user/update-points", {
+      points: _.pointsToChange,
+      won: true
+    });
     _.init(_.gameMode);
     id = null;
   }

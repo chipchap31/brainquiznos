@@ -120,7 +120,8 @@ router.post("/update-points", requireLogin, async (req, res) => {
     if (won) {
       // should add
       await findUser.updateOne({
-        points: findUser.points + points
+        points: findUser.points + points,
+        life: findUser.life + 1
       });
     } else {
       // user lost the game run this block
