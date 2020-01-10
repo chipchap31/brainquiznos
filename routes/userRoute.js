@@ -131,7 +131,7 @@ router.post("/update-points", requireLogin, async (req, res) => {
           // dont go subtract behind zero
 
           points: 0,
-          life: findUser.life - 1
+          life: findUser.life
         });
       } else {
         // if it will not result to zero
@@ -139,7 +139,7 @@ router.post("/update-points", requireLogin, async (req, res) => {
           // dont go subtract behind zero
 
           points: findUser.points - points,
-          life: findUser.life - 1
+          life: findUser.life
         });
       }
     }
