@@ -75,7 +75,7 @@ var tileConfig = {
 Game.prototype.initLife = function(date) {
   clearInterval(window.lifeCountDown);
   window.lifeCountDown = null;
-  console.log(date);
+
   var _ = this;
 
   _.dateReplenish = date;
@@ -305,7 +305,7 @@ Game.prototype.gameCountDown = async function() {
     $gameResult.classList.add("open");
     $.querySelector(
       ".game-result-solved"
-    ).innerHTML = `You solved ${$tileSolved.length} out of ${tileToSolve}`;
+    ).innerHTML = `Solved ${$tileSolved.length} out of ${tileToSolve}`;
     $.querySelector(
       ".game-result-points"
     ).innerHTML = `You gained ${_.pointsToChange} points`;
@@ -331,7 +331,7 @@ Game.prototype.gameCountDown = async function() {
     _.initLife([..._.dateReplenish, { replenishDate: replenishDate.date }]);
     $.querySelector(
       ".game-result-solved"
-    ).innerHTML = `You solved ${$tileSolved.length} out of ${tileToSolve}`;
+    ).innerHTML = `Solved ${$tileSolved.length} out of ${tileToSolve}`;
     $.querySelector(".game-result-points").innerHTML = "You lost a life!";
     $.querySelector(".game-result-title").innerHTML = "Defeat";
     $gameResult.classList.add("open");
@@ -412,7 +412,7 @@ Game.prototype.resetGame = async function() {
 
   $gameMainTime.innerHTML = "00:00";
   $gameInitModal.classList.add("open");
-  console.log($tileSolved.length);
+
   var activeAndDone = $tileSolved.length < tileToSolve && _.gameTime > 0;
   var activeAndUndone = $tileSolved.length < tileToSolve && _.gameTime > 0;
 
@@ -426,10 +426,7 @@ Game.prototype.resetGame = async function() {
         clicks: _.clicks,
         won: false
       });
-      postData("/user/update-points", {
-        points: tileConfig.pointsLost[_.gameMode],
-        won: false
-      });
+
       _.initLife([..._.dateReplenish, { replenishDate: replenishDate.date }]);
     }
   } catch (e) {
@@ -438,10 +435,7 @@ Game.prototype.resetGame = async function() {
     Array.from($tiles).forEach(x => x.remove());
     _.gameTime = 0;
     _.hintTime = 0;
-    postData("/user/update-points", {
-      points: _.pointsToChange,
-      won: true
-    });
+
     _.init(_.gameMode);
     id = null;
   }

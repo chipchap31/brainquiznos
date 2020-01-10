@@ -31,7 +31,7 @@ router.post("/new", requireLogin, async (req, res) => {
     const latestGame = await GAME.findOne({ _user: req.session.user.id }).sort({
       datePlayed: -1
     });
-    console.log(latestGame);
+
     replenishDate = latestGame.replenishDate.getTime() + secondsToAdd;
   }
 
