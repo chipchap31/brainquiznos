@@ -31,7 +31,7 @@ router.post("/new", requireLogin, async (req, res) => {
     const latestGame = await GAME.findOne({ _user: req.session.user.id }).sort({
       datePlayed: -1
     });
-    console.log(latestGame);
+
     replenishDate = latestGame.replenishDate.getTime() + secondsToAdd;
   }
 
@@ -69,7 +69,7 @@ router.post("/update", async (req, res) => {
 
   try {
     const lostGames = await GAME.find({
-      _user: req.session.user.id
+      _user: id
     }).$where(function() {
       return this.replenishDate > Date.now();
     });
@@ -87,7 +87,7 @@ router.post("/update", async (req, res) => {
     }
 
     const findGame = await GAME.findById(req.body.id);
-
+    const fetchUser = await USER.findById(id);
     await findGame.updateOne({
       points: won ? points : 0,
       clicks,
@@ -95,8 +95,10 @@ router.post("/update", async (req, res) => {
 
       replenishDate: won ? Date.now() : replenishDate
     });
-    const updatedGame = await GAME.findById(req.body.id);
 
+    const updatedGame = await GAME.findById(req.body.id);
+    const updatedUser = await USER.findById(id);
+    req.session.user.life = updatedUser.life;
     res.send({ date: updatedGame.replenishDate });
   } catch (e) {
     throw new Error(e);

@@ -34,6 +34,7 @@ function Game() {
   this.lifeTime = 0;
   this.dateReplenish = [];
   this.match = 0;
+  this.pointsToChange = 0;
 }
 
 var tileConfig = {
@@ -74,7 +75,7 @@ var tileConfig = {
 Game.prototype.initLife = function(date) {
   clearInterval(window.lifeCountDown);
   window.lifeCountDown = null;
-  console.log(date);
+
   var _ = this;
 
   _.dateReplenish = date;
@@ -275,7 +276,7 @@ Game.prototype.hintCountDown = function() {
   $gameMainTime.innerHTML = `0${min}:${sec < 10 ? "0" + sec : sec}`;
 };
 
-Game.prototype.gameCountDown = function() {
+Game.prototype.gameCountDown = async function() {
   var _ = this;
   var min = Math.floor((_.gameTime / 60) % 60);
   var sec = Math.floor((_.gameTime / 1) % 60);
@@ -283,9 +284,7 @@ Game.prototype.gameCountDown = function() {
   var userWon = $tileSolved.length >= tileToSolve && _.gameTime >= 0;
   var userLost = _.gameTime <= 0 && $tileSolved.length <= tileToSolve;
 
-  var pointsToChange = Math.ceil(
-    tileConfig.multiplier[_.gameMode] * _.gameTime
-  );
+  _.pointsToChange = Math.ceil(tileConfig.multiplier[_.gameMode] * _.gameTime);
 
   if (userWon) {
     // tiles are solved completely
@@ -294,46 +293,48 @@ Game.prototype.gameCountDown = function() {
     clearInterval(window.interval);
     window.interval = null;
     postData("/user/update-points", {
-      points: pointsToChange,
+      points: _.pointsToChange,
       won: true
     });
     postData("/game/update", {
       id: _.id,
-      points: pointsToChange,
+      points: _.pointsToChange,
       clicks: _.clicks,
       won: true
     });
     $gameResult.classList.add("open");
     $.querySelector(
       ".game-result-solved"
-    ).innerHTML = `You solved ${$tileSolved.length} out of ${tileToSolve}`;
+    ).innerHTML = `Solved ${$tileSolved.length} out of ${tileToSolve}`;
     $.querySelector(
       ".game-result-points"
-    ).innerHTML = `You gained ${pointsToChange} points`;
+    ).innerHTML = `You gained ${_.pointsToChange} points`;
     $.querySelector(".game-result-title").innerHTML = "Victory";
   }
 
   if (userLost) {
     // user fails to solve the puzzles
 
-    $gameResult.classList.add("open");
     clearInterval(window.interval);
     window.interval = null;
     postData("/user/update-points", {
       points: tileConfig.pointsLost[_.gameMode],
       won: false
     });
-    postData("/game/update", {
+    const replenishDate = await postData("/game/update", {
       id: _.id,
       points: tileConfig.pointsLost[_.gameMode],
       clicks: _.clicks,
       won: false
     });
+    _.lifeRemove();
+    _.initLife([..._.dateReplenish, { replenishDate: replenishDate.date }]);
     $.querySelector(
       ".game-result-solved"
-    ).innerHTML = `You solved ${$tileSolved.length} out of ${tileToSolve}`;
+    ).innerHTML = `Solved ${$tileSolved.length} out of ${tileToSolve}`;
     $.querySelector(".game-result-points").innerHTML = "You lost a life!";
     $.querySelector(".game-result-title").innerHTML = "Defeat";
+    $gameResult.classList.add("open");
   }
 
   $gameMainTime.innerHTML = `0${min}:${sec < 10 ? "0" + sec : sec}`;
@@ -402,29 +403,39 @@ Game.prototype.resumeGame = function() {
 Game.prototype.resetGame = async function() {
   clearInterval(window.interval);
   window.interval = null;
+  var _ = this;
+  var $tileSolved = $.getElementsByClassName("solved");
+  var tileToSolve = tileConfig.total[_.gameMode] * 2;
   $gameResult.classList.remove("open");
 
   var _ = this;
-  _.lifeRemove();
 
-  Array.from($tiles).forEach(x => x.remove());
-
-  _.gameTime = 0;
-  _.hintTime = 0;
   $gameMainTime.innerHTML = "00:00";
   $gameInitModal.classList.add("open");
-  try {
-    const replenishDate = await postData("/game/update", {
-      id: _.id,
-      points: tileConfig.pointsLost[_.gameMode],
-      clicks: _.clicks,
-      won: false
-    });
 
-    _.initLife([..._.dateReplenish, { replenishDate: replenishDate.date }]);
+  var activeAndDone = $tileSolved.length < tileToSolve && _.gameTime > 0;
+  var activeAndUndone = $tileSolved.length < tileToSolve && _.gameTime > 0;
+
+  try {
+    if (activeAndUndone) {
+      // if user wants reset early
+      _.lifeRemove();
+      const replenishDate = await postData("/game/update", {
+        id: _.id,
+        points: tileConfig.pointsLost[_.gameMode],
+        clicks: _.clicks,
+        won: false
+      });
+
+      _.initLife([..._.dateReplenish, { replenishDate: replenishDate.date }]);
+    }
   } catch (e) {
     throw new Error(e);
   } finally {
+    Array.from($tiles).forEach(x => x.remove());
+    _.gameTime = 0;
+    _.hintTime = 0;
+
     _.init(_.gameMode);
     id = null;
   }

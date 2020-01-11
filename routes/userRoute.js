@@ -120,7 +120,8 @@ router.post("/update-points", requireLogin, async (req, res) => {
     if (won) {
       // should add
       await findUser.updateOne({
-        points: findUser.points + points
+        points: findUser.points + points,
+        life: findUser.life + 1
       });
     } else {
       // user lost the game run this block
@@ -131,7 +132,7 @@ router.post("/update-points", requireLogin, async (req, res) => {
           // dont go subtract behind zero
 
           points: 0,
-          life: findUser.life - 1
+          life: findUser.life
         });
       } else {
         // if it will not result to zero
@@ -139,7 +140,7 @@ router.post("/update-points", requireLogin, async (req, res) => {
           // dont go subtract behind zero
 
           points: findUser.points - points,
-          life: findUser.life - 1
+          life: findUser.life
         });
       }
     }
@@ -183,9 +184,9 @@ function validate(data) {
   for (var key in data) {
     switch (key) {
       case "username":
-        if (data[key].length < 6 || data[key].length > 12) {
+        if (data[key].length < 6 || data[key].length >= 15) {
           err.push({
-            [key]: "Username must be between 6 to 12 characters long."
+            [key]: "Username must be between 6 to 15 characters long."
           });
         }
         break;
