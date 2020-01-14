@@ -53,7 +53,7 @@ app.use(express.static(path.join(__dirname, "assets")));
 app.use("/", indexRouter);
 app.use("/user", userRouter);
 app.use("/game", gameRouter);
-app.use("/uxde", express.static(__dirname + "/assets/docs/uxdesign.pdf"));
+app.use("/uxdesign", express.static(__dirname + "/assets/docs/uxdesign.pdf"));
 app.use("/unsplash", unsplashRouter);
 app.listen(PORT, () =>
   console.log(`App is running @ port ${PORT} on ${DEV ? "dev" : "prod"} mode.`)
