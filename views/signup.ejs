@@ -10,7 +10,7 @@
         <div class="col-3">
           <form class="form mt-20" action="/user/signup" method="post">
             <label class='mt-10 color-white' for="username">Username</label>
-            <input class='<%= errMessage.username ? "err-input" : null %> mt-10' id='username' type="text" name="username" placeholder="Your username" required>
+            <input value="<%= err ? value.username : "" %>"  class='<%= errMessage.username ? "err-input" : null %> mt-10' id='username' type="text" name="username" placeholder="Your username" required>
                 <% if(errMessage.username) { %>
                   <div class="err mt-10">
                     <%= errMessage.username %>
@@ -18,34 +18,34 @@
                  <% }%>
 
             <label class='mt-10 color-white' for="email">Email</label>
-            <input class='mt-10' id='email' type="email" name="email" placeholder="Your email" required>
+            <input  value="<%= err ? value.email : "" %>" class='mt-10' id='email' type="email" name="email" placeholder="Your email" required>
             <% if(errMessage.email) { %>
               <div class="err mt-10">
                 <%= errMessage.email %>
               </div>
              <% }%>
             <label class='mt-10 color-white' for="password">Password</label>
-            <input class='mt-10' id='password' type="password" name="password" placeholder="Your password" required>
+            <input class='mt-10'  value="<%= err ? value.password : "" %>" id='password' type="password" name="password" placeholder="Your password" required>
             <% if(errMessage.password) { %>
               <div class="err mt-10">
                 <%= errMessage.password %>
               </div>
              <% }%>
             <label class='mt-10 color-white' for="password2">Confirm password</label>
-            <input class='mt-10' id='password2' type="password" name="password2" placeholder="Confirm password" required>
+            <input  value="<%= err ? value.password2 : "" %>" class='mt-10' id='password2' type="password" name="password2" placeholder="Confirm password" required>
 
             <label class='mt-10 color-white' for="gender">Gender</label>
             <div class="flex">
               <div class="flex v-center">
-                <input class="mr-10 " type="radio" name="gender" value="male" required>
+                <input <%=err && value.gender === "male" ? "checked": null%> class="mr-10 " type="radio" name="gender" value="male" required>
                 <span class="color-white ">Male</span>
               </div>
               <div class="flex v-center">
-                <input class="mr-10 ml-20" type="radio" name="gender" value="female" required><span
+                <input <%=err && value.gender === "female" ? "checked": null%> class="mr-10 ml-20" type="radio" name="gender" value="female" required><span
                     class="color-white">Female</span>
               </div>
               <div class="flex v-center">
-                <input class="mr-10 ml-20" type="radio" name="gender" value="other" required><span
+                <input <%=err && value.gender === "other" ? "checked": null%> class="mr-10 ml-20" type="radio" name="gender" value="other" required><span
                     class="color-white">Other</span>
               </div>
             </div>

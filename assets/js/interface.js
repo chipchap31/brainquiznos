@@ -38,9 +38,9 @@ document.addEventListener(
       rewind: true,
       responsive: [
         {
-          breakpoint: 375,
+          breakpoint: 376,
           settings: {
-            slidesToShow: 1.5,
+            slidesToShow: 2.5,
             slidesToScroll: 1,
             itemWidth: 90,
             duration: 0.25

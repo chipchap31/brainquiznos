@@ -89,6 +89,14 @@ Read more about the UX Design [here](https://brainquiznos.com/uxdesign).
 
 In this section, you should mention all of the languages, frameworks, libraries, and any other tools that you have used to construct this project. For each, provide its name, a link to its official site and a short sentence of why it was used.
 
+- [CharJS](https://www.chartjs.org/)
+
+  - It is an open source charting library for designers and also developers. The project utilizes this library to show the points gained depending on the game mode.
+
+- [Sass](https://sass-lang.com/)
+
+  - It is a powerful css preprocessor. I used this technology to make reusable css codes.
+
 - [bcrypt](https://www.npmjs.com/package/bcrypt)
 
   - It is a library to help you hash password. The user's password is hashed to improve privacy and security.
@@ -145,7 +153,7 @@ In this section, you should mention all of the languages, frameworks, libraries,
       When my mentor first time signed up, she come across a bug that says "cannot read user".
       It was an error at one of the parameters being pass to my signup-success [route](https://github.com/chipchap31/brainquiznos/blob/master/routes/userRoute.js). The fix was to change "user" with "loggedIn" at line 45.
 
-      When reviewed in the channel #peer-code-review, one of the student mentioned that when signing up and get an error, all of the input fields losses its value. As a result, he has to fill out all of them again.
+      When reviewed in the channel #peer-code-review, one of the student mentioned that when signing up and get an error, all of the input fields losses its value. As a result, he has to fill out all of them again. The fix was to add value attribute for all of the input fields except the radio type and re-rendering the value when received an error.
 
 1. **As a user, I want to sign in so that I can start playing.**
 
@@ -248,6 +256,8 @@ The last and but not least is to apply for domain name. I registered "brainquizn
    ```
    $ npm run dev
    ```
+
+1. Open http://localhost:8000/ on your browser.
 
 ## Credits
 

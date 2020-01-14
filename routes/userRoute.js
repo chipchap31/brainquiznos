@@ -19,7 +19,8 @@ router.post("/signup", async function(req, res, next) {
     res.render("signup", {
       loggedIn: false,
       err: true,
-      errMessage: validation.errMessage
+      errMessage: validation.errMessage,
+      value: { ...req.body }
     });
   } else if (userExist) {
     res.render("signup", {
@@ -29,7 +30,8 @@ router.post("/signup", async function(req, res, next) {
         username: "Username or email already exist!",
         password: false,
         email: false
-      }
+      },
+      value: { ...req.body }
     });
   } else {
     // success
