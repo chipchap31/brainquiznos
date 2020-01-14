@@ -1,6 +1,5 @@
 var $ = document;
 var $tileContainer = $.querySelector(".tile-container");
-var $gameInit = $.querySelector(".game-init");
 var $tiles = $.getElementsByClassName("tile");
 var $gameMainView = $.getElementById("game-main");
 var $gameHomeView = $.getElementById("game-home");
@@ -11,14 +10,12 @@ var $tileSolved = $.getElementsByClassName("solved");
 var $gameResult = $.getElementById("game-result");
 var $gameDifficulty = $.getElementById("game-difficulty");
 var $gameResetModal = $.getElementById("game-reset");
-var $gameResultSolved = $.querySelector(".game-result-solved");
-var $pauseButton = $.querySelector(".pause-button");
 var $gamePauseModal = $.getElementById("game-pause");
 var $gamePreventModal = $.getElementById("game-prevent");
 var $gameResetPointsLost = $.getElementById("game-reset-pointsLost");
 var $gameHelper = $.querySelector("#game-main .helper");
 var $loader = $.getElementById("loader-wrapper");
-const $livesLeft = $.getElementsByClassName("on");
+var $livesLeft = $.getElementsByClassName("on");
 
 function Game() {
   this.gameMode = null;
@@ -82,7 +79,7 @@ Game.prototype.initLife = function(date) {
 
   var shouldReplenish = _.lives >= 0;
 
-  const diff = (new Date(date[0].replenishDate) - new Date(Date.now())) / 1000;
+  var diff = (new Date(date[0].replenishDate) - new Date(Date.now())) / 1000;
   _.lifeTime = diff;
 
   if (shouldReplenish) {
@@ -91,8 +88,8 @@ Game.prototype.initLife = function(date) {
 };
 Game.prototype.lifeCountDown = function() {
   var _ = this;
-  const target = $.querySelector("#life-timer span");
-  const target2 = $.getElementById("life-modal-timer");
+  var target = $.querySelector("#life-timer span");
+  var target2 = $.getElementById("life-modal-timer");
   var min = Math.floor((_.lifeTime / 60) % 60);
   var sec = Math.floor((_.lifeTime / 1) % 60);
 
@@ -127,9 +124,9 @@ Game.prototype.lifeCountDown = function() {
 };
 
 Game.prototype.lifeAdd = function() {
-  const lives = $.getElementsByClassName("life");
-  const inactive = $.getElementsByClassName("off").length;
-  const index = lives.length - inactive;
+  var lives = $.getElementsByClassName("life");
+  var inactive = $.getElementsByClassName("off").length;
+  var index = lives.length - inactive;
 
   lives[index].classList.add("on");
   lives[index].classList.remove("off");
@@ -137,9 +134,9 @@ Game.prototype.lifeAdd = function() {
   lives[index].classList.remove("color-black");
 };
 Game.prototype.lifeRemove = function() {
-  const lives = $.getElementsByClassName("life");
-  const inactive = $.getElementsByClassName("on");
-  const index = inactive.length - 1;
+  var lives = $.getElementsByClassName("life");
+  var inactive = $.getElementsByClassName("on");
+  var index = inactive.length - 1;
 
   lives[index].classList.add("off");
   lives[index].classList.remove("on");
@@ -190,7 +187,7 @@ Game.prototype.init = async function(gameMode) {
     $gameHelper.innerHTML = "Creating new game...";
     $loader.classList.add("open");
     var $tiles = $.getElementsByClassName("tile");
-    const fetchImgs = await fetch(`/unsplash/${_.theme}`);
+    var fetchImgs = await fetch(`/unsplash/${_.theme}`);
     let imgsArray = await fetchImgs.json();
 
     imgsArray = imgsArray
@@ -289,7 +286,6 @@ Game.prototype.gameCountDown = async function() {
   if (userWon) {
     // tiles are solved completely
 
-    var $gameResultTitle = $.querySelector(".game-result-title");
     clearInterval(window.interval);
     window.interval = null;
     postData("/user/update-points", {
@@ -321,7 +317,7 @@ Game.prototype.gameCountDown = async function() {
       points: tileConfig.pointsLost[_.gameMode],
       won: false
     });
-    const replenishDate = await postData("/game/update", {
+    var replenishDate = await postData("/game/update", {
       id: _.id,
       points: tileConfig.pointsLost[_.gameMode],
       clicks: _.clicks,
@@ -362,8 +358,6 @@ Game.prototype.proccessChoices = function() {
 };
 
 Game.prototype.showTiles = function() {
-  var _ = this;
-
   Array.from($tiles).forEach(x => {
     x.classList.add("show");
   });
@@ -413,14 +407,13 @@ Game.prototype.resetGame = async function() {
   $gameMainTime.innerHTML = "00:00";
   $gameInitModal.classList.add("open");
 
-  var activeAndDone = $tileSolved.length < tileToSolve && _.gameTime > 0;
   var activeAndUndone = $tileSolved.length < tileToSolve && _.gameTime > 0;
 
   try {
     if (activeAndUndone) {
       // if user wants reset early
       _.lifeRemove();
-      const replenishDate = await postData("/game/update", {
+      var replenishDate = await postData("/game/update", {
         id: _.id,
         points: tileConfig.pointsLost[_.gameMode],
         clicks: _.clicks,
@@ -437,7 +430,7 @@ Game.prototype.resetGame = async function() {
     _.hintTime = 0;
 
     _.init(_.gameMode);
-    id = null;
+    _.id = null;
   }
 };
 var game = new Game();
