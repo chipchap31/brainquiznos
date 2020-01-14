@@ -59,12 +59,12 @@ var tileConfig = {
     hard: 0.7
   },
   pointsLost: {
-    easy: 15,
-    normal: 10,
+    easy: 10,
+    normal: 7,
     hard: 5
   }
 };
-//data-open="game-main" data-close='game-home game-difficulty'
+
 // @param {array} date - contains dates when to replenish each of the missing life
 /**
  * @desc Invokes @method "lifeCountDown" when the user's lives fall under 5
@@ -264,7 +264,7 @@ Game.prototype.hintCountDown = function() {
           }
 
           _.choices.length >= 2
-            ? setTimeout(() => _.proccessChoices(), 1000)
+            ? setTimeout(() => _.proccessChoices(), 400)
             : null;
         }
       });

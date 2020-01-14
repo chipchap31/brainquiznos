@@ -1,10 +1,13 @@
 require("dotenv").config();
-let express = require("express");
-let app = express();
+const express = require("express");
+const app = express();
+const secure = require("express-force-https");
 const path = require("path");
-console.log(process.env.NODE_ENV);
+const helmet = require("helmet");
 const DEV = process.env.NODE_ENV === "development";
 const bodyParser = require("body-parser");
+
+app.use(secure);
 // routes
 const indexRouter = require("./routes/indexRoute");
 const userRouter = require("./routes/userRoute");
@@ -18,6 +21,7 @@ const PORT = process.env.PORT || 8000;
 const fetch = require("node-fetch");
 global.fetch = fetch;
 
+app.use(helmet());
 require("./models/userModel");
 require("./models/gameModel");
 app.use(logger("dev"));

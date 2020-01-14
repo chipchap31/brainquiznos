@@ -18,25 +18,28 @@ The game has three modes:
   - Game duration: 1:30 seconds
   - Total tiles: 20
   - Points multiplier: (time left when puzzle was solved x 0.3)
+  - Lost game points lost: 10
 
 - Normal mode
 
-  - Hint time: 10 seconds
+  - Hint time: 15 seconds
   - Game duration: 1:30 seconds
   - Total tiles: 24
   - Points multiplier: (time left when puzzle was solved x 0.5)
+  - Lost game points lost: 7
 
 - Hard mode
-  - Hint time: 10 seconds
+  - Hint time: 15 seconds
   - Game duration: 2 minutes
   - Total tiles: 30
   - Points multiplier: (time left when puzzle was solved x 1)
+  - Lost game points lost: 5
 
 ---
 
 ## UX
 
-I always start my UX process with research. The research involves comparing at least three existing memory game website and getting random users that justify my target audience.
+I always start my UX process with research. The research involves comparing at least three existing memory game website and getting random users that justify my target audience to test each websites.
 
 These are the list of websites that I have chosen to be tested:
 
@@ -44,61 +47,88 @@ These are the list of websites that I have chosen to be tested:
 2.  [Dkmgames](https://dkmgames.com/Memory/pairsrun.php)
 3.  [Helpfulgames](https://www.helpfulgames.com/subjects/brain-training/memory.html)
 
-### Feedback for each websites
-
-#### [Webgamesonline](https://www.webgamesonline.com/memory/)
-
-Webgamesonline is a really simple memory game. When the users initially the page, they didn't have any trouble to start the game. The main reason for this is because the main game is already visible to the users when loaded. The font size is greater than the ideal font size which is 16px. Except for the button's text and the time lapsed. The colour scheme is fantastic. Although, the colour of the solved images are the same with the unsolved. As a result, two of the users click on them by mistake.
-
-#### [Dkmgames](https://dkmgames.com/Memory/pairsrun.php)
-
-Dkmgames is a an awesome website, because it has multiple games within its website. It has a login system that let's you save your progress. The goal of the game is to complete each level that gets harder as you go along.
-
-In terms of usability, you have no controls at all. The font size are great and it is readable because it is greater than the ideal font size. The colour could be better because it is doesn't fit the context of the page. The page does not scale very well, because it images stays on the same place which is in to left of the page. As a result, some all of the users find it really difficult to click the images.
-
-[Helpfulgames](https://www.helpfulgames.com/subjects/brain-training)
-
-Helpfulgames is a bit similar to [Dkmgames](https://dkmgames.com/Memory/pairsrun.php)
-
-**Usability** - When the users load the website they were able to determine what the website is all about and started playing straight away
-
-**Font Size** - The font size is really greater than the ideal 16px so overall the font size is fine. Except for the button's text and the time.
-
-**Colour** - The overall colour palette is fantastic. The colour of the solved tiles are the same with the unsolved. As a result, two of my users clicked on them.
-
-**Scale** - The whole document does not scale at all for mobile landscape. The time that shows when the users started game became really small as well as the button to start a new game.
-
-Use this section to provide insight into your UX process, focusing on who this website is for, what it is that they want to achieve and how your project is the best way to help them achieve these things.
-
-In particular, as part of this section we recommend that you provide a list of User Stories, with the following general structure:
-
-- As a user type, I want to perform an action, so that I can achieve a goal.
-
-This section is also where you would share links to any wireframes, mockups, diagrams etc. that you created as part of the design process. These files should themselves either be included as a pdf file in the project itself (in an separate directory), or just hosted elsewhere online and can be in any format that is viewable inside the browser.
+---
 
 ## Features
 
-- **Secure login system** - allows users to create an account fast and simple by having them fill out the required fields. Also, to prevent third party from playing with their account when they are away from keyboard.In the near future, I will implement [Sendgrid](https://sendgrid.com/) to enable account verification and password recovery feature.
+- **Secure login system** - allows users to create an account fast and simple by having them fill out the required fields. Also, to prevent third party from playing with their account when they are away from keyboard.
 
-### Existing Features
+- **Slider** - the slider contains the game themes. This allows users to choose their choice of theme that they find comfortable playing.
 
-- Feature 1 - allows users X to achieve Y, by having them fill out Z
-- ...
+- **Leadearboard** - allows user to see the scores of the other players in order to see where they rank. This encourages the user to keep playing.
 
-For some/all of your features, you may choose to reference the specific project files that implement them, although this is entirely optional.
+- **Points Graph** - the graph allows the users keep track of their previous game points.
 
-In addition, you may also use this section to discuss plans for additional features to be implemented in the future:
+- **Life / Life replenishment** - this is just an extra feature I implemented. A user losses a life every time one lost a game. The life will be replenish after three minutes. The user is prevented to start a new game if they don't have any lives left.
+
+- **Pause game** - allows user to pause the game, in order for them to stop the time if they get distracted.
+
+- **Restart game** - allows user to restart the game, in order for them to save time from going back to the dashboard. The game will have the same theme after one restart.
+
+- **Difficulty options** - after a user clicks on one of the themes. A modal that shows the game difficulty options opens. This prompts the users on what difficulty they want to play the game.
+
+- **Avatar Icon** - the avatar icon's image is set depending on the gender of the user. Its main purpose is to help user navigate the page as it contains the link to the leaderboard and stats. Also, this is where user will find the logout button that destroys the current cookie and redirect to landing page.
+
+- **[Font Awesome](https://fontawesome.com/)** - The project also takes advantage of this free icon library in order to make the site more attractive.
 
 ### Features Left to Implement
 
-- Another feature idea
+- I will implement [Sendgrid](https://sendgrid.com/) to enable account verification and password recovery feature.
+
+- In the stats page, I will show the user's previous games that contains the amount of clicks and how accurate they are.
+
+- To add a weekly winner, whoever is at the top of the leaderboard every week is the winner.
+
+- Change the gameplay by going up a level while the game gets harder each level.
+
+- User report system - enables users to report other users who has an inappropriate usernames or they believe cheating.
+
+- Game tiles change when user failed to find a match in certain time.
 
 ## Technologies Used
 
 In this section, you should mention all of the languages, frameworks, libraries, and any other tools that you have used to construct this project. For each, provide its name, a link to its official site and a short sentence of why it was used.
 
-- [JQuery](https://jquery.com)
-  - The project uses **JQuery** to simplify DOM manipulation.
+- [bcrypt](https://www.npmjs.com/package/bcrypt)
+
+  - It is a library to help you hash password. The user's password is hashed to improve privacy and security.
+
+- [body-parser](https://www.npmjs.com/package/body-parser)
+
+  - It is a Node js body parsing middleware.It parse incoming request bodies in a middleware before your handlers, available under the req.body property. This project uses this library to read json data easily.
+
+- [cookie-session](https://www.npmjs.com/package/cookie-session)
+
+  - A simple cookie session middleware that store session data on the client within a cookie. This allows users to reduce the amount of times they have to login.
+
+- [dotenv](https://www.npmjs.com/package/dotenv)
+
+  - it allows the project to load environment variables. While in development mode, the project to place sensitive data like api keys inline to the code. Implementing this type of data inline will be exposed when pushed to github.
+
+- [ejs](https://ejs.co/)
+
+  - It is a simple templating language that lets you generate HTML markup with plain JavaScript. The project uses this libraries to make the html reusable and avoid too much editing different files.
+
+- [Express](https://expressjs.com/)
+
+  - It is is a minimal and flexible Node.js web application framework that provides a robust set of features for web and mobile applications. The reason for using this framework is because the it supports the templating engine used which is [ejs](https://ejs.co/).
+
+- [helmet](https://www.npmjs.com/package/helmet)
+
+  - It helps you secure your express apps by setting various HTTP headers. the project uses helmet to make improve security when communicating to the server.
+
+- [mogoose](https://mongoosejs.com/)
+
+  - It provides a straight-forward, schema-based solution to model your application data. It includes built-in type casting, validation, query building, business logic hooks and more, out of the box. The project use this library because the application needs to store such as users basic and game informations.
+
+- [morgan](https://www.npmjs.com/package/morgan)
+
+  - It is a http requests logger for Node js. This helps makes sure that any request from client to the server are working properly. This is done by logging the request path name and the how long it took.
+
+- [nodemon](https://www.npmjs.com/package/nodemon)
+  - It is an excellent tool when working with node js web applications. This project relies on nodemon in development mode.
+
+---
 
 ## Testing
 

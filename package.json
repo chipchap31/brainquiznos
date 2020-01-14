@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "NODE_ENV=development nodemon server.js"
+    "dev": "NODE_ENV=development nodemon server.js",
+    "start": "NODE_ENV=production node server.js"
   },
   "repository": {
     "type": "git",
@@ -25,6 +26,7 @@
     "dotenv": "^8.2.0",
     "ejs": "^3.0.1",
     "express": "^4.17.1",
+    "express-force-https": "^1.0.0",
     "helmet": "^3.21.2",
     "mongoose": "^5.7.13",
     "morgan": "^1.9.1",

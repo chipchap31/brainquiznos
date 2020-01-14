@@ -9,7 +9,9 @@ const unsplash = new Unsplash({
 
 router.get("/:theme", async (req, res, next) => {
   unsplash.search
-    .photos(req.params.theme, 1, 15, { orientation: "portrait" })
+    .photos(req.params.theme, Math.floor(Math.random() * 10) + 1, 15, {
+      orientation: "portrait"
+    })
     .then(response => response.json())
     .then(response => {
       res.send(response.results);
