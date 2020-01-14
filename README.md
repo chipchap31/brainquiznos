@@ -47,7 +47,7 @@ These are the list of websites that I have chosen to be tested:
 2.  [Dkmgames](https://dkmgames.com/Memory/pairsrun.php)
 3.  [Helpfulgames](https://www.helpfulgames.com/subjects/brain-training/memory.html)
 
----
+Read more about the UX Design [here](https://brainquiznos.com/uxdesign).
 
 ## Features
 
@@ -132,23 +132,69 @@ In this section, you should mention all of the languages, frameworks, libraries,
 
 ## Testing
 
-In this section, you need to convince the assessor that you have conducted enough testing to legitimately believe that the site works well. Essentially, in this part you will want to go over all of your user stories from the UX section and ensure that they all work as intended, with the project providing an easy and straightforward way for the users to achieve their goals.
+1. **As a new user, I want to sign up for an account so that can have
+   access.**
 
-Whenever it is feasible, prefer to automate your tests, and if you've done so, provide a brief explanation of your approach, link to the test file(s) and explain how to run them.
+   1. Go to sign up page.
+   1. Try to submit without filling any fields and an error message popped up.
+   1. Try to submit an invalid email and an error message.
+   1. Try to submit username field with invalid requirements from the system and an error message appears.
+   1. Try to submit passwords that does not match and an error message appears.
+   1. Submit the form with form with valid entries the page rendered a success page with the username.
 
-For any scenarios that have not been automated, test the user stories manually and provide as much detail as is relevant. A particularly useful form for describing your testing process is via scenarios, such as:
+      When my mentor first time signed up, she come across a bug that says "cannot read user".
+      It was an error at one of the parameters being pass to my signup-success [route](https://github.com/chipchap31/brainquiznos/blob/master/routes/userRoute.js). The fix was to change "user" with "loggedIn" at line 45.
 
-1. Contact form:
-   1. Go to the "Contact Us" page
-   2. Try to submit the empty form and verify that an error message about the required fields appears
-   3. Try to submit the form with an invalid email address and verify that a relevant error message appears
-   4. Try to submit the form with all inputs valid and verify that a success message appears.
+      When reviewed in the channel #peer-code-review, one of the student mentioned that when signing up and get an error, all of the input fields losses its value. As a result, he has to fill out all of them again.
 
-In addition, you should mention in this section how your project looks and works on different browsers and screen sizes.
+1. **As a user, I want to sign in so that I can start playing.**
 
-You should also mention in this section any interesting bugs or problems you discovered during your testing, even if you haven't addressed them yet.
+   1. Go to login page.
 
-If this section grows too long, you may want to split it off into a separate file and link to it from here.
+   1. Try to submit without filling any fields and an error message popped up.
+
+   1. Try to submit with a username not on database and an error message appears.
+   1. If the username is found but the password is wrong an error message appears.
+   1. Try to submit passwords that does not match and an error message appears.
+   1. Submit the form with form with valid entries the page rendered the game interface.
+
+1. **As a user, I want to start the game so that I can start solving the puzzles.**
+
+   1. Go to main game interface.
+
+   1. Slider of theme works going left and right and theme was successfully chosen by clicking.
+
+   1. The difficulty modal renders and choosing the mode works.
+
+   1. User successfully reached the main game and can start playing.
+
+   During my own testing, I found at that sometime, after pressing the difficulty options, the images are not loaded straight away. As a result, the tiles are not rendered because they rely on the data fetched from unsplash api.
+
+   I solved this by adding the tiles first as a placeholder without the images and preventing the start button from rendering before the images are loaded. You can have a look at it [here](https://github.com/chipchap31/brainquiznos/blob/e2a7ed9775668e7f6811ade8c01ff92fe761428d/assets/js/game.js#L176) until line 216.
+
+   I also got a comment from one of the students that after choosing two images to match, the game doesn't let one choose another image straight away.
+
+   The fix was to edit this block of code at this [line](https://github.com/chipchap31/brainquiznos/blob/e2a7ed9775668e7f6811ade8c01ff92fe761428d/assets/js/game.js#L266).
+
+   ```javascript
+   _.choices.length >= 2 ? setTimeout(() => _.proccessChoices(), 1000) : null;
+   ```
+
+   into this
+
+   ```javascript
+   _.choices.length >= 2 ? setTimeout(() => _.proccessChoices(), 400) : null;
+   ```
+
+1. **As a user, I want to be able to pause the game so that I can stop the time whenever I am doing something else.**
+
+   1. The pause button works when the game started. During hint countdown the images hides and the countdown stops.
+
+   1. A modal pops up asking the user if the user wants to continue or exit the game. Both buttons works.
+
+   1. When the continue button is pressed the countdown continues and the images are shown again during the hint countdown only.
+
+   1. The pause modal disappears and the user can continue playing.
 
 ## Deployment
 
@@ -162,16 +208,49 @@ In particular, you should provide all details of the differences between the dep
 
 In addition, if it is not obvious, you should also describe how to run your code locally.
 
+This project is hosted by the platform called [Heroku](https://www.heroku.com/).
+
+Before deploying to production, I always make sure that the environment variables are in .gitignore to avoid commiting to github and make public. I also like to branch out from develop and create a release branch as it allows me to create a minor debugging.
+
+The next step is to create a new application on Heroku. I called my app brainquiznos and choose Europe as the region. Heroku supports github so all I have to do is logged in to my github and connect the branch of my choice.
+
+The Mongo uri for my database is different from the development mode, so it is essential that I have unique value in my .env.
+
+The last and but not least is to apply for domain name. I registered "brainquiznos" at [NameCheap](https://www.namecheap.com/).
+
+## Quick start
+
+1. Clone the repo and install the dependencies.
+
+   ```
+   $ git clone  https://github.com/chipchap31/brainquiznos.git
+   ```
+
+1. Clone the repo and install the dependencies.
+
+   ```
+   $ npm install
+   ```
+
+1. Sign up for Unsplash api key [here](https://unsplash.com/developers)
+1. Create a .env file in the root directory and add the required fields
+
+   ```
+   MONGO_URI=YOUR MONGODB URI
+   UNSPLASH_KEY=YOUR UNSPLASH API KEY
+   COOKIE_KEY_1=TYPE RANDOM STRING HERE
+   COOKIE_KEY_2=TYPE RANDOM STRING HERE
+
+   ```
+
+1. Start the server
+
+   ```
+   $ npm run dev
+   ```
+
 ## Credits
-
-### Content
-
-- The text for section Y was copied from the [Wikipedia article Z](https://en.wikipedia.org/wiki/Z)
 
 ### Media
 
-- The photos used in this site were obtained from ...
-
-### Acknowledgements
-
-- I received inspiration for this project from X
+- The images for the game are all from the website [Unspash](https://unsplash.com/).
